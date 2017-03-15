@@ -12,8 +12,10 @@ import android.widget.LinearLayout;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Sum sum;
 
     public static String PACKAGE_NAME;
+    public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.show_money_button:
                     if (showBtn.getText() == "显示余额") {
                         sum = DataSupport.find(Sum.class, 1);
-                        String sumString = String.valueOf(sum.getTotal());
-                        String.format(sumString, "%.2f");
+                        String sumString = decimalFormat.format( sum.getTotal() );
                         showBtn.setText(sumString);
                     } else showBtn.setText("显示余额");
                     break;
