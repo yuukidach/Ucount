@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="com.yuukidach.ucount.MainActivity"
+    android:animationCache="false">
+
+    <ImageView
+        android:id="@+id/header_img"
+        android:src="@drawable/mikan_header_img"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_heightPercent="25%" />
+
+    <at.markushi.ui.CircleButton
+        android:id="@+id/add_button"
+        android:src="@drawable/type_big_99999"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="25%"
+        app:layout_heightPercent="16%"
+        android:layout_centerHorizontal="true"
+        app:layout_marginTopPercent="17%"
+        app:cb_color="#fff"
+        app:cb_pressedRingWidth="2dp" />
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/main_recycler"
+        android:layout_below="@id/add_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:background="@color/colorLightSteelBlue"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/in_and_out_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+    <Button
+        android:id="@+id/show_money_button"
+        android:text="@string/show_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="0dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_default_shape"
+        app:layout_marginTopPercent="2%" />
+
+    <TextView
+        android:id="@+id/monthly_income_title"
+        android:text="@string/monthly_income_title"
+        android:textColor="@color/colorSlateGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/header_img" />
+
+    <TextView
+        android:id="@+id/monthly_expenditure_title"
+        android:text="@string/monthly_expenditure_title"
+        android:textColor="@color/colorSlateGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_gravity="end"
+        android:layout_below="@id/header_img" />
+
+</android.support.percent.PercentRelativeLayout>

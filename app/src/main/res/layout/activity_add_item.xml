@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="com.yuukidach.ucount.AddItemActivity">
+
+    <View
+        android:id="@+id/center_view_two"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/add_cost_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_cost_button_string"
+        android:textColor="@color/colorOrange"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:background="@null"
+        android:layout_alignStart="@id/center_view_two" />
+
+    <Button
+        android:id="@+id/add_earn_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_earn_button_string"
+        android:textColor="@color/colorSlateGray"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:background="@null"
+        android:layout_alignEnd="@id/center_view_two"
+        android:layout_alignBaseline="@id/add_cost_button"/>
+
+    <LinearLayout
+        android:id="@+id/have_chosen"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/add_cost_button"
+        app:layout_heightPercent="8%">
+
+        <ImageView
+            android:id="@+id/chosen_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/type_big_1"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/chosen_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"
+            android:text="一般"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="45%"
+        android:layout_below="@id/have_chosen"
+        android:background="#FFFFFF">
+
+    </RelativeLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/item_fragment"
+        android:background="@drawable/page2_gradient"
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+        <ImageView
+            android:id="@+id/konata_izumi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:src="@drawable/konata_izumi" />
+
+        <TextView
+            android:id="@+id/picture_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Sa 把金额输进去吧 ━ω━●"
+            android:layout_toEndOf="@id/konata_izumi"
+            android:textColor="#000"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginStart="13dp"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/input_money_text"
+            android:layout_below="@id/picture_word"
+            android:layout_alignStart="@id/picture_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:met_baseColor="#0056d3"
+            app:met_primaryColor="#2071c3"
+            android:digits="1234567890."
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:inputType="number" />
+
+        <at.markushi.ui.CircleButton
+            android:id="@+id/add_finish"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_widthPercent="20%"
+            app:layout_heightPercent="40%"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_check"
+            app:cb_color="@color/colorBlue"
+            app:cb_pressedRingWidth="8dp"
+            android:scaleType="fitCenter" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</android.support.percent.PercentRelativeLayout>

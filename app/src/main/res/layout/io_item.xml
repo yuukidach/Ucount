@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 主界面收入显示 -->
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/earn_left_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/earn_item_img_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/earn_item_money_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/earn_item_img_main"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+
+        <TextView
+            android:id="@+id/earn_item_name_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/earn_item_money_main" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+    <!-- 主界面支出显示 -->
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/cost_right_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cost_item_img_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/cost_item_name_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/cost_item_img_main"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
+
+        <TextView
+            android:id="@+id/cost_item_money_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/cost_item_name_main" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+</LinearLayout>
