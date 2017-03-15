@@ -147,12 +147,12 @@ public class CostFragment extends Fragment {
 
     // 改变banner状态
     public void changeBanner(IOItem tmpItem) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getId());
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);
 
-        itemImage.setImageResource(tmpItem.getId());
-        itemTitle.setTag(-tmpItem.getId());      // 保留图片资源id作为标签，方便以后调用
+        itemImage.setImageResource(tmpItem.getSrcId());
+        itemTitle.setTag(-tmpItem.getSrcId());      // 保留图片资源id作为标签，方便以后调用
         itemTitle.setText(tmpItem.getName());
 
         // 获取图片颜色并改变上方banner的背景色

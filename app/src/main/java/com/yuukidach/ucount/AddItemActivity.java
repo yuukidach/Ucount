@@ -78,8 +78,7 @@ public class AddItemActivity extends AppCompatActivity {
                     break;
                 case R.id.add_finish:
                     putItemInData( Double.parseDouble(moneyText.getText().toString()) );
-                    Intent intent = new Intent(AddItemActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    finish();
                     break;
             }
 
@@ -97,7 +96,7 @@ public class AddItemActivity extends AppCompatActivity {
         } else ioItem.setType(1);
 
         ioItem.setName(bannerText.getText().toString());
-        ioItem.setId(tag);
+        ioItem.setSrcId(tag);
         ioItem.setMoney(money);
         ioItem.save();
 

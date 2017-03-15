@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         // litepal
         Connector.getDatabase();
 
+        initIoItemList();
+
         showBtn = (Button) findViewById(R.id.show_money_button);
         addBtn = (CircleButton) findViewById(R.id.add_button);
         ioItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
@@ -88,5 +90,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    public void initIoItemList() {
+        ioItemList = DataSupport.findAll(IOItem.class);
     }
 }

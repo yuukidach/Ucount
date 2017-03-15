@@ -71,7 +71,7 @@ public class GridViewAdapter extends BaseAdapter {
          */
         int pos = position + curIndex * pageSize;
         viewHolder.tv.setText(mDatas.get(pos).getName());
-        viewHolder.iv.setImageResource(mDatas.get(pos).getId());
+        viewHolder.iv.setImageResource(mDatas.get(pos).getSrcId());
 
         /**
          * 为GridView中的每个item设置高度

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder> {
     private List<IOItem> mIOItemList;
+
+    public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         PercentRelativeLayout earnLayout, costLayout;
@@ -54,16 +57,16 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         if (ioItem.getType() == -1) {       // -1代表支出
             holder.earnLayout.setVisibility(View.GONE);
             holder.costLayout.setVisibility(View.VISIBLE);
-            holder.itemImageCost.setImageResource(ioItem.getId());
+            holder.itemImageCost.setImageResource(ioItem.getSrcId());
             holder.itemNameCost.setText(ioItem.getName());
-            holder.itemMoneyCost.setText(String.valueOf(ioItem.getMoney()));
+            holder.itemMoneyCost.setText(decimalFormat.format(ioItem.getMoney()));
         //表示收入的布局
         } else if (ioItem.getType() == 1) {
             holder.earnLayout.setVisibility(View.VISIBLE);
             holder.costLayout.setVisibility(View.GONE);
-            holder.itemImageEarn.setImageResource(ioItem.getId());
+            holder.itemImageEarn.setImageResource(ioItem.getSrcId());
             holder.itemNameEarn.setText(ioItem.getName());
-            holder.itemMoneyEarn.setText(String.valueOf(ioItem.getMoney()));
+            holder.itemMoneyEarn.setText(decimalFormat.format(ioItem.getMoney()));
         }
 
     }

@@ -142,12 +142,12 @@ public class EarnFragment extends Fragment {
 
     // 改变banner状态
     public void changeBanner(IOItem tmpItem) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getId());
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);
 
-        itemImage.setImageResource(tmpItem.getId());
-        itemTitle.setTag(tmpItem.getId());
+        itemImage.setImageResource(tmpItem.getSrcId());
+        itemTitle.setTag(tmpItem.getSrcId());
         itemTitle.setText(tmpItem.getName());
 
         // 获取图片颜色并改变上方banner的背景色
