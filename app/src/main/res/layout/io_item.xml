@@ -10,13 +10,13 @@
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/earn_left_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <ImageView
             android:id="@+id/earn_item_img_main"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            app:layout_widthPercent="10%"
+            app:layout_widthPercent="8%"
             android:scaleType="fitCenter"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
@@ -45,13 +45,13 @@
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/cost_right_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="55dp">
 
         <ImageView
             android:id="@+id/cost_item_img_main"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            app:layout_widthPercent="10%"
+            app:layout_widthPercent="8%"
             android:scaleType="fitCenter"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>

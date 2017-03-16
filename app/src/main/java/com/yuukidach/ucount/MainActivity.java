@@ -1,17 +1,30 @@
 package com.yuukidach.ucount;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +34,16 @@ import at.markushi.ui.CircleButton;
 
 public class MainActivity extends AppCompatActivity {
     private List<IOItem> ioItemList = new ArrayList<>();
-    private RecyclerView ioItemRecyclerView;
+    private RecyclerView  ioItemRecyclerView;
     private IOItemAdapter adapter;
-    private Button showBtn;
-    private CircleButton addBtn;
+    private Button        showBtn;
+    private CircleButton  addBtn;
+    private ImageView     headerImg;
 
-    private Sum sum;
+    private Sum           sum;
 
     public static String PACKAGE_NAME;
+    public static final int SELECT_GALLERY_PIC = 1;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
@@ -47,10 +62,20 @@ public class MainActivity extends AppCompatActivity {
         showBtn = (Button) findViewById(R.id.show_money_button);
         addBtn = (CircleButton) findViewById(R.id.add_button);
         ioItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
+        headerImg = (ImageView) findViewById(R.id.header_img);
 
         // 设置按钮监听
         showBtn.setOnClickListener(new ButtonListener());
         addBtn.setOnClickListener(new ButtonListener());
+
+        // 设置首页header图片长按以更换图片
+        headerImg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                selectPictureFromGallery();
+                return false;
+            }
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
@@ -92,7 +117,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     public void initIoItemList() {
         ioItemList = DataSupport.findAll(IOItem.class);
+    }
+
+    public void selectPictureFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        // 设置选择类型为图片类型
+        intent.setType("image/*");
+        // 打开图片选择
+        startActivityForResult(intent, SELECT_GALLERY_PIC);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case SELECT_GALLERY_PIC:
+                if (data == null) return;
+                // 用户从图库选择图片后会返回所选图片的Uri
+                Uri uri = data.getData();
+                this.headerImg.setImageURI(uri);
+                break;
+        }
     }
 }
