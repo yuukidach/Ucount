@@ -1,17 +1,14 @@
 package com.yuukidach.ucount;
 
-import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,17 +17,13 @@ import android.widget.LinearLayout;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
+
+import static android.provider.CalendarContract.CalendarCache.URI;
 
 public class MainActivity extends AppCompatActivity {
     private List<IOItem> ioItemList = new ArrayList<>();
@@ -46,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int SELECT_GALLERY_PIC = 1;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 获得包名，方便后面的程序使用
         PACKAGE_NAME = getApplicationContext().getPackageName();
-
-        // litepal
-        Connector.getDatabase();
-
-        initIoItemList();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
         addBtn = (CircleButton) findViewById(R.id.add_button);
@@ -77,13 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
-        layoutManager.setReverseLayout(true);   // 列表反转
-
-        ioItemRecyclerView.setLayoutManager(layoutManager);
-        adapter = new IOItemAdapter(ioItemList);
-        ioItemRecyclerView.setAdapter(adapter);
+        setImageForHeader();
     }
 
 
@@ -91,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBtn.setText("显示余额");
+
+        // litepal
+        Connector.getDatabase();
+
+        initIoItemList();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
+        layoutManager.setReverseLayout(true);   // 列表反转
+
+        ioItemRecyclerView.setLayoutManager(layoutManager);
+        adapter = new IOItemAdapter(ioItemList);
+        ioItemRecyclerView.setAdapter(adapter);
     }
 
 
@@ -123,24 +120,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void selectPictureFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         // 设置选择类型为图片类型
         intent.setType("image/*");
         // 打开图片选择
         startActivityForResult(intent, SELECT_GALLERY_PIC);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case SELECT_GALLERY_PIC:
                 if (data == null) return;
                 // 用户从图库选择图片后会返回所选图片的Uri
                 Uri uri = data.getData();
                 this.headerImg.setImageURI(uri);
+                saveImageUri(uri);
+
+                // 获取永久访问图片URI的权限
+                int takeFlags = data.getFlags();
+                takeFlags &=(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContentResolver().takePersistableUriPermission(uri, takeFlags);
+
                 break;
+        }
+    }
+
+    // 利用SharedPreferences保存图片uri
+    public void saveImageUri(Uri uri) {
+        SharedPreferences pref = getSharedPreferences("image", MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor =  pref.edit();
+        prefEditor.putString("uri", uri.toString());
+        prefEditor.apply();
+    }
+
+    public void setImageForHeader() {
+        SharedPreferences pref = getSharedPreferences("image", MODE_PRIVATE);
+        String imageUri = pref.getString("uri", "");
+
+        if (!imageUri.equals("")) {
+            Uri contentUri = Uri.parse(imageUri);
+            this.headerImg.setImageURI(contentUri);
         }
     }
 }
