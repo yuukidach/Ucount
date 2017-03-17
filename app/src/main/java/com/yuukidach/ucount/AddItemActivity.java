@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
@@ -77,8 +78,13 @@ public class AddItemActivity extends AppCompatActivity {
 
                     break;
                 case R.id.add_finish:
-                    putItemInData( Double.parseDouble(moneyText.getText().toString()) );
-                    finish();
+                    String moneyString =  moneyText.getText().toString();
+                    if (moneyString.equals(""))
+                        Toast.makeText(getApplicationContext(),"唔姆，你还没输入金额",Toast.LENGTH_SHORT).show();
+                    else {
+                        putItemInData(Double.parseDouble(moneyText.getText().toString()));
+                        finish();
+                    }
                     break;
             }
 
