@@ -13,9 +13,9 @@
 > [LitePalFramework/LitePal](https://github.com/LitePalFramework/LitePal) 
 
 软件截图
-![](/home/yuukidach/Pictures/Screenshot_2017-03-17-10-40-31.png) 
+![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2017-03-17-10-40-31.png?raw=true)
 
-![](/home/yuukidach/Pictures/Screenshot_2017-03-17-10-40-52.png) 
+![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2017-03-17-10-40-52.png?raw=true) 
 
 测试机型：
 
