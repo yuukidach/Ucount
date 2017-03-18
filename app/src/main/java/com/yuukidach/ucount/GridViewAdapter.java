@@ -54,7 +54,7 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.chose_io_item, parent, false);
             viewHolder = new ViewHolder();
@@ -64,14 +64,6 @@ public class GridViewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        /**
-         * 重新确定position.
-         * 在给View绑定显示的数据时，计算正确的position = position + curIndex * pageSize，
-         * （因为拿到的是总的数据源，数据源是分页加载到每页的GridView上的，为了确保能正确的点对不同页上的item)
-         */
-        int pos = position + curIndex * pageSize;
-        viewHolder.tv.setText(mDatas.get(pos).getName());
-        viewHolder.iv.setImageResource(mDatas.get(pos).getSrcId());
 
         /**
          * 为GridView中的每个item设置高度
@@ -83,6 +75,15 @@ public class GridViewAdapter extends BaseAdapter {
                 height / 4 + 20);
         //设置每一行的高度和宽度
         convertView.setLayoutParams(params);
+
+        /**
+         * 重新确定position.
+         * 在给View绑定显示的数据时，计算正确的position = position + curIndex * pageSize，
+         * （因为拿到的是总的数据源，数据源是分页加载到每页的GridView上的，为了确保能正确的点对不同页上的item)
+         */
+        int pos = position + curIndex * pageSize;
+        viewHolder.tv.setText(mDatas.get(pos).getName());
+        viewHolder.iv.setImageResource(mDatas.get(pos).getSrcId());
 
         return convertView;
     }

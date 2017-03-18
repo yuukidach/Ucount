@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // litepal
+        Connector.getDatabase();
+
         // 获得包名，方便后面的程序使用
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
@@ -75,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBtn.setText("显示余额");
-
-        // litepal
-        Connector.getDatabase();
 
         initIoItemList();
 
@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 takeFlags &=(Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 getContentResolver().takePersistableUriPermission(uri, takeFlags);
-
                 break;
         }
     }

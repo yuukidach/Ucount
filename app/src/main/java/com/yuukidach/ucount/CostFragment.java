@@ -72,7 +72,7 @@ public class CostFragment extends Fragment {
         pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
         mPagerList = new ArrayList<View>();
         for (int i = 0; i < pageCount; i++) {
-            //每个页面都是inflate出一个新实例
+            // 每个页面都是inflate出一个新实例
             GridView gridView = (GridView) inflater.inflate(R.layout.item_grid, mPager, false);
             gridView.setAdapter(new GridViewAdapter(getActivity(), mDatas, i, pageSize));
 
