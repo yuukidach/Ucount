@@ -5,4 +5,7 @@
     <string name="monthly_expenditure_title">当月支出</string>
     <string name="add_cost_button_string">支出</string>
     <string name="add_earn_button_string">收入</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,13 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <com.merhold.extensiblepageindicator.ExtensiblePageIndicator
         android:id="@+id/ll_dot_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        app:indicatorRadius="4dp"
+        app:indicatorPadding="27dp"
         android:layout_marginBottom="0dp"
-        android:gravity="center"
-        android:orientation="horizontal" />
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        app:indicatorInactiveColor="@color/colorLightGray"
+        app:indicatorActiveColor="@color/colorBlue"/>
 
 </RelativeLayout>

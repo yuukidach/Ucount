@@ -72,7 +72,6 @@
         app:layout_heightPercent="45%"
         android:layout_below="@id/have_chosen"
         android:background="#FFFFFF">
-
     </RelativeLayout>
 
     <android.support.percent.PercentRelativeLayout

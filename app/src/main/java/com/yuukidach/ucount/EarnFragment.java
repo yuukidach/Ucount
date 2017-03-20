@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +35,11 @@ public class EarnFragment extends Fragment {
     private ViewPager mPager;
     private List<View> mPagerList;
     private List<IOItem> mDatas;
-    private LinearLayout mLlDot;
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
     private LinearLayout itemLayout;
-
+    private ExtensiblePageIndicator extensiblePageIndicator;
     // 总的页数
     private int pageCount;
 
@@ -56,7 +58,7 @@ public class EarnFragment extends Fragment {
         View view = inflater.inflate(R.layout.earn_fragment, container, false);
 
         mPager = (ViewPager) view.findViewById(R.id.viewpager_2);
-        mLlDot = (LinearLayout) view.findViewById(R.id.ll_dot_2);
+        extensiblePageIndicator = (ExtensiblePageIndicator) view.findViewById(R.id.ll_dot_2);
 
         // 初始化数据源
         initDatas();
@@ -68,24 +70,24 @@ public class EarnFragment extends Fragment {
         pageCount = (int) Math.ceil(mDatas.size() * 1.0 / pageSize);
         mPagerList = new ArrayList<View>();
         for (int i = 0; i < pageCount; i++) {
-            //每个页面都是inflate出一个新实例
-            GridView gridView = (GridView) inflater.inflate(R.layout.item_grid, mPager, false);
-            gridView.setAdapter(new GridViewAdapter(getActivity(), mDatas, i, pageSize));
+            RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_grid, mPager ,false);
+            MyGridLayoutManager layoutManager = new MyGridLayoutManager(getContext(), 6);
+            recyclerView.setLayoutManager(layoutManager);
+            GridRecyclerAdapter adaper = new GridRecyclerAdapter(mDatas, i, pageSize);
+            recyclerView.setAdapter(adaper);
 
-            mPagerList.add(gridView);
+            mPagerList.add(recyclerView);
 
-            // 对gridView添加item监听
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            adaper.setOnItemClickListener(new GridRecyclerAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    changeBanner(mDatas.get((int)id));
+                public void onItemClick(View view, int position) {
+                    changeBanner(mDatas.get(position));
                 }
             });
         }
-        // 设置圆点
-        setOvalLayout(inflater, mLlDot);
         // 设置适配器
         mPager.setAdapter(new ViewPagerAdapter(mPagerList));
+        extensiblePageIndicator.initViewPager(mPager);
 
         return view;
     }
@@ -100,37 +102,6 @@ public class EarnFragment extends Fragment {
             int imageId = getResources().getIdentifier("type_big_n" + i, "drawable", MainActivity.PACKAGE_NAME);
             mDatas.add(new IOItem(imageId, titles[i-1]));
         }
-    }
-
-    /**
-     * 设置圆点
-     */
-    public void setOvalLayout(LayoutInflater inflater, ViewGroup container) {
-        for (int i = 0; i < pageCount; i++) {
-            mLlDot.addView(inflater.inflate(R.layout.dot, container, false));
-        }
-        // 默认显示第一页
-        mLlDot.getChildAt(0).findViewById(R.id.v_dot)
-                .setBackgroundResource(R.drawable.dot_selected);
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageSelected(int position) {
-                // 取消圆点选中
-                mLlDot.getChildAt(curIndex)
-                        .findViewById(R.id.v_dot)
-                        .setBackgroundResource(R.drawable.dot_normal);
-                // 圆点选中
-                mLlDot.getChildAt(position)
-                        .findViewById(R.id.v_dot)
-                        .setBackgroundResource(R.drawable.dot_selected);
-                curIndex = position;
-            }
-
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            public void onPageScrollStateChanged(int arg0) {
-            }
-        });
     }
 
     // 获得AddItemActivity对应的控件，用来提示已选择的项目类型
