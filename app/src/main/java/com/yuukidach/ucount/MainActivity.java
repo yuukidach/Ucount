@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     // 利用SharedPreferences保存图片uri
     public void saveImageUri(Uri uri) {
         SharedPreferences pref = getSharedPreferences("image", MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor =  pref.edit();
+        SharedPreferences.Editor prefEditor = pref.edit();
         prefEditor.putString("uri", uri.toString());
         prefEditor.apply();
     }

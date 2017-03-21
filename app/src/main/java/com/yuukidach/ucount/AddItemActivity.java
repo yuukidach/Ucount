@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import at.markushi.ui.CircleButton;
 
 public class AddItemActivity extends AppCompatActivity {
@@ -31,6 +35,8 @@ public class AddItemActivity extends AppCompatActivity {
     private TextView bannerText;
 
     private TextView moneyText;
+
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +110,7 @@ public class AddItemActivity extends AppCompatActivity {
         ioItem.setName(bannerText.getText().toString());
         ioItem.setSrcId(tag);
         ioItem.setMoney(money);
+        ioItem.setTimeStamp(format.format(new Date()));
         ioItem.save();
 
         Sum sum = new Sum();

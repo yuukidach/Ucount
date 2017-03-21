@@ -6,6 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <RelativeLayout
+        android:id="@+id/date_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/main_dot"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/dot"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/iotem_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/colorSlateGray"
+            android:layout_toStartOf="@id/main_dot"
+            android:layout_marginEnd="6dp"/>
+
+
+    </RelativeLayout>
+
     <!-- 主界面收入显示 -->
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/earn_left_layout"

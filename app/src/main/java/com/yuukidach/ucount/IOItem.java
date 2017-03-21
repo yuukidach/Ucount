@@ -14,6 +14,7 @@ public class IOItem extends DataSupport {
     private double money;
     private String name;
     private String description;
+    private String timeStamp;
 
     public IOItem () {}
 
@@ -39,25 +40,12 @@ public class IOItem extends DataSupport {
         this.description = description;
     }
 
-    public double getMoney() {
-        return money;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public int getSrcId() {
-        return srcId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+    public double getMoney()                       { return money; }
+    public int getType()                           { return type; }
+    public int getSrcId()                          { return srcId; }
+    public String getName()                        { return name; }
+    public String getDescription()                 { return description; }
+    public String getTimeStamp()                   { return timeStamp; }
 
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
@@ -65,4 +53,5 @@ public class IOItem extends DataSupport {
     public void setSrcId(int srcId)                { this.srcId = srcId; }
     public void setName(String name)               { this.name = name; }
     public void setDescription(String description) { this.description = description; }
+    public void setTimeStamp(String timeStamp)     { this.timeStamp = timeStamp; }
 }
