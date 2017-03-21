@@ -36,7 +36,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private TextView moneyText;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

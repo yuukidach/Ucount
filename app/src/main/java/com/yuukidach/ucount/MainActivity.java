@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBtn.setText("显示余额");
+        GlobalVariables.setmDate("");
 
         initIoItemList();
 
