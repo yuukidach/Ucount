@@ -8,9 +8,13 @@ import org.litepal.crud.DataSupport;
  */
 
 public class IOItem extends DataSupport {
+    public final int TYPE_COST = -1;
+    public final int TYPE_EARN =  1;
+
     private int id;
     private int type;                       // 收入还会支出
     private int srcId;                      // 项目资源id
+    private int mId;
     private double money;
     private String name;
     private String description;
@@ -46,6 +50,7 @@ public class IOItem extends DataSupport {
     public String getName()                        { return name; }
     public String getDescription()                 { return description; }
     public String getTimeStamp()                   { return timeStamp; }
+    public int getmId()                            { return mId; }
 
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
@@ -54,4 +59,5 @@ public class IOItem extends DataSupport {
     public void setName(String name)               { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setTimeStamp(String timeStamp)     { this.timeStamp = timeStamp; }
+    public void setmId(int mId)                    { this.mId = mId; }
 }

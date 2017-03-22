@@ -17,11 +17,11 @@ import org.litepal.crud.DataSupport;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import at.markushi.ui.CircleButton;
 
 public class AddItemActivity extends AppCompatActivity {
-
     private static final String TAG = "AddItemActivity";
 
     private FragmentManager manager;
@@ -36,7 +36,8 @@ public class AddItemActivity extends AppCompatActivity {
 
     private TextView moneyText;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+    private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日");
+    private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,36 +100,47 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     public void putItemInData(double money) {
+        Sum sum = new Sum();
         IOItem ioItem = new IOItem();
         int tag = (int)bannerText.getTag();
 
         if (tag < 0) {
-            ioItem.setType(-1);
+            ioItem.setType(ioItem.TYPE_COST);
             tag = -tag;
-        } else ioItem.setType(1);
+        } else ioItem.setType(ioItem.TYPE_EARN);
 
         ioItem.setName(bannerText.getText().toString());
         ioItem.setSrcId(tag);
         ioItem.setMoney(money);
-        ioItem.setTimeStamp(format.format(new Date()));
+        ioItem.setTimeStamp(formatItem.format(new Date()));         // 存储记账时间
         ioItem.save();
 
-        Sum sum = new Sum();
-        if (isThereASum()) {
-            sum = DataSupport.find(Sum.class, 1);
-            sum.setTotal(sum.getTotal() + money * ioItem.getType());
-            sum.save();
-        } else {
-            sum.setId(1);
-            sum.setName("All");
-            sum.setTotal(money * ioItem.getType());
-            sum.save();
-        }
+        int type = ioItem.getType();
+        String sumDate = formatSum.format(new Date());
+        // 计算总额
+        sum.calculateMoneyIncludeNull(sum.SUM, "All", money, type, sumDate);
+        calculateMonthlyMoney(type, ioItem);
     }
 
-    public boolean isThereASum() {
-        if (DataSupport.find(Sum.class, 1) == null)
-            return false;
-        return true;
+    public void calculateMonthlyMoney(int type, IOItem ioItem) {
+        Sum sum = new Sum();
+        Sum tmpSum = new Sum();
+        String sumDate = formatSum.format(new Date());
+        int id = (int)((double)type / 2 + 2.5);
+
+        // 保证一定现有2号id，避免出现当月支出不更新的bug
+        if (!tmpSum.isThereASum(tmpSum.MONTHLY_COST))
+            tmpSum.saveSum(tmpSum, tmpSum.MONTHLY_COST, 0.0, 1, sumDate);
+
+        if (sum.isThereASum(id)) {
+            sum = DataSupport.find(Sum.class, id);
+            if (sum.getDate().equals(ioItem.getTimeStamp().substring(0, 8))) {
+                sum.calculateMoney(id, ioItem.getMoney(), type*type);
+            } else {
+                sum.saveSum(sum, id, ioItem.getMoney(), type*type, sumDate);
+            }
+        } else {
+            sum.saveSum(sum, id, ioItem.getMoney(), type*type, sumDate);
+        }
     }
 }

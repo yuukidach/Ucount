@@ -70,7 +70,16 @@
         android:layout_below="@id/header_img" />
 
     <TextView
-        android:id="@+id/monthly_expenditure_title"
+        android:id="@+id/monthly_earn_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="12sp"
+        android:layout_below="@id/monthly_income_title"
+        android:layout_alignStart="@id/monthly_income_title"/>
+
+    <TextView
+        android:id="@+id/monthly_cost_title"
         android:text="@string/monthly_expenditure_title"
         android:textColor="@color/colorSlateGray"
         android:layout_width="wrap_content"
@@ -79,5 +88,14 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_gravity="end"
         android:layout_below="@id/header_img" />
+
+    <TextView
+        android:id="@+id/monthly_cost_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="12sp"
+        android:layout_below="@id/monthly_cost_title"
+        android:layout_alignEnd="@id/monthly_cost_title"/>
 
 </android.support.percent.PercentRelativeLayout>

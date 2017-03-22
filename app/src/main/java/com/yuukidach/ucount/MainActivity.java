@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -32,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private Button        showBtn;
     private CircleButton  addBtn;
     private ImageView     headerImg;
+    private TextView      monthlyCost, monthlyEarn;
 
-    private Sum           sum;
+    private Sum           sum = new Sum();
 
     public static String PACKAGE_NAME;
     public static final int SELECT_GALLERY_PIC = 1;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         addBtn = (CircleButton) findViewById(R.id.add_button);
         ioItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
         headerImg = (ImageView) findViewById(R.id.header_img);
+        monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
+        monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
 
         // 设置按钮监听
         showBtn.setOnClickListener(new ButtonListener());
@@ -78,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showBtn.setText("显示余额");
+
+        sum.setMoneyText(sum.MONTHLY_COST, monthlyCost);
+        sum.setMoneyText(sum.MONTHLY_EARN, monthlyEarn);
+
+        // 用于存储recyclerView的日期
         GlobalVariables.setmDate("");
 
         initIoItemList();
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.show_money_button:
                     if (showBtn.getText() == "显示余额") {
-                        sum = DataSupport.find(Sum.class, 1);
+                        sum = DataSupport.find(Sum.class, sum.SUM);
                         String sumString = decimalFormat.format( sum.getTotal() );
                         showBtn.setText(sumString);
                     } else showBtn.setText("显示余额");
