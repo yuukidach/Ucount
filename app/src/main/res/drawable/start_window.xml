@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <bitmap
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sakamotosan"/>
+    </item>
+</layer-list>

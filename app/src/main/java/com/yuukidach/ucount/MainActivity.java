@@ -1,6 +1,7 @@
 package com.yuukidach.ucount;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
+import org.litepal.crud.callback.FindMultiCallback;
 import org.litepal.tablemanager.Connector;
 
 import java.text.DecimalFormat;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -81,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        initIoItemList(this);
+
         showBtn.setText("显示余额");
 
         sum.setMoneyText(sum.MONTHLY_COST, monthlyCost);
@@ -88,16 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 用于存储recyclerView的日期
         GlobalVariables.setmDate("");
-
-        initIoItemList();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
-        layoutManager.setReverseLayout(true);   // 列表反转
-
-        ioItemRecyclerView.setLayoutManager(layoutManager);
-        adapter = new IOItemAdapter(ioItemList);
-        ioItemRecyclerView.setAdapter(adapter);
     }
 
 
@@ -125,8 +121,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void initIoItemList() {
-        ioItemList = DataSupport.findAll(IOItem.class);
+    public void initIoItemList(final Context context) {
+        DataSupport.findAllAsync(IOItem.class).listen(new FindMultiCallback() {
+            @Override
+            public <T> void onFinish(List<T> t) {
+                ioItemList = (List<IOItem>) t;
+                setRecyclerView(context);
+            }
+        });
     }
 
     public void selectPictureFromGallery() {
@@ -174,5 +176,15 @@ public class MainActivity extends AppCompatActivity {
             Uri contentUri = Uri.parse(imageUri);
             this.headerImg.setImageURI(contentUri);
         }
+    }
+
+    public void setRecyclerView(Context context) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
+        layoutManager.setReverseLayout(true);   // 列表反转
+
+        ioItemRecyclerView.setLayoutManager(layoutManager);
+        adapter = new IOItemAdapter(ioItemList);
+        ioItemRecyclerView.setAdapter(adapter);
     }
 }
