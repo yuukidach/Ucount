@@ -1,5 +1,6 @@
 **Ucount**
 ===
+
 # 宅记
 
 ***
@@ -12,11 +13,13 @@
 
 > [LitePalFramework/LitePal](https://github.com/LitePalFramework/LitePal) 
 
-软件截图
-![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2017-03-17-10-40-31.png?raw=true)
+> [extensible-page-indicator](https://github.com/merhold/extensible-page-indicator) 
 
-![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2017-03-17-10-40-52.png?raw=true) 
+软件截图
+![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237803.png?raw=true)
+
+![](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true) 
 
 测试机型：
 
-华为荣耀7、Vivo X5 Pro D、一加三T
+华为荣耀7、Vivo X5 Pro D、一加3T
