@@ -96,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
         GlobalVariables.setmDate("");
     }
 
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();   不调用父类的方法
+        Intent intent = new Intent(Intent.ACTION_MAIN);  // ACTION_MAIN  作为Task中第一个Activity启动
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);        // CATEGORY_HOME  设备启动时的第一个Activity
+
+        startActivity(intent);
+    }
+
 
     // 各个按钮的活动
     private class ButtonListener implements View.OnClickListener {
