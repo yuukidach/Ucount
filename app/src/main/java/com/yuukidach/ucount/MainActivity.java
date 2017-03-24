@@ -2,19 +2,23 @@ package com.yuukidach.ucount;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
@@ -22,7 +26,9 @@ import org.litepal.crud.callback.FindMultiCallback;
 import org.litepal.tablemanager.Connector;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import at.markushi.ui.CircleButton;
@@ -46,6 +52,48 @@ public class MainActivity extends AppCompatActivity {
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     private static final String TAG = "MainActivity";
+    private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日");
+
+    // 为recyclerView设置滑动动作
+    private ItemTouchHelper.Callback mCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+            // 获得滑动位置
+            final int position = viewHolder.getAdapterPosition();
+
+            if (direction == ItemTouchHelper.RIGHT) {
+                // 弹窗确认
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("你确定要删除么？");
+
+                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.removeItem(position);
+                        // 刷新界面
+                        onResume();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LinearLayout sonView = (LinearLayout) viewHolder.itemView;
+                        TextView grandsonTextView = (TextView) sonView.findViewById(R.id.iotem_date);
+                        // 判断是否应该显示时间
+                        if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
+                            GlobalVariables.setmDate("");
+                        else GlobalVariables.setmDate(adapter.getItemDate(position));
+                        adapter.notifyItemChanged(position);
+                    }
+                }).show();  // 显示弹窗
+            }
+        }
+    };
+    private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(mCallback);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
         sum.setMoneyText(sum.MONTHLY_COST, monthlyCost);
         sum.setMoneyText(sum.MONTHLY_EARN, monthlyEarn);
-
-        // 用于存储recyclerView的日期
-        GlobalVariables.setmDate("");
     }
 
     @Override
@@ -192,6 +237,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView(Context context) {
+        // 用于存储recyclerView的日期
+        GlobalVariables.setmDate("");
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
         layoutManager.setReverseLayout(true);   // 列表反转
@@ -199,5 +247,6 @@ public class MainActivity extends AppCompatActivity {
         ioItemRecyclerView.setLayoutManager(layoutManager);
         adapter = new IOItemAdapter(ioItemList);
         ioItemRecyclerView.setAdapter(adapter);
+        itemTouchHelper.attachToRecyclerView(ioItemRecyclerView);
     }
 }

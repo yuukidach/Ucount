@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.litepal.crud.DataSupport;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         ImageView itemImageEarn, itemImageCost;
         TextView itemNameEarn, itemNameCost;
         TextView itemMoneyEarn, itemMoneyCost;
-
         TextView itemDate;
 
         public ViewHolder(View view) {
@@ -102,7 +103,31 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.dateBar.setVisibility(View.VISIBLE);
             holder.itemDate.setText(Date);
             GlobalVariables.setmDate(Date);
-            Log.d(TAG, "showItemDate: ");
+            Log.d(TAG, "showItemDate: "+Date);
         }
+    }
+
+    // 返回子项目时间，便于在取消删除的时候判断是否应该显示项目时间
+    public String getItemDate(int position) {
+        IOItem ioItem = mIOItemList.get(position);
+        return ioItem.getTimeStamp();
+    }
+
+    public void removeItem(int position) {
+        IOItem ioItem = mIOItemList.get(position);
+        Sum sum = DataSupport.find(Sum.class, 1);  // 1 代表sum;
+        Sum month;
+        int type = ioItem.getType();
+        sum.setTotal(sum.getTotal()-ioItem.getMoney() * type);
+        sum.save();
+        // 判断收支类型
+        if (type < 0) month = DataSupport.find(Sum.class, 2);     // 2 代表cost
+        else month = DataSupport.find(Sum.class, 3);              // 3 代表earn
+        month.setTotal(month.getTotal()-ioItem.getMoney());
+        month.save();
+        DataSupport.delete(IOItem.class, mIOItemList.get(position).getId());
+
+        mIOItemList.remove(position);
+        notifyItemRemoved(position);
     }
 }

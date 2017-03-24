@@ -53,6 +53,7 @@ public class IOItem extends DataSupport {
     public String getTimeStamp()                   { return timeStamp; }
     public int getmId()                            { return mId; }
     public String getSrcName()                     { return srcName; }
+    public int getId()                             { return id; }
 
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
