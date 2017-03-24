@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Sum           sum = new Sum();
 
     public static String PACKAGE_NAME;
+    public static Resources resources;
     public static final int SELECT_GALLERY_PIC = 1;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -54,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
         // litepal
         Connector.getDatabase();
 
-        // 获得包名，方便后面的程序使用
+        // 获得包名和资源，方便后面的程序使用
         PACKAGE_NAME = getApplicationContext().getPackageName();
+        resources = getResources();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
         addBtn = (CircleButton) findViewById(R.id.add_button);

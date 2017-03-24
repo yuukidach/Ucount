@@ -102,15 +102,15 @@ public class AddItemActivity extends AppCompatActivity {
     public void putItemInData(double money) {
         Sum sum = new Sum();
         IOItem ioItem = new IOItem();
-        int tag = (int)bannerText.getTag();
+        String tagName = (String) bannerText.getTag();
+        int tagType = (int) bannerImage.getTag();
 
-        if (tag < 0) {
+        if (tagType < 0) {
             ioItem.setType(ioItem.TYPE_COST);
-            tag = -tag;
         } else ioItem.setType(ioItem.TYPE_EARN);
 
         ioItem.setName(bannerText.getText().toString());
-        ioItem.setSrcId(tag);
+        ioItem.setSrcName(tagName);
         ioItem.setMoney(money);
         ioItem.setTimeStamp(formatItem.format(new Date()));         // 存储记账时间
         ioItem.save();

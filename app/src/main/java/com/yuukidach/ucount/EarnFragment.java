@@ -92,15 +92,11 @@ public class EarnFragment extends Fragment {
         return view;
     }
 
-    /**
-     * 初始化数据源
-     */
+    // 初始化数据源
     private void initDatas() {
         mDatas = new ArrayList<IOItem>();
         for (int i = 1; i <= titles.length; i++) {
-            //动态获取资源ID，第一个参数是资源名，第二个参数是资源类型例如drawable，string等，第三个参数包名
-            int imageId = getResources().getIdentifier("type_big_n" + i, "drawable", MainActivity.PACKAGE_NAME);
-            mDatas.add(new IOItem(imageId, titles[i-1]));
+            mDatas.add(new IOItem("type_big_n" + i, titles[i-1]));
         }
     }
 
@@ -118,8 +114,9 @@ public class EarnFragment extends Fragment {
         pb.maximumColorCount(1);
 
         itemImage.setImageResource(tmpItem.getSrcId());
-        itemTitle.setTag(tmpItem.getSrcId());
         itemTitle.setText(tmpItem.getName());
+        itemImage.setTag(1);                        // 保留图片资源属性，1表示收入
+        itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用
 
         // 获取图片颜色并改变上方banner的背景色
         pb.generate(new Palette.PaletteAsyncListener() {
