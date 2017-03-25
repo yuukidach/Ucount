@@ -111,6 +111,7 @@ public class AddItemActivity extends AppCompatActivity {
                     break;
                 case R.id.clear:
                     calculatorClear();
+                    moneyText.setText("0.00");
                     break;
             }
 

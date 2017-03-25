@@ -51,7 +51,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/type_big_1"
             android:layout_marginStart="10dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/chosen_title"
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:orientation="horizontal"
-            android:background="#f5ecf3">
+            android:background="#f5f5f5">
         </LinearLayout>
 
         <android.support.percent.PercentRelativeLayout
@@ -311,7 +311,7 @@
                 android:scaleType="centerCrop"
                 android:layout_marginEnd="6dp"
                 android:layout_marginTop="27dp"
-                android:background="#e9e1df"/>
+                android:background="#f4f1f0"/>
 
         </LinearLayout>
         <!--
