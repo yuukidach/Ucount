@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
@@ -29,14 +30,14 @@ public class CostFragment extends Fragment {
 
     private String[] titles = {"一般", "用餐", "零食", "交通", "充值", "购物", "娱乐", "住房", "饮料", "网购",
             "鞋帽", "护肤", "化妆", "电影", "转账", "浪费", "健身", "医疗", "旅游", "教育", "香烟", "酒水", "数码", "捐献",
-            "家庭", "宠物", "服装", "日用", "水果", "母婴", "信用卡", "股票", "工作", "家具", "通信"};
+            "家庭", "宠物", "服装", "日用", "水果", "母婴", "信用卡", "理财", "工作", "家具", "通信"};
     private ViewPager mPager;
     private List<View> mPagerList;
     private List<IOItem> mDatas;
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
-    private LinearLayout itemLayout;
+    private RelativeLayout itemLayout;
     private ExtensiblePageIndicator extensiblePageIndicator;
 
     // 总的页数
@@ -115,7 +116,7 @@ public class CostFragment extends Fragment {
     public void getBannerId() {
         itemImage = (ImageView) getActivity().findViewById(R.id.chosen_image);
         itemTitle = (TextView) getActivity().findViewById(R.id.chosen_title);
-        itemLayout = (LinearLayout) getActivity().findViewById(R.id.have_chosen);
+        itemLayout = (RelativeLayout) getActivity().findViewById(R.id.have_chosen);
     }
 
     // 改变banner状态

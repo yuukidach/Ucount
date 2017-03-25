@@ -8,7 +8,14 @@ import android.app.Application;
 
 public class GlobalVariables {
     private static String mDate = "";
+    private static boolean mHasDot = false;
+    private static String mInputMoney = "";
 
-    public static void setmDate(String date) { mDate = date; }
-    public static String getmDate() { return mDate; }
+    public static void setmDate(String date)     { mDate = date;     }
+    public static void setHasDot(boolean hasDot) { mHasDot = hasDot; }
+    public static void setmInputMoney(String a)  { mInputMoney = a;  }
+
+    public static String getmDate()       { return mDate;      }
+    public static boolean getmHasDot()    { return mHasDot;    }
+    public static String getmInputMoney() { return mInputMoney;}
 }

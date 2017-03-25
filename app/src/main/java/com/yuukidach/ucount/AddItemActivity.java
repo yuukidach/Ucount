@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
+import java.security.PrivateKey;
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -29,7 +32,9 @@ public class AddItemActivity extends AppCompatActivity {
 
     private Button addCostBtn;
     private Button addEarnBtn;
-    private CircleButton addFinishBtn;
+    private Button clearBtn;
+    private ImageButton addFinishBtn;
+
 
     private ImageView bannerImage;
     private TextView bannerText;
@@ -38,6 +43,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日");
     private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月");
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +52,13 @@ public class AddItemActivity extends AppCompatActivity {
         // 设置按钮监听
         addCostBtn = (Button) findViewById(R.id.add_cost_button);
         addEarnBtn = (Button) findViewById(R.id.add_earn_button);
-        addFinishBtn = (CircleButton) findViewById(R.id.add_finish);
+        addFinishBtn = (ImageButton) findViewById(R.id.add_finish);
+        clearBtn = (Button) findViewById(R.id.clear);
         addCostBtn.setOnClickListener(new ButtonListener());
         addEarnBtn.setOnClickListener(new ButtonListener());
         addFinishBtn.setOnClickListener(new ButtonListener());
+        clearBtn.setOnClickListener(new ButtonListener());
+
 
         bannerText = (TextView) findViewById(R.id.chosen_title);
         bannerImage = (ImageView) findViewById(R.id.chosen_image);
@@ -62,6 +71,12 @@ public class AddItemActivity extends AppCompatActivity {
         transaction.replace(R.id.item_fragment, new CostFragment());
         transaction.commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        moneyText.setText("0.00");
     }
 
     private class ButtonListener implements View.OnClickListener {
@@ -86,12 +101,16 @@ public class AddItemActivity extends AppCompatActivity {
                     break;
                 case R.id.add_finish:
                     String moneyString =  moneyText.getText().toString();
-                    if (moneyString.equals(""))
+                    if (moneyString.equals("0.00") || GlobalVariables.getmInputMoney().equals(""))
                         Toast.makeText(getApplicationContext(),"唔姆，你还没输入金额",Toast.LENGTH_SHORT).show();
                     else {
                         putItemInData(Double.parseDouble(moneyText.getText().toString()));
+                        calculatorClear();
                         finish();
                     }
+                    break;
+                case R.id.clear:
+                    calculatorClear();
                     break;
             }
 
@@ -141,6 +160,39 @@ public class AddItemActivity extends AppCompatActivity {
             }
         } else {
             sum.saveSum(sum, id, ioItem.getMoney(), type*type, sumDate);
+        }
+    }
+
+    // 数字输入按钮
+    public void calculatorNumOnclick(View v) {
+        Button view = (Button) v;
+        String digit = view.getText().toString();
+        String money = GlobalVariables.getmInputMoney();
+        if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length()>2) {
+            String dot = money.substring(money.length() - 3, money.length() - 2);
+            Log.d(TAG, "calculatorNumOnclick: " + dot);
+            if (dot.equals(".")) {
+                Toast.makeText(getApplicationContext(), "唔，已经不能继续输入了", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        GlobalVariables.setmInputMoney(money+digit);
+        moneyText.setText(decimalFormat.format(Double.valueOf(GlobalVariables.getmInputMoney())));
+    }
+
+    // 清零按钮
+    public void calculatorClear() {
+        GlobalVariables.setmInputMoney("");
+        GlobalVariables.setHasDot(false);
+    }
+
+    // 小数点处理工作
+    public void calculatorPushDot(View view) {
+        if (GlobalVariables.getmHasDot()) {
+            Toast.makeText(getApplicationContext(), "已经输入过小数点了 ━ω━●", Toast.LENGTH_SHORT).show();
+        } else {
+            GlobalVariables.setmInputMoney(GlobalVariables.getmInputMoney()+".");
+            GlobalVariables.setHasDot(true);
         }
     }
 }

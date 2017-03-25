@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ public class EarnFragment extends Fragment {
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
-    private LinearLayout itemLayout;
+    private RelativeLayout itemLayout;
     private ExtensiblePageIndicator extensiblePageIndicator;
     // 总的页数
     private int pageCount;
@@ -104,7 +105,7 @@ public class EarnFragment extends Fragment {
     public void getBannerId() {
         itemImage = (ImageView) getActivity().findViewById(R.id.chosen_image);
         itemTitle = (TextView) getActivity().findViewById(R.id.chosen_title);
-        itemLayout = (LinearLayout) getActivity().findViewById(R.id.have_chosen);
+        itemLayout = (RelativeLayout) getActivity().findViewById(R.id.have_chosen);
     }
 
     // 改变banner状态

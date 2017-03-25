@@ -12,7 +12,7 @@
 
     <ImageView
         android:id="@+id/header_img"
-        android:src="@drawable/mikan_header_img"
+        android:src="@drawable/yui_header"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
