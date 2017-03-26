@@ -93,13 +93,24 @@
         android:background="@drawable/page2_gradient"
         android:layout_marginTop="@dimen/activity_horizontal_margin">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/calculator_banner"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:orientation="horizontal"
             android:background="#f5f5f5">
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/add_description"
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:src="@drawable/pencil"
+                android:scaleType="centerInside"
+                android:background="#00000000"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+        </RelativeLayout>
 
         <android.support.percent.PercentRelativeLayout
             android:id="@+id/input_board"
@@ -119,7 +130,7 @@
                 android:text="1"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -133,7 +144,7 @@
                 android:text="2"
                 android:textSize="19sp"
                 android:textColor="#000"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -147,7 +158,7 @@
                 android:text="3"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -161,7 +172,7 @@
                 android:text="4"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -176,7 +187,7 @@
                 android:text="5"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -191,7 +202,7 @@
                 android:text="6"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -205,7 +216,7 @@
                 android:text="7"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -220,7 +231,7 @@
                 android:text="8"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -235,7 +246,7 @@
                 android:text="9"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -248,7 +259,6 @@
                 android:text="清零"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -263,7 +273,7 @@
                 android:text="0"
                 android:textColor="#000"
                 android:textSize="19sp"
-                android:fontFamily="sans_serif_light"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
             <Button
@@ -278,6 +288,7 @@
                 android:text="."
                 android:textColor="#000"
                 android:textSize="19sp"
+                android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
         </android.support.percent.PercentRelativeLayout>
@@ -294,7 +305,7 @@
             android:background="@drawable/calculator_button">
 
             <TextView
-                android:id="@+id/anime_worlds"
+                android:id="@+id/anime_words"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:text="记得点我啊=w=."
@@ -311,50 +322,10 @@
                 android:scaleType="centerCrop"
                 android:layout_marginEnd="6dp"
                 android:layout_marginTop="27dp"
-                android:background="#f4f1f0"/>
+                android:background="#00000000"/>
 
         </LinearLayout>
-        <!--
-                <TextView
-                    android:id="@+id/picture_word"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text="Sa 把金额输进去吧 ━ω━●"
-                    android:layout_toEndOf="@id/konata_izumi"
-                    android:textColor="#000"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginStart="13dp"/>
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/input_money_text"
-                    android:layout_below="@id/picture_word"
-                    android:layout_alignStart="@id/picture_word"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:met_baseColor="#0056d3"
-                    app:met_primaryColor="#2071c3"
-                    android:digits="1234567890."
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="1"
-                    android:inputType="number" />
-
-                <at.markushi.ui.CircleButton
-                    android:id="@+id/add_finish"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_widthPercent="20%"
-                    app:layout_heightPercent="40%"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/ic_check"
-                    app:cb_color="@color/colorBlue"
-                    app:cb_pressedRingWidth="8dp"
-                    android:scaleType="fitCenter" />
-        -->
     </android.support.percent.PercentRelativeLayout>
 
 </android.support.percent.PercentRelativeLayout>

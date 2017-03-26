@@ -1,6 +1,7 @@
 package com.yuukidach.ucount;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,14 +16,9 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
-import java.security.PrivateKey;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
-
-import at.markushi.ui.CircleButton;
 
 public class AddItemActivity extends AppCompatActivity {
     private static final String TAG = "AddItemActivity";
@@ -34,12 +30,15 @@ public class AddItemActivity extends AppCompatActivity {
     private Button addEarnBtn;
     private Button clearBtn;
     private ImageButton addFinishBtn;
+    private ImageButton addDescription;
 
 
     private ImageView bannerImage;
     private TextView bannerText;
 
     private TextView moneyText;
+
+    private TextView words;
 
     private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日");
     private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月");
@@ -49,14 +48,24 @@ public class AddItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        // 设置按钮监听
+
+
+
         addCostBtn = (Button) findViewById(R.id.add_cost_button);
         addEarnBtn = (Button) findViewById(R.id.add_earn_button);
-        addFinishBtn = (ImageButton) findViewById(R.id.add_finish);
+        addFinishBtn   = (ImageButton) findViewById(R.id.add_finish);
+        addDescription = (ImageButton) findViewById(R.id.add_description);
         clearBtn = (Button) findViewById(R.id.clear);
+        words = (TextView) findViewById(R.id.anime_words);
+        // 设置字体颜色
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/chinese_character.ttf");
+        clearBtn.setTypeface(typeface);
+        words.setTypeface(typeface);
+        // 设置按钮监听
         addCostBtn.setOnClickListener(new ButtonListener());
         addEarnBtn.setOnClickListener(new ButtonListener());
         addFinishBtn.setOnClickListener(new ButtonListener());
+        addDescription.setOnClickListener(new ButtonListener());
         clearBtn.setOnClickListener(new ButtonListener());
 
 
@@ -64,6 +73,8 @@ public class AddItemActivity extends AppCompatActivity {
         bannerImage = (ImageView) findViewById(R.id.chosen_image);
 
         moneyText = (TextView) findViewById(R.id.input_money_text);
+        // 及时清零
+        moneyText.setText("0.00");
 
         manager = getSupportFragmentManager();
 
@@ -71,12 +82,6 @@ public class AddItemActivity extends AppCompatActivity {
         transaction.replace(R.id.item_fragment, new CostFragment());
         transaction.commit();
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        moneyText.setText("0.00");
     }
 
     private class ButtonListener implements View.OnClickListener {
@@ -113,6 +118,9 @@ public class AddItemActivity extends AppCompatActivity {
                     calculatorClear();
                     moneyText.setText("0.00");
                     break;
+                case R.id.add_description:
+                    Intent intent = new Intent(AddItemActivity.this, AddDescription.class);
+                    startActivity(intent);
             }
 
             transaction.commit();
@@ -133,7 +141,11 @@ public class AddItemActivity extends AppCompatActivity {
         ioItem.setSrcName(tagName);
         ioItem.setMoney(money);
         ioItem.setTimeStamp(formatItem.format(new Date()));         // 存储记账时间
+        ioItem.setDescription(GlobalVariables.getmDescription());
         ioItem.save();
+
+        // 存储完之后及时清空备注
+        GlobalVariables.setmDescription("");
 
         int type = ioItem.getType();
         String sumDate = formatSum.format(new Date());

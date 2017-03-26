@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyItemChanged(position);
                     }
                 }).show();  // 显示弹窗
+            } else if (direction == ItemTouchHelper.LEFT) {
+                
             }
         }
     };
