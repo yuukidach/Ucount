@@ -22,7 +22,10 @@
 一开始本来打算第二界面自己重新布局的，结果发现让软键盘弹出来还是太难看了，就也写了个键盘输入
 
 **主界面**
-![主界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true) ![删除界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true)
+![主界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true)
+
+**删除界面**
+![删除界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true)
 
 **支出项目界面**
 ![支出项目界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533156.png?raw=true) 
