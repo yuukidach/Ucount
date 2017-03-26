@@ -28,7 +28,6 @@
             android:layout_toStartOf="@id/main_dot"
             android:layout_marginEnd="27dp"/>
 
-
     </RelativeLayout>
 
     <!-- 主界面收入显示 -->
@@ -52,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/earn_item_img_main"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/page1_recycler_top"
             android:layout_centerVertical="true"
             android:textColor="@color/colorSlateGray" />
 
@@ -62,7 +62,18 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/earn_item_money_main"
             android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginTop="@dimen/page1_recycler_top"
             android:textColor="@color/colorSlateGray" />
+
+        <TextView
+            android:id="@+id/earn_item_decription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/earn_item_money_main"
+            android:layout_alignEnd="@id/earn_item_money_main"
+            android:textSize="13sp"
+            android:textColor="@color/colorLightGray"
+            android:background="@null"/>
 
     </android.support.percent.PercentRelativeLayout>
 
@@ -87,6 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/cost_item_img_main"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/page1_recycler_top"
             android:layout_centerVertical="true"
             android:textColor="@color/colorSlateGray" />
 
@@ -97,7 +109,18 @@
             android:layout_toEndOf="@id/cost_item_name_main"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/text_gap"
+            android:layout_marginTop="@dimen/page1_recycler_top"
             android:textColor="@color/colorSlateGray" />
+
+        <TextView
+            android:id="@+id/cost_item_decription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cost_item_name_main"
+            android:layout_alignStart="@id/cost_item_name_main"
+            android:textSize="13sp"
+            android:textColor="@color/colorGray"
+            android:background="@null"/>
 
     </android.support.percent.PercentRelativeLayout>
 

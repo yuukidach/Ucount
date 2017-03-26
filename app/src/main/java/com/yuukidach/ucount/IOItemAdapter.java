@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         ImageView itemImageEarn, itemImageCost;
         TextView itemNameEarn, itemNameCost;
         TextView itemMoneyEarn, itemMoneyCost;
+        TextView itemDspEarn, itemDspCost;
         TextView itemDate;
 
         public ViewHolder(View view) {
@@ -54,6 +56,8 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             itemNameCost  = (TextView ) view.findViewById(R.id.cost_item_name_main);
             itemMoneyEarn = (TextView ) view.findViewById(R.id.earn_item_money_main);
             itemMoneyCost = (TextView ) view.findViewById(R.id.cost_item_money_main);
+            itemDspEarn   = (TextView ) view.findViewById(R.id.earn_item_decription);
+            itemDspCost   = (TextView ) view.findViewById(R.id.cost_item_decription);
             itemDate      = (TextView ) view.findViewById(R.id.iotem_date);
         }
     }
@@ -80,6 +84,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.itemImageCost.setImageResource(ioItem.getSrcId());
             holder.itemNameCost.setText(ioItem.getName());
             holder.itemMoneyCost.setText(decimalFormat.format(ioItem.getMoney()));
+            handleDescription(ioItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
         //表示收入的布局
         } else if (ioItem.getType() == TYPE_EARN) {
             holder.earnLayout.setVisibility(View.VISIBLE);
@@ -87,6 +92,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
             holder.itemImageEarn.setImageResource(ioItem.getSrcId());
             holder.itemNameEarn.setText(ioItem.getName());
             holder.itemMoneyEarn.setText(decimalFormat.format(ioItem.getMoney()));
+            handleDescription(ioItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
         }
 
     }
@@ -129,5 +135,23 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
 
         mIOItemList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public boolean isThereADescription(IOItem ioItem) {
+        return (ioItem.getDescription()!=null && !ioItem.getDescription().equals(""));
+    }
+
+    public void handleDescription(IOItem ioItem, TextView Dsp, TextView Name, TextView Money) {
+        if (isThereADescription(ioItem)) {
+            RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)Name.getLayoutParams();
+            nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams)Money.getLayoutParams();
+            moneyParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            Dsp.setText(ioItem.getDescription());
+            Name.setLayoutParams(nameParams);
+            Money.setLayoutParams(moneyParams);
+        } else {
+            Dsp.setVisibility(View.GONE);
+        }
     }
 }

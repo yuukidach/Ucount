@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:orientation="horizontal"
-            android:background="#f5f5f5">
+            android:background="#f3efef">
 
             <ImageButton
                 android:id="@+id/add_description"

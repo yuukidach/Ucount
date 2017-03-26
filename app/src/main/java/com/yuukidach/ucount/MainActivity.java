@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -90,13 +91,12 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyItemChanged(position);
                     }
                 }).show();  // 显示弹窗
-            } else if (direction == ItemTouchHelper.LEFT) {
-                
             }
         }
     };
     private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(mCallback);
 
+//=============================================================================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
