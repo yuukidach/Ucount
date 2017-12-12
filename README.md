@@ -21,22 +21,22 @@
 
 一开始本来打算第二界面自己重新布局的，结果发现让软键盘弹出来还是太难看了，就也写了个键盘输入
 
-**主界面**
+**主界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true" width="50%" alt='主界面'>
 
-**删除界面**
+**删除界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true" width="50%" alt='删除界面'>
 
-**支出项目界面**
+**支出项目界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533156.png?raw=true" width="50%" alt='支出项目界面'>
 
-**收入项目界面**
+**收入项目界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533171.png?raw=true" width="50%" alt='收入项目界面'>
 
-**备注界面**
+**备注界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519189.png?raw=true" width="50%" alt='备注界面'>
 
-**旧版收支界面**
+**旧版收支界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true" width="50%" alt='旧版收支界面'>
 
 ### 附加功能说明
