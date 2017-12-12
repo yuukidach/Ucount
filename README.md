@@ -23,22 +23,21 @@
 
 **主界面**
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true" width="50%" alt='主界面'>
-![主界面-w200](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true)
 
 **删除界面**
-![删除界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true)
+<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true" width="50%" alt='删除界面'>
 
 **支出项目界面**
-![支出项目界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533156.png?raw=true) 
+<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533156.png?raw=true" width="50%" alt='支出项目界面'>
 
 **收入项目界面**
-![收入项目界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533171.png?raw=true) 
+<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533171.png?raw=true" width="50%" alt='收入项目界面'>
 
 **备注界面**
-![备注界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519189.png?raw=true) 
+<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519189.png?raw=true" width="50%" alt='备注界面'>
 
 **旧版收支界面**
-![旧版收支界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true) 
+<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true" width="50%" alt='旧版收支界面'>
 
 ### 附加功能说明
 1. 长按首页横幅可以更换图片
@@ -46,4 +45,4 @@
 
 
 ### 测试机型：
-华为荣耀7、Vivo X5 Pro D、一加3T
+小米6、华为荣耀7、Vivo X5 Pro D、一加3T
