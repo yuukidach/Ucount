@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_gap">5dp</dimen>
+    <dimen name="image_text_gap">10dp</dimen>>
     <dimen name="page1_recycler_top">10dp</dimen>
 </resources>

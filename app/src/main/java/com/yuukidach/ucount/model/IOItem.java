@@ -1,6 +1,8 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.model;
 
 import android.content.res.Resources;
+
+import com.yuukidach.ucount.MainActivity;
 
 import org.litepal.crud.DataSupport;
 
@@ -15,7 +17,7 @@ public class IOItem extends DataSupport {
 
     private int id;
     private int type;                       // 收入还会支出
-    private int mId;
+    private int bookId;
     private double money;
     private String name;
     private String description;
@@ -51,7 +53,7 @@ public class IOItem extends DataSupport {
     public String getName()                        { return name; }
     public String getDescription()                 { return description; }
     public String getTimeStamp()                   { return timeStamp; }
-    public int getmId()                            { return mId; }
+    public int getBookId()                         { return bookId; }
     public String getSrcName()                     { return srcName; }
     public int getId()                             { return id; }
 
@@ -61,7 +63,7 @@ public class IOItem extends DataSupport {
     public void setName(String name)               { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setTimeStamp(String timeStamp)     { this.timeStamp = timeStamp; }
-    public void setmId(int mId)                    { this.mId = mId; }
+    public void setBookId(int mId)                 { this.bookId = mId; }
     public void setSrcName(String srcName)         { this.srcName = srcName; }
 
     // 返回图片资源的id

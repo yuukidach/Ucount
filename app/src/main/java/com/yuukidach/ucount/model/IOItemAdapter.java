@@ -1,11 +1,8 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.model;
 
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yuukidach.ucount.GlobalVariables;
+import com.yuukidach.ucount.R;
+
 import org.litepal.crud.DataSupport;
 
 import java.text.DecimalFormat;
 import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by yuukidach on 17-3-10.
@@ -121,16 +119,13 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
 
     public void removeItem(int position) {
         IOItem ioItem = mIOItemList.get(position);
-        Sum sum = DataSupport.find(Sum.class, 1);  // 1 代表sum;
-        Sum month;
+        BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         int type = ioItem.getType();
-        sum.setTotal(sum.getTotal()-ioItem.getMoney() * type);
-        sum.save();
+        bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney()*type);
         // 判断收支类型
-        if (type < 0) month = DataSupport.find(Sum.class, 2);     // 2 代表cost
-        else month = DataSupport.find(Sum.class, 3);              // 3 代表earn
-        month.setTotal(month.getTotal()-ioItem.getMoney());
-        month.save();
+        if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - ioItem.getMoney());
+        else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - ioItem.getMoney());
+        bookItem.save();
         DataSupport.delete(IOItem.class, mIOItemList.get(position).getId());
 
         mIOItemList.remove(position);

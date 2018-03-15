@@ -14,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yuukidach.ucount.model.BookItem;
+import com.yuukidach.ucount.model.IOItem;
+
 import org.litepal.crud.DataSupport;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddItemActivity extends AppCompatActivity {
     private static final String TAG = "AddItemActivity";
@@ -40,16 +44,13 @@ public class AddItemActivity extends AppCompatActivity {
 
     private TextView words;
 
-    private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日");
-    private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月");
+    private SimpleDateFormat formatItem = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+    private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-
-
-
 
         addCostBtn = (Button) findViewById(R.id.add_cost_button);
         addEarnBtn = (Button) findViewById(R.id.add_earn_button);
@@ -128,8 +129,8 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     public void putItemInData(double money) {
-        Sum sum = new Sum();
         IOItem ioItem = new IOItem();
+        BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         String tagName = (String) bannerText.getTag();
         int tagType = (int) bannerImage.getTag();
 
@@ -142,38 +143,43 @@ public class AddItemActivity extends AppCompatActivity {
         ioItem.setMoney(money);
         ioItem.setTimeStamp(formatItem.format(new Date()));         // 存储记账时间
         ioItem.setDescription(GlobalVariables.getmDescription());
+        ioItem.setBookId(GlobalVariables.getmBookId());
         ioItem.save();
+
+        // 将收支存储在对应账本下
+        bookItem.getIoItemList().add(ioItem);
+        bookItem.setSumAll(bookItem.getSumAll() + money*ioItem.getType());
+        bookItem.save();
+
+        calculateMonthlyMoney(bookItem, ioItem.getType(), ioItem);
 
         // 存储完之后及时清空备注
         GlobalVariables.setmDescription("");
-
-        int type = ioItem.getType();
-        String sumDate = formatSum.format(new Date());
-        // 计算总额
-        sum.calculateMoneyIncludeNull(sum.SUM, "All", money, type, sumDate);
-        calculateMonthlyMoney(type, ioItem);
     }
 
-    public void calculateMonthlyMoney(int type, IOItem ioItem) {
-        Sum sum = new Sum();
-        Sum tmpSum = new Sum();
+    // 计算月收支
+    public void calculateMonthlyMoney(BookItem bookItem, int money_type, IOItem ioItem) {
         String sumDate = formatSum.format(new Date());
-        int id = (int)((double)type / 2 + 2.5);
 
-        // 保证一定现有2号id，避免出现当月支出不更新的bug
-        if (!tmpSum.isThereASum(tmpSum.MONTHLY_COST))
-            tmpSum.saveSum(tmpSum, tmpSum.MONTHLY_COST, 0.0, 1, sumDate);
-
-        if (sum.isThereASum(id)) {
-            sum = DataSupport.find(Sum.class, id);
-            if (sum.getDate().equals(ioItem.getTimeStamp().substring(0, 8))) {
-                sum.calculateMoney(id, ioItem.getMoney(), type*type);
+        // 求取月收支类型
+        if (bookItem.getDate().equals(ioItem.getTimeStamp().substring(0, 8))) {
+            if (money_type == 1) {
+                bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() + ioItem.getMoney());
             } else {
-                sum.saveSum(sum, id, ioItem.getMoney(), type*type, sumDate);
+                bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() + ioItem.getMoney());
             }
         } else {
-            sum.saveSum(sum, id, ioItem.getMoney(), type*type, sumDate);
+            if (money_type == 1) {
+                bookItem.setSumMonthlyEarn(ioItem.getMoney());
+                bookItem.setSumMonthlyCost(0.0);
+            } else {
+                bookItem.setSumMonthlyCost(ioItem.getMoney());
+                bookItem.setSumMonthlyEarn(0.0);
+            }
+            bookItem.setDate(sumDate);
         }
+
+        bookItem.save();
     }
 
     // 数字输入按钮

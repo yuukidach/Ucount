@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yuukidach.ucount.model.IOItem;
+
 import java.util.List;
 
 /**
