@@ -22,7 +22,7 @@
 一开始本来打算第二界面自己重新布局的，结果发现让软键盘弹出来还是太难看了，就也写了个键盘输入
 
 **主界面**
-![主界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true)
+![主界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true =400)
 
 **删除界面**
 ![删除界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true)
@@ -36,13 +36,16 @@
 **备注界面**
 ![备注界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519189.png?raw=true) 
 
+**账本添加界面**
+![账本添加界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2018-03-15-15-43-26-363_com.yuukidach.ucount.png)
+
 **旧版收支界面**
 ![旧版收支界面](https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true) 
 
 ### 附加功能说明
-1. 长按首页横幅可以更换图片
+1. 长按首页以及账本横幅可以更换图片
 2. 单个项目左滑删除
 
 
 ### 测试机型：
-华为荣耀7、Vivo X5 Pro D、一加3T
+小米6
