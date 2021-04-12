@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout
+<androidx.percentlayout.widget.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -86,7 +86,7 @@
         android:background="#FFFFFF">
     </RelativeLayout>
 
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/item_fragment"
@@ -112,7 +112,7 @@
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
         </RelativeLayout>
 
-        <android.support.percent.PercentRelativeLayout
+        <androidx.percentlayout.widget.PercentRelativeLayout
             android:id="@+id/input_board"
             android:layout_height="match_parent"
             android:layout_width="0dp"
@@ -291,7 +291,7 @@
                 android:fontFamily="sans-serif-light"
                 android:background="@drawable/calculator_button"/>
 
-        </android.support.percent.PercentRelativeLayout>
+        </androidx.percentlayout.widget.PercentRelativeLayout>
 
 
         <LinearLayout
@@ -326,6 +326,6 @@
 
         </LinearLayout>
 
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
-</android.support.percent.PercentRelativeLayout>
+</androidx.percentlayout.widget.PercentRelativeLayout>

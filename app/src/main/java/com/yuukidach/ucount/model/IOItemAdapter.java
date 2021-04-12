@@ -1,7 +1,7 @@
 package com.yuukidach.ucount.model;
 
-import android.support.percent.PercentRelativeLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.percentlayout.widget.PercentRelativeLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

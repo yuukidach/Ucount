@@ -31,7 +31,7 @@
     </RelativeLayout>
 
     <!-- 主界面收入显示 -->
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:id="@+id/earn_left_layout"
         android:layout_width="match_parent"
         android:layout_height="55dp">
@@ -75,10 +75,10 @@
             android:textColor="@color/colorLightGray"
             android:background="@null"/>
 
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
     <!-- 主界面支出显示 -->
-    <android.support.percent.PercentRelativeLayout
+    <androidx.percentlayout.widget.PercentRelativeLayout
         android:id="@+id/cost_right_layout"
         android:layout_width="match_parent"
         android:layout_height="55dp">
@@ -122,6 +122,6 @@
             android:textColor="@color/colorGray"
             android:background="@null"/>
 
-    </android.support.percent.PercentRelativeLayout>
+    </androidx.percentlayout.widget.PercentRelativeLayout>
 
 </LinearLayout>
