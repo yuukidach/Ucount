@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
 import com.yuukidach.ucount.model.IOItemAdapter;
 import com.yuukidach.ucount.presenter.MainPresenter;
-import com.yuukidach.ucount.view.MainItemListView;
+import com.yuukidach.ucount.view.MainItemRecyclerView;
 import com.yuukidach.ucount.view.MainView;
 
 import org.litepal.crud.DataSupport;
@@ -47,7 +48,7 @@ import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity implements MainView, MainItemListView {
+public class MainActivity extends AppCompatActivity implements MainView, MainItemRecyclerView {
     private MainPresenter presenter;
 
     private List<IOItem> ioItemList = new ArrayList<>();
@@ -76,10 +77,14 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
 
-    // 为ioitem recyclerView设置滑动动作
-    private ItemTouchHelper.Callback ioCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+    // Set swipe action for io item recycler view
+    private final ItemTouchHelper.Callback ioCallback =
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        // do not want to call onMoved method
         @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
             final int position = viewHolder.getBindingAdapterPosition();
 
             if (direction == ItemTouchHelper.RIGHT) {
-                // 弹窗确认
+                // Confirm if the user want to delete the item or not
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage(R.string.delete_item_alarm);
 
@@ -97,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ioAdapter.removeItem(position);
-                        // 刷新界面
-                        onResume();
+                        // refresh the activity
+                        ioAdapter.notifyDataSetChanged();
                     }
                 }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                     @Override
@@ -116,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         }
     };
 
-    private ItemTouchHelper ioTouchHelper = new ItemTouchHelper(ioCallback);
+    private final ItemTouchHelper ioTouchHelper = new ItemTouchHelper(ioCallback);
 
 
     // 为bookitem recyclerview添加动作
