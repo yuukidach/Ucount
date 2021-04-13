@@ -8,4 +8,8 @@ public interface MainView {
     void showBalance();
 
     void hideBalance();
+
+    void updateMonthlyEarn();
+
+    void updateMonthlyCost();
 }

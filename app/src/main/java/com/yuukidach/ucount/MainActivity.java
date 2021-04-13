@@ -31,6 +31,7 @@ import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
 import com.yuukidach.ucount.model.IOItemAdapter;
+import com.yuukidach.ucount.presenter.MainPresenter;
 import com.yuukidach.ucount.view.AddItemActivity;
 import com.yuukidach.ucount.view.MainView;
 
@@ -47,6 +48,8 @@ import java.util.Locale;
 import at.markushi.ui.CircleButton;
 
 public class MainActivity extends AppCompatActivity implements MainView {
+    private MainPresenter presenter;
+
     private List<IOItem> ioItemList = new ArrayList<>();
     private List<BookItem> bookItemList = new ArrayList<>();
 
@@ -194,10 +197,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
         drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
-        // 设置按钮监听
-        showBtn.setOnClickListener(new ButtonListener());
+        showBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = showBtn.getText().toString();
+                presenter.toggleBalanceVisibility(str);
+            }
+        });
+
         addBtn.setOnClickListener(new ButtonListener());
         addBookButton.setOnClickListener(new ButtonListener());
+
+        presenter = new MainPresenter(this);
 
         // 设置首页header图片长按以更换图片
         headerImg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -225,14 +236,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         initBookItemList(this);
         initIoItemList(this);
 
-        hideBalance();
-
-        updateHeaderImg();
-        updateDrawerImg();
-
-        BookItem tmp = DataSupport.find(BookItem.class, bookItemList.get(GlobalVariables.getmBookPos()).getId());
-        monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
-        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
+        presenter.onResume();
     }
 
     @Override
@@ -245,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         startActivity(intent);
     }
 
-
     // 各个按钮的活动
     private class ButtonListener implements View.OnClickListener {
         @Override
@@ -255,10 +258,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 case R.id.add_button:
                     Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
                     startActivity(intent);
-                    break;
-                case R.id.show_money_button:
-                    if (showBtn.getText() == getString(R.string.show_balance)) showBalance();
-                    else hideBalance();
                     break;
                 case R.id.add_book_button:
                     final BookItem bookItem = new BookItem();
@@ -428,5 +427,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void hideBalance() {
         showBtn.setText(R.string.show_balance);
+    }
+
+    @Override
+    public void updateMonthlyEarn() {
+        BookItem tmp = DataSupport.find(
+                BookItem.class,
+                bookItemList.get(GlobalVariables.getmBookPos()
+        ).getId());
+        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
+    }
+
+    @Override
+    public void updateMonthlyCost() {
+        BookItem tmp = DataSupport.find(
+                BookItem.class,
+                bookItemList.get(GlobalVariables.getmBookPos()
+        ).getId());
+        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
     }
 }
