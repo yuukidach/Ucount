@@ -205,7 +205,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        addBtn.setOnClickListener(new ButtonListener());
+        // start activity to add cost or earning item
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+                startActivity(intent);
+            }
+        });
+
         addBookButton.setOnClickListener(new ButtonListener());
 
         presenter = new MainPresenter(this);
@@ -254,11 +262,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                // 按住加号按钮以后，切换到AddItemActivity
-                case R.id.add_button:
-                    Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                    startActivity(intent);
-                    break;
                 case R.id.add_book_button:
                     final BookItem bookItem = new BookItem();
                     final EditText book_title = new EditText(MainActivity.this);
@@ -444,6 +447,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 BookItem.class,
                 bookItemList.get(GlobalVariables.getmBookPos()
         ).getId());
-        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
+        monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
     }
 }
