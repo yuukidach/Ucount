@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +31,8 @@ import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
 import com.yuukidach.ucount.model.IOItemAdapter;
+import com.yuukidach.ucount.view.AddItemActivity;
+import com.yuukidach.ucount.view.MainView;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -41,33 +46,33 @@ import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainView {
     private List<IOItem> ioItemList = new ArrayList<>();
     private List<BookItem> bookItemList = new ArrayList<>();
 
-    private RecyclerView    ioItemRecyclerView;
-    private IOItemAdapter   ioAdapter;
-    private Button          showBtn;
-    private CircleButton    addBtn;
-    private ImageView       headerImg;
-    private TextView        monthlyCost, monthlyEarn;
+    private RecyclerView ioItemRecyclerView;
+    private IOItemAdapter ioAdapter;
+    private Button showBtn;
+    private CircleButton addBtn;
+    private ImageView headerImg;
+    private TextView monthlyCost, monthlyEarn;
 
     // parameter for drawer
-    private DrawerLayout    drawerLayout;
-    private LinearLayout    bookLinearLayout;
-    private RecyclerView    bookItemRecyclerView;
+    private DrawerLayout drawerLayout;
+    private LinearLayout bookLinearLayout;
+    private RecyclerView bookItemRecyclerView;
     private BookItemAdapter bookAdapter;
-    private ImageButton     addBookButton;
-    private ImageView       drawerBanner;
+    private ImageButton addBookButton;
+    private ImageView drawerBanner;
 
     public static String PACKAGE_NAME;
     public static Resources resources;
-    public static final int SELECT_PIC4MAIN = 1;
+    public static final int SELECT_PIC4HEADER = 1;
     public static final int SELECT_PIC4DRAWER = 2;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     private static final String TAG = "MainActivity";
-    private SimpleDateFormat formatSum  = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
+    private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
 
     // 为ioitem recyclerView设置滑动动作
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private ItemTouchHelper bookTouchHelper = new ItemTouchHelper(bookCallback);
-//=============================================================================================================//
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -186,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
         bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
         addBookButton = (ImageButton) findViewById(R.id.add_book_button);
-        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer) ;
+        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
         drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
         // 设置按钮监听
@@ -211,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setImageForHeaderAndBanner();
+//        setImageForHeaderAndBanner();
     }
 
 
@@ -223,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
         initIoItemList(this);
 
         showBtn.setText("显示余额");
+
+        updateHeaderImg();
+        updateDrawerImg();
 
         BookItem tmp = DataSupport.find(BookItem.class, bookItemList.get(GlobalVariables.getmBookPos()).getId());
         monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
@@ -254,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
                     if (showBtn.getText() == "显示余额") {
                         BookItem tmp = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
 
-                        String sumString = decimalFormat.format( tmp.getSumAll() );
+                        String sumString = decimalFormat.format(tmp.getSumAll());
                         showBtn.setText(sumString);
                     } else showBtn.setText("显示余额");
                     break;
@@ -279,9 +287,8 @@ public class MainActivity extends AppCompatActivity {
                                 bookItem.save();
 
                                 onResume();
-                            }
-                            else
-                                Toast.makeText(getApplicationContext(),"没有输入新账本名称哦",Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                         @Override
@@ -300,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
     // 初始化收支项目显示
     public void initIoItemList(final Context context) {
 
-        ioItemList =  DataSupport.where("bookId = ?", String.valueOf(GlobalVariables.getmBookId())).find(IOItem.class);
+        ioItemList = DataSupport.where("bookId = ?", String.valueOf(GlobalVariables.getmBookId())).find(IOItem.class);
         setIoItemRecyclerView(context);
     }
 
@@ -329,72 +336,84 @@ public class MainActivity extends AppCompatActivity {
         // 设置选择类型为图片类型
         intent.setType("image/*");
         // 打开图片选择
-        if (id == 1)
-            startActivityForResult(intent, SELECT_PIC4MAIN);
-        else
-            startActivityForResult(intent, SELECT_PIC4DRAWER);
+//        if (id == 1)
+        startActivityForResult(intent, id);
+//        else
+//            startActivityForResult(intent, SELECT_PIC4DRAWER);
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SELECT_PIC4MAIN:
-                if (data == null) return;
-                // 用户从图库选择图片后会返回所选图片的Uri
-                Uri uri1 = data.getData();
-                this.headerImg.setImageURI(uri1);
-                saveImageUri(SELECT_PIC4MAIN, uri1);
 
-                // 获取永久访问图片URI的权限
-                int takeFlags = data.getFlags();
-                takeFlags &=(Intent.FLAG_GRANT_READ_URI_PERMISSION
+        if (data == null) return;
+        Uri uri = data.getData();
+        saveImageUri(requestCode, uri);
+
+        // get permanent permission to access the image
+        int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                getContentResolver().takePersistableUriPermission(uri1, takeFlags);
-                break;
+        getContentResolver().takePersistableUriPermission(uri, takeFlags);
 
-            case SELECT_PIC4DRAWER:
-                if (data == null) return;
-                // 用户从图库选择图片后会返回所选图片的Uri
-                Uri uri2 = data.getData();
-                this.drawerBanner.setImageURI(uri2);
-                saveImageUri(SELECT_PIC4DRAWER, uri2);
 
-                // 获取永久访问图片URI的权限
-                int takeFlags2 = data.getFlags();
-                takeFlags2 &=(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                getContentResolver().takePersistableUriPermission(uri2, takeFlags2);
-                break;
-        }
+//        switch (requestCode) {
+//            case SELECT_PIC4MAIN:
+//                if (data == null) return;
+//                // 用户从图库选择图片后会返回所选图片的Uri
+//                Uri uri1 = data.getData();
+//                this.headerImg.setImageURI(uri1);
+//                saveImageUri(SELECT_PIC4MAIN, uri1);
+//
+//                // 获取永久访问图片URI的权限
+//                int takeFlags = data.getFlags();
+//                takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                getContentResolver().takePersistableUriPermission(uri1, takeFlags);
+//                break;
+//
+//            case SELECT_PIC4DRAWER:
+//                if (data == null) return;
+//                // 用户从图库选择图片后会返回所选图片的Uri
+//                Uri uri2 = data.getData();
+//                this.drawerBanner.setImageURI(uri2);
+//                saveImageUri(SELECT_PIC4DRAWER, uri2);
+//
+//                // 获取永久访问图片URI的权限
+//                int takeFlags2 = data.getFlags();
+//                takeFlags2 &= (Intent.FLAG_GRANT_READ_URI_PERMISSION
+//                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                getContentResolver().takePersistableUriPermission(uri2, takeFlags2);
+//                break;
+//        }
     }
 
     // 利用SharedPreferences保存图片uri
     public void saveImageUri(int id, Uri uri) {
-        SharedPreferences pref = getSharedPreferences("image"+id, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("image" + id, MODE_PRIVATE);
         SharedPreferences.Editor prefEditor = pref.edit();
         prefEditor.putString("uri", uri.toString());
         prefEditor.apply();
     }
 
-    public void setImageForHeaderAndBanner() {
-        SharedPreferences pref1 = getSharedPreferences("image"+SELECT_PIC4MAIN, MODE_PRIVATE);
-        String imageUri1 = pref1.getString("uri", "");
-
-        if (!imageUri1.equals("")) {
-            Uri contentUri = Uri.parse(imageUri1);
-            this.headerImg.setImageURI(contentUri);
-        }
-
-        SharedPreferences pref2 = getSharedPreferences("image"+SELECT_PIC4DRAWER, MODE_PRIVATE);
-        String imageUri2 = pref2.getString("uri", "");
-
-        if (!imageUri2.equals("")) {
-            Uri contentUri = Uri.parse(imageUri2);
-            this.drawerBanner.setImageURI(contentUri);
-        }
-    }
+//    public void setImageForHeaderAndBanner() {
+//        SharedPreferences pref1 = getSharedPreferences("image" + SELECT_PIC4HEADER, MODE_PRIVATE);
+//        String imageUri1 = pref1.getString("uri", "");
+//
+//        if (!imageUri1.equals("")) {
+//            Uri contentUri = Uri.parse(imageUri1);
+//            this.headerImg.setImageURI(contentUri);
+//        }
+//
+//        SharedPreferences pref2 = getSharedPreferences("image" + SELECT_PIC4DRAWER, MODE_PRIVATE);
+//        String imageUri2 = pref2.getString("uri", "");
+//
+//        if (!imageUri2.equals("")) {
+//            Uri contentUri = Uri.parse(imageUri2);
+//            this.drawerBanner.setImageURI(contentUri);
+//        }
+//    }
 
     public void setIoItemRecyclerView(Context context) {
         // 用于存储recyclerView的日期
@@ -433,5 +452,27 @@ public class MainActivity extends AppCompatActivity {
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
 
         //GlobalVariables.setmBookId(bookItemRecyclerView.getId());
+    }
+
+    @Override
+    public void updateHeaderImg() {
+        SharedPreferences pref = getSharedPreferences("image" + SELECT_PIC4HEADER,
+                MODE_PRIVATE);
+        String imageUri = pref.getString("uri", "");
+        if (!imageUri.isEmpty()) {
+            Uri contentUri = Uri.parse(imageUri);
+            this.headerImg.setImageURI(contentUri);
+        }
+    }
+
+    @Override
+    public void updateDrawerImg() {
+        SharedPreferences pref = getSharedPreferences("image" + SELECT_PIC4DRAWER,
+                MODE_PRIVATE);
+        String imageUri = pref.getString("uri", "");
+        if (!imageUri.isEmpty()) {
+            Uri contentUri = Uri.parse(imageUri);
+            this.drawerBanner.setImageURI(contentUri);
+        }
     }
 }

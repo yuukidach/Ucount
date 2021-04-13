@@ -1,4 +1,4 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.view;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -14,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yuukidach.ucount.AddDescription;
+import com.yuukidach.ucount.CostFragment;
+import com.yuukidach.ucount.EarnFragment;
+import com.yuukidach.ucount.GlobalVariables;
+import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.IOItem;
 
