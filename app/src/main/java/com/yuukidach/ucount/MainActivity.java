@@ -215,8 +215,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 return false;
             }
         });
-
-//        setImageForHeaderAndBanner();
     }
 
 
@@ -336,11 +334,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         // 设置选择类型为图片类型
         intent.setType("image/*");
         // 打开图片选择
-//        if (id == 1)
         startActivityForResult(intent, id);
-//        else
-//            startActivityForResult(intent, SELECT_PIC4DRAWER);
-
     }
 
     @Override
@@ -356,37 +350,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         getContentResolver().takePersistableUriPermission(uri, takeFlags);
-
-
-//        switch (requestCode) {
-//            case SELECT_PIC4MAIN:
-//                if (data == null) return;
-//                // 用户从图库选择图片后会返回所选图片的Uri
-//                Uri uri1 = data.getData();
-//                this.headerImg.setImageURI(uri1);
-//                saveImageUri(SELECT_PIC4MAIN, uri1);
-//
-//                // 获取永久访问图片URI的权限
-//                int takeFlags = data.getFlags();
-//                takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//                getContentResolver().takePersistableUriPermission(uri1, takeFlags);
-//                break;
-//
-//            case SELECT_PIC4DRAWER:
-//                if (data == null) return;
-//                // 用户从图库选择图片后会返回所选图片的Uri
-//                Uri uri2 = data.getData();
-//                this.drawerBanner.setImageURI(uri2);
-//                saveImageUri(SELECT_PIC4DRAWER, uri2);
-//
-//                // 获取永久访问图片URI的权限
-//                int takeFlags2 = data.getFlags();
-//                takeFlags2 &= (Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//                getContentResolver().takePersistableUriPermission(uri2, takeFlags2);
-//                break;
-//        }
     }
 
     // 利用SharedPreferences保存图片uri
@@ -396,24 +359,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         prefEditor.putString("uri", uri.toString());
         prefEditor.apply();
     }
-
-//    public void setImageForHeaderAndBanner() {
-//        SharedPreferences pref1 = getSharedPreferences("image" + SELECT_PIC4HEADER, MODE_PRIVATE);
-//        String imageUri1 = pref1.getString("uri", "");
-//
-//        if (!imageUri1.equals("")) {
-//            Uri contentUri = Uri.parse(imageUri1);
-//            this.headerImg.setImageURI(contentUri);
-//        }
-//
-//        SharedPreferences pref2 = getSharedPreferences("image" + SELECT_PIC4DRAWER, MODE_PRIVATE);
-//        String imageUri2 = pref2.getString("uri", "");
-//
-//        if (!imageUri2.equals("")) {
-//            Uri contentUri = Uri.parse(imageUri2);
-//            this.drawerBanner.setImageURI(contentUri);
-//        }
-//    }
 
     public void setIoItemRecyclerView(Context context) {
         // 用于存储recyclerView的日期
