@@ -4,4 +4,7 @@
     <string name="show_balance">显示余额</string>
     <string name="monthly_income_title">当月收入</string>
     <string name="monthly_expenditure_title">当月支出</string>
+    <string name="delete_item_alarm">确定要删除这一项吗?</string>
+    <string name="cancle">取消</string>
+    <string name="confirm">确定</string>
 </resources>

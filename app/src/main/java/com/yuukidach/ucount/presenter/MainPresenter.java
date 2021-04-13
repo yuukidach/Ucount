@@ -1,9 +1,13 @@
 package com.yuukidach.ucount.presenter;
 
+import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.view.MainView;
+
+import java.util.List;
 
 public class MainPresenter {
     final private MainView mainView;
+    private List<BookItem> bookItemList;
 
     private static boolean isNumeric(String str) {
         try {

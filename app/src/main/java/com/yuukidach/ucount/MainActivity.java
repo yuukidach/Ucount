@@ -32,7 +32,7 @@ import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
 import com.yuukidach.ucount.model.IOItemAdapter;
 import com.yuukidach.ucount.presenter.MainPresenter;
-import com.yuukidach.ucount.view.AddItemActivity;
+import com.yuukidach.ucount.view.MainItemListView;
 import com.yuukidach.ucount.view.MainView;
 
 import org.litepal.crud.DataSupport;
@@ -47,7 +47,7 @@ import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, MainItemListView {
     private MainPresenter presenter;
 
     private List<IOItem> ioItemList = new ArrayList<>();
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private RecyclerView ioItemRecyclerView;
     private IOItemAdapter ioAdapter;
     private Button showBtn;
-    private CircleButton addBtn;
     private ImageView headerImg;
     private TextView monthlyCost, monthlyEarn;
 
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private LinearLayout bookLinearLayout;
     private RecyclerView bookItemRecyclerView;
     private BookItemAdapter bookAdapter;
-    private ImageButton addBookButton;
     private ImageView drawerBanner;
 
     public static String PACKAGE_NAME;
@@ -88,21 +86,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
         @Override
         public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
             // 获得滑动位置
-            final int position = viewHolder.getAdapterPosition();
+            final int position = viewHolder.getBindingAdapterPosition();
 
             if (direction == ItemTouchHelper.RIGHT) {
                 // 弹窗确认
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("你确定要删除么？");
+                builder.setMessage(R.string.delete_item_alarm);
 
-                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ioAdapter.removeItem(position);
                         // 刷新界面
                         onResume();
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LinearLayout sonView = (LinearLayout) viewHolder.itemView;
@@ -185,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         resources = getResources();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
-        addBtn = (CircleButton) findViewById(R.id.add_button);
+        final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
+        final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
         ioItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
         headerImg = (ImageView) findViewById(R.id.header_img);
         monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
@@ -193,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         // drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
         bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
-        addBookButton = (ImageButton) findViewById(R.id.add_book_button);
         bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
         drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
@@ -290,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     // 初始化收支项目显示
     public void initIoItemList(final Context context) {
-
         ioItemList = DataSupport.where("bookId = ?", String.valueOf(GlobalVariables.getmBookId())).find(IOItem.class);
         setIoItemRecyclerView(context);
     }

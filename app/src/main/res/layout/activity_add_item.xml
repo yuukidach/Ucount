@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context="com.yuukidach.ucount.view.AddItemActivity">
+    tools:context="com.yuukidach.ucount.AddItemActivity">
 
     <View
         android:id="@+id/center_view_two"
