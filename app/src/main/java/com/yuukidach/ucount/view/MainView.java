@@ -4,4 +4,8 @@ public interface MainView {
     void updateHeaderImg();
 
     void updateDrawerImg();
+
+    void showBalance();
+
+    void hideBalance();
 }

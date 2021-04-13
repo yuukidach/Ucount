@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         initBookItemList(this);
         initIoItemList(this);
 
-        showBtn.setText("显示余额");
+        hideBalance();
 
         updateHeaderImg();
         updateDrawerImg();
@@ -257,12 +257,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
                     startActivity(intent);
                     break;
                 case R.id.show_money_button:
-                    if (showBtn.getText() == "显示余额") {
-                        BookItem tmp = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
-
-                        String sumString = decimalFormat.format(tmp.getSumAll());
-                        showBtn.setText(sumString);
-                    } else showBtn.setText("显示余额");
+                    if (showBtn.getText() == getString(R.string.show_balance)) showBalance();
+                    else hideBalance();
                     break;
                 case R.id.add_book_button:
                     final BookItem bookItem = new BookItem();
@@ -419,5 +415,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
             Uri contentUri = Uri.parse(imageUri);
             this.drawerBanner.setImageURI(contentUri);
         }
+    }
+
+    @Override
+    public void showBalance() {
+        BookItem tmp = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
+
+        String sumString = decimalFormat.format(tmp.getSumAll());
+        showBtn.setText(sumString);
+    }
+
+    @Override
+    public void hideBalance() {
+        showBtn.setText(R.string.show_balance);
     }
 }
