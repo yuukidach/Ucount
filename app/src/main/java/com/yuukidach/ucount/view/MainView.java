@@ -12,4 +12,6 @@ public interface MainView {
     void updateMonthlyEarn();
 
     void updateMonthlyCost();
+
+    void navigateToAddItem();
 }

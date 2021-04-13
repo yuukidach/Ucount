@@ -32,13 +32,13 @@ public class MainPresenter {
         else mainView.showBalance();
     }
 
-    public void updateMonthlyCost() {
-        if (mainView == null) return;
-        mainView.updateMonthlyCost();
-    }
-
-    public void UpdateMonthlyEarn() {
-        if (mainView == null) return;
-        mainView.updateMonthlyEarn();
-    }
+//    public void updateMonthlyCost() {
+//        if (mainView == null) return;
+//        mainView.updateMonthlyCost();
+//    }
+//
+//    public void UpdateMonthlyEarn() {
+//        if (mainView == null) return;
+//        mainView.updateMonthlyEarn();
+//    }
 }

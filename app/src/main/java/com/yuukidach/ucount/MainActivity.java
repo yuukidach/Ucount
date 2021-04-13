@@ -209,12 +209,43 @@ public class MainActivity extends AppCompatActivity implements MainView {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                startActivity(intent);
+                navigateToAddItem();
             }
         });
 
-        addBookButton.setOnClickListener(new ButtonListener());
+        addBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BookItem bookItem = new BookItem();
+                final EditText book_title = new EditText(MainActivity.this);
+                // 弹窗输入
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("请输入新的账本名字");
+
+                builder.setView(book_title);
+
+                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!book_title.getText().toString().isEmpty()) {
+                            bookItem.setName(book_title.getText().toString());
+                            bookItem.setSumAll(0.0);
+                            bookItem.setSumMonthlyCost(0.0);
+                            bookItem.setSumMonthlyEarn(0.0);
+                            bookItem.setDate(sumDate);
+                            bookItem.save();
+
+                            onResume();
+                        } else
+                            Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();  // 显示弹窗
+            }
+        });
 
         presenter = new MainPresenter(this);
 
@@ -256,49 +287,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         startActivity(intent);
     }
-
-    // 各个按钮的活动
-    private class ButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.add_book_button:
-                    final BookItem bookItem = new BookItem();
-                    final EditText book_title = new EditText(MainActivity.this);
-                    // 弹窗输入
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("请输入新的账本名字");
-
-                    builder.setView(book_title);
-
-                    builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!book_title.getText().toString().isEmpty()) {
-                                bookItem.setName(book_title.getText().toString());
-                                bookItem.setSumAll(0.0);
-                                bookItem.setSumMonthlyCost(0.0);
-                                bookItem.setSumMonthlyEarn(0.0);
-                                bookItem.setDate(sumDate);
-                                bookItem.save();
-
-                                onResume();
-                            } else
-                                Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    }).show();  // 显示弹窗
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    }
-
 
     // 初始化收支项目显示
     public void initIoItemList(final Context context) {
@@ -448,5 +436,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 bookItemList.get(GlobalVariables.getmBookPos()
         ).getId());
         monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
+    }
+
+    @Override
+    public void navigateToAddItem() {
+        Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+        startActivity(intent);
     }
 }
