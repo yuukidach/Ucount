@@ -39,4 +39,6 @@ public interface MainView {
     void setMainItemRecycler();
 
     void setBookItemRecycler();
+
+    void setNewBook();
 }

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.model.IoItem;
 
 import org.litepal.crud.DataSupport;
 
@@ -28,7 +28,7 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
     private final int TYPE_COST = -1;
     private final int TYPE_EARN =  1;
 
-    private List<IOItem> mIOItemList;
+    private List<IoItem> mIOItemList;
     private String mDate;
 
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -61,7 +61,7 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
         }
     }
 
-    public MainItemAdapter(List<IOItem> ioItemList) {
+    public MainItemAdapter(List<IoItem> ioItemList) {
         mIOItemList = ioItemList;
     }
 
@@ -75,7 +75,7 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        IOItem ioItem = mIOItemList.get(position);
+        IoItem ioItem = mIOItemList.get(position);
         showItemDate(holder, ioItem.getTimeStamp());
         // 表示支出的布局
         if (ioItem.getType() == TYPE_COST) {       // -1代表支出
@@ -115,12 +115,12 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
 
     // 返回子项目时间，便于在取消删除的时候判断是否应该显示项目时间
     public String getItemDate(int position) {
-        IOItem ioItem = mIOItemList.get(position);
+        IoItem ioItem = mIOItemList.get(position);
         return ioItem.getTimeStamp();
     }
 
     public void removeItem(int position) {
-        IOItem ioItem = mIOItemList.get(position);
+        IoItem ioItem = mIOItemList.get(position);
         BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         int type = ioItem.getType();
         bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney()*type);
@@ -128,17 +128,17 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
         if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - ioItem.getMoney());
         else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - ioItem.getMoney());
         bookItem.save();
-        DataSupport.delete(IOItem.class, mIOItemList.get(position).getId());
+        DataSupport.delete(IoItem.class, mIOItemList.get(position).getId());
 
         mIOItemList.remove(position);
         notifyItemRemoved(position);
     }
 
-    public boolean isThereADescription(IOItem ioItem) {
+    public boolean isThereADescription(IoItem ioItem) {
         return (ioItem.getDescription()!=null && !ioItem.getDescription().equals(""));
     }
 
-    public void handleDescription(IOItem ioItem, TextView Dsp, TextView Name, TextView Money) {
+    public void handleDescription(IoItem ioItem, TextView Dsp, TextView Name, TextView Money) {
         if (isThereADescription(ioItem)) {
             RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)Name.getLayoutParams();
             nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);

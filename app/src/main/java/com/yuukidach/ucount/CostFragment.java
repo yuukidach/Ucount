@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.model.IoItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CostFragment extends Fragment {
             "家庭", "宠物", "服装", "日用", "水果", "母婴", "信用卡", "理财", "工作", "家具", "通信"};
     private ViewPager mPager;
     private List<View> mPagerList;
-    private List<IOItem> mDatas;
+    private List<IoItem> mDatas;
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
@@ -105,9 +105,9 @@ public class CostFragment extends Fragment {
      * 初始化数据源
      */
     private void initDatas() {
-        mDatas = new ArrayList<IOItem>();
+        mDatas = new ArrayList<IoItem>();
         for (int i = 1; i <= titles.length; i++) {
-            mDatas.add(new IOItem("type_big_" + i, titles[i-1]));
+            mDatas.add(new IoItem("type_big_" + i, titles[i-1]));
         }
     }
 
@@ -120,7 +120,7 @@ public class CostFragment extends Fragment {
     }
 
     // 改变banner状态
-    public void changeBanner(IOItem tmpItem) {
+    public void changeBanner(IoItem tmpItem) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);

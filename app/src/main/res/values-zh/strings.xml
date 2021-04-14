@@ -7,4 +7,5 @@
     <string name="delete_item_alarm">确定要删除这一项吗?</string>
     <string name="cancle">取消</string>
     <string name="confirm">确定</string>
+    <string name="new_book_prompt">请输入新账本名字</string>
 </resources>

@@ -6,6 +6,7 @@
     <string name="delete_item_alarm">Are you sure to delete it?</string>
     <string name="cancle">Cancle</string>
     <string name="confirm">Confirm</string>
+    <string name="new_book_prompt">Please enter the name for new book</string>
     <string name="add_cost_button_string">支出</string>
     <string name="add_earn_button_string">收入</string>
 

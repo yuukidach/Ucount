@@ -27,8 +27,8 @@ public class MainPresenter {
 
         // TODO: Now due to the bad code structure, the setBookItemRecycler needs to be called in
         // front of hide / update... But it seems it more reasonable to put it behind.
-        mainView.setMainItemRecycler();
         mainView.setBookItemRecycler();
+        mainView.setMainItemRecycler();
 
         mainView.hideBalance();
         mainView.updateHeaderImg();
@@ -40,5 +40,9 @@ public class MainPresenter {
     public void toggleBalanceVisibility(String str) {
         if (isNumeric(str)) mainView.hideBalance();
         else mainView.showBalance();
+    }
+
+    public void setNewBook() {
+        mainView.setNewBook();
     }
 }

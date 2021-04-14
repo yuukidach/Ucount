@@ -8,8 +8,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yuukidach.ucount.model.BookItemAdapter;
-
 
 public class BookItemCallback extends ItemTouchHelper.SimpleCallback {
     private Context context;

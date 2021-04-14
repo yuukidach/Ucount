@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.model.IoItem;
 
 import org.litepal.crud.DataSupport;
 
@@ -129,7 +129,7 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     public void putItemInData(double money) {
-        IOItem ioItem = new IOItem();
+        IoItem ioItem = new IoItem();
         BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         String tagName = (String) bannerText.getTag();
         int tagType = (int) bannerImage.getTag();
@@ -158,7 +158,7 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     // 计算月收支
-    public void calculateMonthlyMoney(BookItem bookItem, int money_type, IOItem ioItem) {
+    public void calculateMonthlyMoney(BookItem bookItem, int money_type, IoItem ioItem) {
         String sumDate = formatSum.format(new Date());
 
         // 求取月收支类型

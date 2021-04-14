@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.model.IoItem;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "GridRecyclerAdapter";
 
-    private List<IOItem> mDatas;
+    private List<IoItem> mDatas;
     private int curIndex;
     private int pageSize;
 
@@ -40,7 +40,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    public GridRecyclerAdapter(List<IOItem> Datas, int curIndex, int pageSize) {
+    public GridRecyclerAdapter(List<IoItem> Datas, int curIndex, int pageSize) {
         this.mDatas = Datas;
         this.curIndex = curIndex;
         this.pageSize = pageSize;
@@ -73,7 +73,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: I am in here:" + position);
         int realPositon = position + curIndex * pageSize;
-        IOItem ioItem = mDatas.get(realPositon);
+        IoItem ioItem = mDatas.get(realPositon);
         holder.itemImage.setImageResource(ioItem.getSrcId());
         holder.itemTitle.setText(ioItem.getName());
         // 将数据保存在itemView的Tag中，以便点击时进行获取

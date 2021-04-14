@@ -11,7 +11,7 @@ import org.litepal.crud.DataSupport;
  * 花费和收入的条目
  */
 
-public class IOItem extends DataSupport {
+public class IoItem extends DataSupport {
     public final int TYPE_COST = -1;
     public final int TYPE_EARN =  1;
 
@@ -24,15 +24,15 @@ public class IOItem extends DataSupport {
     private String timeStamp;
     private String srcName;                 // 项目资源名称
 
-    public IOItem () {}
+    public IoItem() {}
 
-    public IOItem(String srcName, String name) {
+    public IoItem(String srcName, String name) {
         this.srcName = srcName;
         this.name = name;
     }
 
     // 构造函数（无具体描述）
-    public IOItem(String srcName, int type, double money, String name) {
+    public IoItem(String srcName, int type, double money, String name) {
         this.srcName = srcName;
         this.money = money;
         this.type = type;
@@ -40,7 +40,7 @@ public class IOItem extends DataSupport {
     }
 
     // 构造函数（有具体描述）
-    public IOItem(String srcName, int type, double money, String name, String description) {
+    public IoItem(String srcName, int type, double money, String name, String description) {
         this.money = money;
         this.type = type;
         this.srcName = srcName;

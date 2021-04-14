@@ -3,7 +3,7 @@
     <dbname value="MoneyCount"></dbname>
     <version value="1"></version>
     <list>
-        <mapping class="com.yuukidach.ucount.model.IOItem"></mapping>
+        <mapping class="com.yuukidach.ucount.model.IoItem"></mapping>
         <mapping class="com.yuukidach.ucount.model.BookItem"></mapping>
     </list>
 </litepal>

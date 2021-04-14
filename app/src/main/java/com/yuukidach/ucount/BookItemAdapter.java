@@ -1,4 +1,4 @@
-package com.yuukidach.ucount.model;
+package com.yuukidach.ucount;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.GlobalVariables;
-import com.yuukidach.ucount.R;
+import com.yuukidach.ucount.model.BookItem;
+import com.yuukidach.ucount.model.IoItem;
 
 import org.litepal.crud.DataSupport;
 
@@ -93,16 +93,12 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         void onItemClick(View view, int position);
     }
 
-    /*public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(mBookList, fromPosition, toPosition);
-
-        notifyItemMoved(fromPosition, toPosition);
-    }*/
-
     public void removeItem(int position) {
+        Log.d(TAG, "removeItem: " + position);
+        Log.d(TAG, "removeItem: " + mBookList);
         BookItem bookItem = mBookList.get(position);
 
-        DataSupport.deleteAll(IOItem.class, "bookId = ?", String.valueOf(mBookList.get(position).getId()));
+        DataSupport.deleteAll(IoItem.class, "bookId = ?", String.valueOf(mBookList.get(position).getId()));
         DataSupport.delete(BookItem.class, mBookList.get(position).getId());
 
         mBookList.remove(position);

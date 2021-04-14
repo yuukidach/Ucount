@@ -1,6 +1,5 @@
 package com.yuukidach.ucount;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,8 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.BookItemAdapter;
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.model.IoItem;
 import com.yuukidach.ucount.presenter.MainPresenter;
 import com.yuukidach.ucount.view.MainView;
 
@@ -68,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     private static final String TAG = "MainActivity";
-    private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
-    String sumDate = formatSum.format(new Date());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
         drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
+        mainPresenter = new MainPresenter(this);
+
         showBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,38 +114,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         addBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BookItem bookItem = new BookItem();
-                final EditText book_title = new EditText(MainActivity.this);
-                // 弹窗输入
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("请输入新的账本名字");
-
-                builder.setView(book_title);
-
-                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!book_title.getText().toString().isEmpty()) {
-                            bookItem.setName(book_title.getText().toString());
-                            bookItem.setSumAll(0.0);
-                            bookItem.setSumMonthlyCost(0.0);
-                            bookItem.setSumMonthlyEarn(0.0);
-                            bookItem.setDate(sumDate);
-                            bookItem.save();
-
-                            onResume();
-                        } else
-                            Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).show();  // 显示弹窗
+                mainPresenter.setNewBook();
             }
         });
-
-        mainPresenter = new MainPresenter(this);
 
         // 设置首页header图片长按以更换图片
         headerImg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -276,10 +245,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setMainItemRecycler() {
-        List<IOItem> ioItemList = DataSupport.where(
+        List<IoItem> ioItemList = DataSupport.where(
                 "bookId = ?",
                 String.valueOf(GlobalVariables.getmBookId())
-        ).find(IOItem.class);
+        ).find(IoItem.class);
 
         // 用于存储recyclerView的日期
         GlobalVariables.setmDate("");
@@ -303,14 +272,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         if (bookItemList.isEmpty()) {
             BookItem bookItem = new BookItem();
-
-            bookItem.saveBook(bookItem, 1, "默认账本");
-            bookItem.setSumAll(0.0);
-            bookItem.setSumMonthlyCost(0.0);
-            bookItem.setSumMonthlyEarn(0.0);
-            bookItem.setDate(sumDate);
-            bookItem.save();
-
+            bookItem.addNewBookIntoStorage(1, "Default");
             bookItemList = DataSupport.findAll(BookItem.class);
         }
 
@@ -324,8 +286,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 // 选中之后的操作
                 GlobalVariables.setmBookPos(position);
                 GlobalVariables.setmBookId(bookItemList.get(position).getId());
-                onResume();
                 drawerLayout.closeDrawer(bookLinearLayout);
+                onResume();
             }
         });
 
@@ -334,6 +296,32 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 new BookItemCallback(this, bookAdapter)
         );
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
+    }
 
+    @Override
+    public void setNewBook() {
+        final BookItem bookItem = new BookItem();
+        final EditText book_title = new EditText(MainActivity.this);
+        // 弹窗输入
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.new_book_prompt);
+
+        builder.setView(book_title);
+
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!book_title.getText().toString().isEmpty()) {
+                    int id = bookItemList.get(bookItemList.size()-1).getId() + 1;
+                    bookItem.addNewBookIntoStorage(id, book_title.getText().toString());
+                    onResume();
+                } else
+                    Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
+            }
+        }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).show();
     }
 }
