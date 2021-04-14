@@ -25,6 +25,11 @@ public class MainPresenter {
     public void onResume() {
         if (mainView == null) return;
 
+        // TODO: Now due to the bad code structure, the setBookItemRecycler needs to be called in
+        // front of hide / update... But it seems it more reasonable to put it behind.
+        mainView.setMainItemRecycler();
+        mainView.setBookItemRecycler();
+
         mainView.hideBalance();
         mainView.updateHeaderImg();
         mainView.updateDrawerImg();

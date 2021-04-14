@@ -35,4 +35,8 @@ public interface MainView {
      * Navigate to addItem activity
      */
     void navigateToAddItem();
+
+    void setMainItemRecycler();
+
+    void setBookItemRecycler();
 }

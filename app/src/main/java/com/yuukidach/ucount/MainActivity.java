@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +30,7 @@ import android.widget.Toast;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
-import com.yuukidach.ucount.presenter.MainItemPresenter;
 import com.yuukidach.ucount.presenter.MainPresenter;
-import com.yuukidach.ucount.view.MainItemView;
 import com.yuukidach.ucount.view.MainView;
 
 import org.litepal.crud.DataSupport;
@@ -48,15 +45,12 @@ import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity implements MainView, MainItemView {
+public class MainActivity extends AppCompatActivity implements MainView {
     private MainPresenter mainPresenter;
-    private MainItemPresenter mainItemPresenter;
 
-    private List<IOItem> ioItemList = new ArrayList<>();
     private List<BookItem> bookItemList = new ArrayList<>();
 
     private RecyclerView ioItemRecyclerView;
-    private MainItemAdapter ioAdapter;
     private Button showBtn;
     private ImageView headerImg;
     private TextView monthlyCost, monthlyEarn;
@@ -65,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     private DrawerLayout drawerLayout;
     private LinearLayout bookLinearLayout;
     private RecyclerView bookItemRecyclerView;
-    private BookItemAdapter bookAdapter;
     private ImageView drawerBanner;
 
     public static String PACKAGE_NAME;
@@ -77,55 +70,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     private static final String TAG = "MainActivity";
     private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
-
-    // 为bookitem recyclerview添加动作
-    private ItemTouchHelper.Callback bookCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            // 如果不想上下拖动，可以将 dragFlags = 0
-            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-
-            // 如果你想左右滑动，可以将 swipeFlags = 0
-            int swipeFlags = ItemTouchHelper.RIGHT;
-
-            //最终的动作标识（flags）必须要用makeMovementFlags()方法生成
-            return makeMovementFlags(dragFlags, swipeFlags);
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-
-        @Override
-        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-            // 获得滑动位置
-            final int position = viewHolder.getAdapterPosition();
-
-            if (direction == ItemTouchHelper.RIGHT) {
-                // 弹窗确认
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("你确定要删除么？");
-
-                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        bookAdapter.removeItem(position);
-                        // 刷新界面
-                        onResume();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        bookAdapter.notifyDataSetChanged();
-                    }
-                }).show();  // 显示弹窗
-            }
-        }
-    };
-
-    private ItemTouchHelper bookTouchHelper = new ItemTouchHelper(bookCallback);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         });
 
         mainPresenter = new MainPresenter(this);
-        mainItemPresenter = new MainItemPresenter(this);
 
         // 设置首页header图片长按以更换图片
         headerImg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -228,8 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     @Override
     protected void onResume() {
         super.onResume();
-        initBookItemList(this);
-        mainItemPresenter.onResume();
+//        initBookItemList(this);
         mainPresenter.onResume();
     }
 
@@ -240,25 +182,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         intent.addCategory(Intent.CATEGORY_HOME);        // CATEGORY_HOME  设备启动时的第一个Activity
 
         startActivity(intent);
-    }
-
-    public void initBookItemList(final Context context) {
-        bookItemList = DataSupport.findAll(BookItem.class);
-
-        if (bookItemList.isEmpty()) {
-            BookItem bookItem = new BookItem();
-
-            bookItem.saveBook(bookItem, 1, "默认账本");
-            bookItem.setSumAll(0.0);
-            bookItem.setSumMonthlyCost(0.0);
-            bookItem.setSumMonthlyEarn(0.0);
-            bookItem.setDate(sumDate);
-            bookItem.save();
-
-            bookItemList = DataSupport.findAll(BookItem.class);
-        }
-
-        setBookItemRecyclerView(context);
     }
 
     public void selectPictureFromGallery(int id) {
@@ -290,29 +213,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         SharedPreferences.Editor prefEditor = pref.edit();
         prefEditor.putString("uri", uri.toString());
         prefEditor.apply();
-    }
-
-    public void setBookItemRecyclerView(Context context) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-
-        bookItemRecyclerView.setLayoutManager(layoutManager);
-        bookItemRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-        bookAdapter = new BookItemAdapter(bookItemList);
-
-        bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // 选中之后的操作
-                GlobalVariables.setmBookPos(position);
-                GlobalVariables.setmBookId(bookItemList.get(position).getId());
-                onResume();
-                drawerLayout.closeDrawer(bookLinearLayout);
-            }
-        });
-
-        bookItemRecyclerView.setAdapter(bookAdapter);
-        bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
     }
 
     @Override
@@ -375,8 +275,8 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     }
 
     @Override
-    public void init() {
-        ioItemList = DataSupport.where(
+    public void setMainItemRecycler() {
+        List<IOItem> ioItemList = DataSupport.where(
                 "bookId = ?",
                 String.valueOf(GlobalVariables.getmBookId())
         ).find(IOItem.class);
@@ -388,12 +288,52 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         layoutManager.setStackFromEnd(true);    // show from bottom to top
         layoutManager.setReverseLayout(true);   // reverse the layout
 
-        ioAdapter = new MainItemAdapter(ioItemList);
+        MainItemAdapter ioAdapter = new MainItemAdapter(ioItemList);
         ioItemRecyclerView.setAdapter(ioAdapter);
         ioItemRecyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
                 new MainItemCallback(this, ioAdapter)
         );
         ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
+    }
+
+    @Override
+    public void setBookItemRecycler() {
+        bookItemList = DataSupport.findAll(BookItem.class);
+
+        if (bookItemList.isEmpty()) {
+            BookItem bookItem = new BookItem();
+
+            bookItem.saveBook(bookItem, 1, "默认账本");
+            bookItem.setSumAll(0.0);
+            bookItem.setSumMonthlyCost(0.0);
+            bookItem.setSumMonthlyEarn(0.0);
+            bookItem.setDate(sumDate);
+            bookItem.save();
+
+            bookItemList = DataSupport.findAll(BookItem.class);
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        bookItemRecyclerView.setLayoutManager(layoutManager);
+        bookItemRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        BookItemAdapter bookAdapter = new BookItemAdapter(bookItemList);
+        bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // 选中之后的操作
+                GlobalVariables.setmBookPos(position);
+                GlobalVariables.setmBookId(bookItemList.get(position).getId());
+                onResume();
+                drawerLayout.closeDrawer(bookLinearLayout);
+            }
+        });
+
+        bookItemRecyclerView.setAdapter(bookAdapter);
+        ItemTouchHelper bookTouchHelper = new ItemTouchHelper(
+                new BookItemCallback(this, bookAdapter)
+        );
+        bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
+
     }
 }
