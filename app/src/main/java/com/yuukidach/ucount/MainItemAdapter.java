@@ -1,5 +1,6 @@
-package com.yuukidach.ucount.model;
+package com.yuukidach.ucount;
 
+import androidx.annotation.NonNull;
 import androidx.percentlayout.widget.PercentRelativeLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -10,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.GlobalVariables;
-import com.yuukidach.ucount.R;
+import com.yuukidach.ucount.model.BookItem;
+import com.yuukidach.ucount.model.IOItem;
 
 import org.litepal.crud.DataSupport;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by yuukidach on 17-3-10.
  */
 
-public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder> {
+public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHolder> {
     private static final String TAG = "IOItemAdapter";
     private final int TYPE_COST = -1;
     private final int TYPE_EARN =  1;
@@ -60,10 +61,11 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
         }
     }
 
-    public IOItemAdapter(List<IOItem> ioItemList) {
+    public MainItemAdapter(List<IOItem> ioItemList) {
         mIOItemList = ioItemList;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
@@ -72,7 +74,7 @@ public class IOItemAdapter extends RecyclerView.Adapter<IOItemAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IOItem ioItem = mIOItemList.get(position);
         showItemDate(holder, ioItem.getTimeStamp());
         // 表示支出的布局

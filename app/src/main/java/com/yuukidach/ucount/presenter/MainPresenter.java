@@ -24,6 +24,7 @@ public class MainPresenter {
 
     public void onResume() {
         if (mainView == null) return;
+
         mainView.hideBalance();
         mainView.updateHeaderImg();
         mainView.updateDrawerImg();
@@ -35,14 +36,4 @@ public class MainPresenter {
         if (isNumeric(str)) mainView.hideBalance();
         else mainView.showBalance();
     }
-
-//    public void updateMonthlyCost() {
-//        if (mainView == null) return;
-//        mainView.updateMonthlyCost();
-//    }
-//
-//    public void UpdateMonthlyEarn() {
-//        if (mainView == null) return;
-//        mainView.updateMonthlyEarn();
-//    }
 }

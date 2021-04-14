@@ -31,9 +31,9 @@ import android.widget.Toast;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.BookItemAdapter;
 import com.yuukidach.ucount.model.IOItem;
-import com.yuukidach.ucount.model.IOItemAdapter;
+import com.yuukidach.ucount.presenter.MainItemPresenter;
 import com.yuukidach.ucount.presenter.MainPresenter;
-import com.yuukidach.ucount.view.MainItemRecyclerView;
+import com.yuukidach.ucount.view.MainItemView;
 import com.yuukidach.ucount.view.MainView;
 
 import org.litepal.crud.DataSupport;
@@ -48,14 +48,15 @@ import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
-public class MainActivity extends AppCompatActivity implements MainView, MainItemRecyclerView {
-    private MainPresenter presenter;
+public class MainActivity extends AppCompatActivity implements MainView, MainItemView {
+    private MainPresenter mainPresenter;
+    private MainItemPresenter mainItemPresenter;
 
     private List<IOItem> ioItemList = new ArrayList<>();
     private List<BookItem> bookItemList = new ArrayList<>();
 
     private RecyclerView ioItemRecyclerView;
-    private IOItemAdapter ioAdapter;
+    private MainItemAdapter ioAdapter;
     private Button showBtn;
     private ImageView headerImg;
     private TextView monthlyCost, monthlyEarn;
@@ -77,53 +78,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     private SimpleDateFormat formatSum = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
     String sumDate = formatSum.format(new Date());
 
-    // Set swipe action for io item recycler view
-    private final ItemTouchHelper.Callback ioCallback =
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-        // do not want to call onMoved method
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView,
-                              @NonNull RecyclerView.ViewHolder viewHolder,
-                              @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-            // 获得滑动位置
-            final int position = viewHolder.getBindingAdapterPosition();
-
-            if (direction == ItemTouchHelper.RIGHT) {
-                // Confirm if the user want to delete the item or not
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage(R.string.delete_item_alarm);
-
-                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ioAdapter.removeItem(position);
-                        // refresh the activity
-                        ioAdapter.notifyDataSetChanged();
-                    }
-                }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LinearLayout sonView = (LinearLayout) viewHolder.itemView;
-                        TextView grandsonTextView = (TextView) sonView.findViewById(R.id.iotem_date);
-                        // 判断是否应该显示时间
-                        if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
-                            GlobalVariables.setmDate("");
-                        else GlobalVariables.setmDate(ioAdapter.getItemDate(position));
-                        ioAdapter.notifyItemChanged(position);
-                    }
-                }).show();  // 显示弹窗
-            }
-        }
-    };
-
-    private final ItemTouchHelper ioTouchHelper = new ItemTouchHelper(ioCallback);
-
-
     // 为bookitem recyclerview添加动作
     private ItemTouchHelper.Callback bookCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         @Override
@@ -135,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
             int swipeFlags = ItemTouchHelper.RIGHT;
 
             //最终的动作标识（flags）必须要用makeMovementFlags()方法生成
-            int flags = makeMovementFlags(dragFlags, swipeFlags);
-            return flags;
+            return makeMovementFlags(dragFlags, swipeFlags);
         }
 
         @Override
@@ -204,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
             @Override
             public void onClick(View v) {
                 String str = showBtn.getText().toString();
-                presenter.toggleBalanceVisibility(str);
+                mainPresenter.toggleBalanceVisibility(str);
             }
         });
 
@@ -250,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
             }
         });
 
-        presenter = new MainPresenter(this);
+        mainPresenter = new MainPresenter(this);
+        mainItemPresenter = new MainItemPresenter(this);
 
         // 设置首页header图片长按以更换图片
         headerImg.setOnLongClickListener(new View.OnLongClickListener() {
@@ -274,29 +228,19 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     @Override
     protected void onResume() {
         super.onResume();
-
         initBookItemList(this);
-        initIoItemList(this);
-
-        presenter.onResume();
+        mainItemPresenter.onResume();
+        mainPresenter.onResume();
     }
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();   不调用父类的方法
         Intent intent = new Intent(Intent.ACTION_MAIN);  // ACTION_MAIN  作为Task中第一个Activity启动
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);        // CATEGORY_HOME  设备启动时的第一个Activity
 
         startActivity(intent);
     }
-
-    // 初始化收支项目显示
-    public void initIoItemList(final Context context) {
-        ioItemList = DataSupport.where("bookId = ?", String.valueOf(GlobalVariables.getmBookId())).find(IOItem.class);
-        setIoItemRecyclerView(context);
-    }
-
 
     public void initBookItemList(final Context context) {
         bookItemList = DataSupport.findAll(BookItem.class);
@@ -348,20 +292,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
         prefEditor.apply();
     }
 
-    public void setIoItemRecyclerView(Context context) {
-        // 用于存储recyclerView的日期
-        GlobalVariables.setmDate("");
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setStackFromEnd(true);    // 列表从底部开始展示，反转后从上方开始展示
-        layoutManager.setReverseLayout(true);   // 列表反转
-
-        ioItemRecyclerView.setLayoutManager(layoutManager);
-        ioAdapter = new IOItemAdapter(ioItemList);
-        ioItemRecyclerView.setAdapter(ioAdapter);
-        ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
-    }
-
     public void setBookItemRecyclerView(Context context) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
 
@@ -383,8 +313,6 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
 
         bookItemRecyclerView.setAdapter(bookAdapter);
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
-
-        //GlobalVariables.setmBookId(bookItemRecyclerView.getId());
     }
 
     @Override
@@ -444,5 +372,28 @@ public class MainActivity extends AppCompatActivity implements MainView, MainIte
     public void navigateToAddItem() {
         Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void init() {
+        ioItemList = DataSupport.where(
+                "bookId = ?",
+                String.valueOf(GlobalVariables.getmBookId())
+        ).find(IOItem.class);
+
+        // 用于存储recyclerView的日期
+        GlobalVariables.setmDate("");
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);    // show from bottom to top
+        layoutManager.setReverseLayout(true);   // reverse the layout
+
+        ioAdapter = new MainItemAdapter(ioItemList);
+        ioItemRecyclerView.setAdapter(ioAdapter);
+        ioItemRecyclerView.setLayoutManager(layoutManager);
+        ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
+                new MainItemCallback(this, ioAdapter)
+        );
+        ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
     }
 }
