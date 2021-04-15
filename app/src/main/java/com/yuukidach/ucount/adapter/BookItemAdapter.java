@@ -1,5 +1,6 @@
 package com.yuukidach.ucount.adapter;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
+import com.yuukidach.ucount.presenter.MainPresenter;
 
 import org.litepal.LitePal;
 
@@ -21,7 +23,9 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHolder> {
-    private List<BookItem> mBookList;
+    private final MainPresenter mainPresenter;
+
+//    private List<BookItem> mBookList;
     private OnItemClickListener onItemClickListener = null;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -37,10 +41,14 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         }
     }
 
-    public BookItemAdapter(List<BookItem> bookItemList) {
-        mBookList = bookItemList;
+//    public BookItemAdapter(List<BookItem> bookItemList) {
+//        mBookList = bookItemList;
+//    }
+    public BookItemAdapter(MainPresenter presenter) {
+        mainPresenter = presenter;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
@@ -52,7 +60,6 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 int position = holder.getBindingAdapterPosition();
-
                 onItemClickListener.onItemClick(holder.itemView, position);
             }
         });
@@ -66,7 +73,8 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         holder.book_name.setText(bookItem.getName());
 
         // 判断是否被选中
-        if (position == GlobalVariables.getmBookPos()) {
+//        if (position == GlobalVariables.getmBookPos()) {
+        if (position == mainPresenter.getCurBookId()) {
             holder.bookView.setBackgroundColor(ContextCompat.getColor(holder.bookView.getContext(), R.color.blue));
             holder.book_mark.setImageResource(R.drawable.ic_yellow_yes);
         } else {
@@ -93,7 +101,6 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
 
     public void removeItem(int position) {
         Log.d(TAG, "removeItem: " + position);
-        Log.d(TAG, "removeItem: " + mBookList);
         BookItem bookItem = mBookList.get(position);
 
         LitePal.deleteAll(MoneyItem.class, "bookId = ?", String.valueOf(mBookList.get(position).getId()));

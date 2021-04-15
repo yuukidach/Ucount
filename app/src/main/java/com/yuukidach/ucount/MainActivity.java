@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookItemRecyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         );
-        BookItemAdapter bookAdapter = new BookItemAdapter(list);
+        BookItemAdapter bookAdapter = new BookItemAdapter(mainPresenter);
         bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

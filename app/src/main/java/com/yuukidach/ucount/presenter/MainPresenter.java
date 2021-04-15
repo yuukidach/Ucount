@@ -106,6 +106,10 @@ public class MainPresenter {
         mainView.setBookItemRecycler(bookItems);
     }
 
+    public int getCurBookId() {
+        return curBookId;
+    }
+
     public void onAddBookClick() {
         mainView.setNewBook();
     }
