@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context="com.yuukidach.ucount.AddDescription">
+    tools:context="com.yuukidach.ucount.DescriptionActivity">
 
     <TextView
         android:id="@+id/page3_banner"

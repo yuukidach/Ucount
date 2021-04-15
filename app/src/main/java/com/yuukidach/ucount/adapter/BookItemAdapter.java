@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.GlobalVariables;
+//import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
@@ -19,10 +19,6 @@ import org.litepal.LitePal;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
-
-/**
- * Created by dash on 18-3-12.
- */
 
 public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHolder> {
     private List<BookItem> mBookList;
@@ -55,7 +51,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         holder.bookView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
+                int position = holder.getBindingAdapterPosition();
 
                 onItemClickListener.onItemClick(holder.itemView, position);
             }

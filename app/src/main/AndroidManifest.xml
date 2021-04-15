@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddItemActivity" />
-        <activity android:name=".AddDescription"
+        <activity android:name=".DescriptionActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
     </application>

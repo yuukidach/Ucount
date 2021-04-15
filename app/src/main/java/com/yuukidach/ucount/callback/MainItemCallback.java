@@ -11,17 +11,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yuukidach.ucount.GlobalVariables;
+//import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.R;
-import com.yuukidach.ucount.adapter.MainItemAdapter;
+import com.yuukidach.ucount.adapter.MoneyItemAdapter;
 
 public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
     // DO NOT make them as final
-    private MainItemAdapter adapter;
+    private MoneyItemAdapter adapter;
     private Context context;
     private RecyclerView recyclerView;
 
-    public MainItemCallback(Context context, RecyclerView recyclerView, MainItemAdapter adapter) {
+    public MainItemCallback(Context context, RecyclerView recyclerView, MoneyItemAdapter adapter) {
         super(0, ItemTouchHelper.RIGHT);
         this.context = context;
         this.adapter = adapter;

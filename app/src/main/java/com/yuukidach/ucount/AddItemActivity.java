@@ -117,9 +117,10 @@ public class AddItemActivity extends AppCompatActivity {
                     calculatorClear();
                     moneyText.setText("0.00");
                     break;
-                case R.id.add_description:
-                    Intent intent = new Intent(AddItemActivity.this, AddDescription.class);
-                    startActivity(intent);
+                    // TODO: In or to do refactoring, comment out these lines. Refactor them later
+//                case R.id.add_description:
+//                    Intent intent = new Intent(AddItemActivity.this, AddDescription.class);
+//                    startActivity(intent);
             }
 
             transaction.commit();

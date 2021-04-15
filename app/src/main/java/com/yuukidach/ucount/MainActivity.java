@@ -2,7 +2,6 @@ package com.yuukidach.ucount;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 
@@ -28,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yuukidach.ucount.adapter.BookItemAdapter;
-import com.yuukidach.ucount.adapter.MainItemAdapter;
+import com.yuukidach.ucount.adapter.MoneyItemAdapter;
 import com.yuukidach.ucount.callback.BookItemCallback;
 import com.yuukidach.ucount.callback.MainItemCallback;
 import com.yuukidach.ucount.model.BookItem;
@@ -37,11 +36,7 @@ import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.presenter.MainPresenter;
 import com.yuukidach.ucount.view.MainView;
 
-import org.litepal.LitePal;
-import org.litepal.tablemanager.Connector;
-
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import at.markushi.ui.CircleButton;
@@ -50,18 +45,28 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final ImgUtils imgUtils = new ImgUtils(this);
     private final MainPresenter mainPresenter = new MainPresenter(this, imgUtils);
 
-    private List<BookItem> bookItemList = new ArrayList<>();
+//    private List<BookItem> bookItemList = new ArrayList<>();
 
-    private RecyclerView ioItemRecyclerView;
-    private Button showBtn;
-    private ImageView headerImg;
-    private TextView monthlyCost, monthlyEarn;
+//    private RecyclerView MoneyItemRecyclerView;
+    private final Button showBtn = (Button) findViewById(R.id.show_money_button);
+    private final TextView monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
+    private final TextView monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
+    private final ImageView headerImg = (ImageView) findViewById(R.id.header_img);
+    private final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
+    private final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
+    private final RecyclerView MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
+//    private ImageView headerImg;
+//    private TextView monthlyCost, monthlyEarn;
 
     // parameter for drawer
-    private DrawerLayout drawerLayout;
-    private LinearLayout bookLinearLayout;
-    private RecyclerView bookItemRecyclerView;
-    private ImageView drawerBanner;
+//    private DrawerLayout drawerLayout;
+//    private LinearLayout bookLinearLayout;
+//    private RecyclerView bookItemRecyclerView;
+//    private ImageView drawerBanner;
+    private final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
+    private final RecyclerView bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
+    private final LinearLayout bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
+    private final ImageView drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
     public static String PACKAGE_NAME;
     public static Resources resources;
@@ -82,24 +87,24 @@ public class MainActivity extends AppCompatActivity implements MainView {
         PACKAGE_NAME = getApplicationContext().getPackageName();
         resources = getResources();
 
-        showBtn = (Button) findViewById(R.id.show_money_button);
-        final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
-        final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
-        ioItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
-        headerImg = (ImageView) findViewById(R.id.header_img);
-        monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
-        monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
+//        showBtn = (Button) findViewById(R.id.show_money_button);
+//        final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
+//        final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
+//        MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
+//        headerImg = (ImageView) findViewById(R.id.header_img);
+//        monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
+//        monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
         // drawer
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
-        bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
-        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
-        drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
+//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
+//        bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
+//        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
+//        drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
         showBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String str = showBtn.getText().toString();
-                mainPresenter.toggleBalanceVisibility(str);
+                mainPresenter.onShowBalanceClick(str);
             }
         });
 
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         addBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainPresenter.setNewBook();
+                mainPresenter.onAddBookClick();
             }
         });
 
@@ -186,33 +191,45 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void updateHeaderImg() {
-        SharedPreferences pref = getSharedPreferences("image" + ImageType.HEADER.ordinal(),
-                MODE_PRIVATE);
-        String imageUri = pref.getString("uri", "");
-        if (!imageUri.isEmpty()) {
-            Uri contentUri = Uri.parse(imageUri);
-            this.headerImg.setImageURI(contentUri);
-        }
+    public void updateHeaderImg(String uriStr) {
+        Uri uri = Uri.parse(uriStr);
+        this.headerImg.setImageURI(uri);
     }
 
     @Override
-    public void updateDrawerImg() {
-        SharedPreferences pref = getSharedPreferences("image" + ImageType.DRAWER.ordinal(),
-                MODE_PRIVATE);
-        String imageUri = pref.getString("uri", "");
-        if (!imageUri.isEmpty()) {
-            Uri contentUri = Uri.parse(imageUri);
-            this.drawerBanner.setImageURI(contentUri);
-        }
+    public void updateDrawerImg(String uriStr) {
+        Uri uri = Uri.parse(uriStr);
+        this.drawerBanner.setImageURI(uri);
     }
 
-    @Override
-    public void showBalance() {
-        BookItem tmp = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
+//    @Override
+//    public void updateHeaderImg() {
+//        SharedPreferences pref = getSharedPreferences("image" + ImageType.HEADER.ordinal(),
+//                MODE_PRIVATE);
+//        String imageUri = pref.getString("uri", "");
+//        if (!imageUri.isEmpty()) {
+//            Uri contentUri = Uri.parse(imageUri);
+//            this.headerImg.setImageURI(contentUri);
+//        }
+//    }
+//
+//    @Override
+//    public void updateDrawerImg() {
+//        SharedPreferences pref = getSharedPreferences("image" + ImageType.DRAWER.ordinal(),
+//                MODE_PRIVATE);
+//        String imageUri = pref.getString("uri", "");
+//        if (!imageUri.isEmpty()) {
+//            Uri contentUri = Uri.parse(imageUri);
+//            this.drawerBanner.setImageURI(contentUri);
+//        }
+//    }
 
-        String sumString = decimalFormat.format(tmp.getSumAll());
-        showBtn.setText(sumString);
+    @Override
+    public void showBalance(String numStr) {
+//        BookItem tmp = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
+//
+//        String sumString = decimalFormat.format(tmp.getSumAll());
+        showBtn.setText(numStr);
     }
 
     @Override
@@ -221,21 +238,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void updateMonthlyEarn() {
-        BookItem tmp = LitePal.find(
-                BookItem.class,
-                bookItemList.get(GlobalVariables.getmBookPos()
-        ).getId());
-        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
+    public void updateMonthlyEarn(String numStr) {
+//        BookItem tmp = LitePal.find(
+//                BookItem.class,
+//                bookItemList.get(GlobalVariables.getmBookPos()
+//        ).getId());
+//        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
+        monthlyEarn.setText(numStr);
     }
 
     @Override
-    public void updateMonthlyCost() {
-        BookItem tmp = LitePal.find(
-                BookItem.class,
-                bookItemList.get(GlobalVariables.getmBookPos()
-        ).getId());
-        monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
+    public void updateMonthlyCost(String numStr) {
+//        BookItem tmp = LitePal.find(
+//                BookItem.class,
+//                bookItemList.get(GlobalVariables.getmBookPos()
+//        ).getId());
+//        monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
+        monthlyCost.setText(numStr);
     }
 
     @Override
@@ -245,49 +264,40 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setMainItemRecycler() {
-        List<MoneyItem> moneyItemList = LitePal.where(
-                "bookId = ?",
-                String.valueOf(GlobalVariables.getmBookId())
-        ).find(MoneyItem.class);
+    public void setMainItemRecycler(List<MoneyItem> list) {
+//        List<MoneyItem> moneyItemList = LitePal.where(
+//                "bookId = ?",
+//                String.valueOf(GlobalVariables.getmBookId())
+//        ).find(MoneyItem.class);
 
         // 用于存储recyclerView的日期
-        GlobalVariables.setmDate("");
+//        GlobalVariables.setmDate("");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);    // show from bottom to top
         layoutManager.setReverseLayout(true);   // reverse the layout
 
-        MainItemAdapter ioAdapter = new MainItemAdapter(moneyItemList);
-        ioItemRecyclerView.setAdapter(ioAdapter);
-        ioItemRecyclerView.setLayoutManager(layoutManager);
+        MoneyItemAdapter moneyItemAdapter = new MoneyItemAdapter(list);
+        MoneyItemRecyclerView.setAdapter(moneyItemAdapter);
+        MoneyItemRecyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
-                new MainItemCallback(this, ioItemRecyclerView,ioAdapter)
+                new MainItemCallback(this, MoneyItemRecyclerView, moneyItemAdapter)
         );
-        ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
+        ioTouchHelper.attachToRecyclerView(MoneyItemRecyclerView);
     }
 
     @Override
-    public void setBookItemRecycler() {
-        bookItemList = LitePal.findAll(BookItem.class);
-        Log.d(TAG, "setBookItemRecycler: " + bookItemList);
-
-        if (bookItemList.isEmpty()) {
-            BookItem bookItem = new BookItem();
-            bookItem.addNewBookIntoStorage(1, "Default");
-            bookItemList = LitePal.findAll(BookItem.class);
-        }
-
+    public void setBookItemRecycler(List<BookItem> list) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         bookItemRecyclerView.setLayoutManager(layoutManager);
-        bookItemRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        BookItemAdapter bookAdapter = new BookItemAdapter(bookItemList);
+        bookItemRecyclerView.addItemDecoration(
+                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        );
+        BookItemAdapter bookAdapter = new BookItemAdapter(list);
         bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                // 选中之后的操作
-                GlobalVariables.setmBookPos(position);
-                GlobalVariables.setmBookId(bookItemList.get(position).getId());
+                mainPresenter.updateBookItemView(position);
                 drawerLayout.closeDrawer(bookLinearLayout);
                 onResume();
             }
@@ -300,9 +310,42 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
     }
 
+//    @Override
+//    public void setBookItemRecycler() {
+//        bookItemList = LitePal.findAll(BookItem.class);
+//        Log.d(TAG, "setBookItemRecycler: " + bookItemList);
+//
+//        if (bookItemList.isEmpty()) {
+//            BookItem bookItem = new BookItem();
+//            bookItem.addNewBookIntoStorage(1, "Default");
+//            bookItemList = LitePal.findAll(BookItem.class);
+//        }
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        bookItemRecyclerView.setLayoutManager(layoutManager);
+//        bookItemRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//        BookItemAdapter bookAdapter = new BookItemAdapter(bookItemList);
+//        bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                // 选中之后的操作
+//                GlobalVariables.setmBookPos(position);
+//                GlobalVariables.setmBookId(bookItemList.get(position).getId());
+//                drawerLayout.closeDrawer(bookLinearLayout);
+//                onResume();
+//            }
+//        });
+//
+//        bookItemRecyclerView.setAdapter(bookAdapter);
+//        ItemTouchHelper bookTouchHelper = new ItemTouchHelper(
+//                new BookItemCallback(this, bookItemRecyclerView, bookAdapter)
+//        );
+//        bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
+//    }
+
     @Override
     public void setNewBook() {
-        final BookItem bookItem = new BookItem();
+//        final BookItem bookItem = new BookItem();
         final EditText book_title = new EditText(MainActivity.this);
         // 弹窗输入
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -314,11 +357,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!book_title.getText().toString().isEmpty()) {
-                    int id = bookItemList.get(bookItemList.size()-1).getId() + 1;
-                    bookItem.addNewBookIntoStorage(id, book_title.getText().toString());
+//                    int id = bookItemList.get(bookItemList.size()-1).getId() + 1;
+//                    bookItem.addNewBookIntoStorage(id, book_title.getText().toString());
+                    mainPresenter.onAddBookConfirmClick(book_title.getText().toString());
                     onResume();
-                } else
+                } else {
+                    // TODO: use strings.xml
                     Toast.makeText(getApplicationContext(), "没有输入新账本名称哦", Toast.LENGTH_SHORT).show();
+                }
             }
         }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
             @Override

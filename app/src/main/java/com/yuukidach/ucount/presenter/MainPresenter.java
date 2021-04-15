@@ -2,23 +2,29 @@ package com.yuukidach.ucount.presenter;
 
 import android.net.Uri;
 
+//import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.ImgUtils;
+import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.view.MainView;
 
+import org.litepal.LitePal;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MainPresenter {
     final private MainView mainView;
     final private ImgUtils imgUtils;
-    private List<BookItem> bookItemList;
+
+    final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    private int curBookId;
+//    private List<BookItem> bookItemList;
 
     /**
      * Check if a string only contains numeric character
      * eg. "-1" -> true
      *     "-8df" -> false;
-     * @param str
-     * @return
      */
     private static boolean isNumeric(String str) {
         try {
@@ -37,20 +43,34 @@ public class MainPresenter {
     public void onResume() {
         if (mainView == null) return;
 
-        // TODO: Now due to the bad code structure, the setBookItemRecycler needs to be called in
-        // front of hide / update... But it seems it more reasonable to put it behind.
-        mainView.setBookItemRecycler();
-        mainView.setMainItemRecycler();
+//        mainView.setBookItemRecycler();
+        updateBookItemView(0);
+        updateMoneyItemView();
+//        mainView.setMainItemRecycler();
 
         mainView.hideBalance();
-        mainView.updateHeaderImg();
-        mainView.updateDrawerImg();
-        mainView.updateMonthlyEarn();
-        mainView.updateMonthlyCost();
+        // transfer enum to int, then get the string
+        mainView.updateHeaderImg(imgUtils.getUriStr(MainView.ImageType.HEADER.ordinal()));
+        mainView.updateDrawerImg(imgUtils.getUriStr(MainView.ImageType.DRAWER.ordinal()));
+        updateMonthlyEarn();
+        updateMonthlyCost();
+
     }
 
     public void onImageLongClick(MainView.ImageType type) {
         mainView.openPicGallery(type);
+    }
+
+    private void showBalance() {
+        BookItem book = LitePal.find(BookItem.class, curBookId);
+        String sumStr = decimalFormat.format(book.getSum());
+
+        mainView.showBalance(sumStr);
+    }
+
+    public void onShowBalanceClick(String str) {
+        if (isNumeric(str)) mainView.hideBalance();
+        else showBalance();
     }
 
     public void updateImgUtils(Uri uri, int id) {
@@ -58,12 +78,51 @@ public class MainPresenter {
         imgUtils.update(uri);
     }
 
-    public void toggleBalanceVisibility(String str) {
-        if (isNumeric(str)) mainView.hideBalance();
-        else mainView.showBalance();
+    public void updateMonthlyEarn() {
+        BookItem book = LitePal.find(BookItem.class, curBookId);
+        String str = decimalFormat.format(book.getEarnSum());
+
+        mainView.updateMonthlyEarn(str);
     }
 
-    public void setNewBook() {
+    public void updateMonthlyCost() {
+        BookItem book = LitePal.find(BookItem.class, curBookId);
+        String str = decimalFormat.format(book.getCostSum());
+
+        mainView.updateMonthlyCost(str);
+    }
+
+    public void updateBookItemView(int position) {
+        List<BookItem> bookItems = LitePal.findAll(BookItem.class);
+
+        if (bookItems.isEmpty()) {
+            BookItem bookItem = new BookItem();
+            bookItem.addNewBookIntoStorage(0, "Default");
+            bookItems = LitePal.findAll(BookItem.class);
+        }
+
+        // mark current book's ID
+        curBookId = bookItems.get(position).getId();
+        mainView.setBookItemRecycler(bookItems);
+    }
+
+    public void onAddBookClick() {
         mainView.setNewBook();
+    }
+
+    public void onAddBookConfirmClick(String name) {
+        List<BookItem> bookItems = LitePal.findAll(BookItem.class);
+        int id = bookItems.get(bookItems.size()-1).getId() + 1;
+
+        BookItem item = new BookItem();
+        item.addNewBookIntoStorage(id, name);
+    }
+
+    public void updateMoneyItemView() {
+        List<MoneyItem> moneyItems = LitePal.where(
+                "bookId = ?",
+                String.valueOf(curBookId)
+        ).find(MoneyItem.class);
+        mainView.setMainItemRecycler(moneyItems);
     }
 }

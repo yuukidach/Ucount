@@ -1,5 +1,12 @@
 package com.yuukidach.ucount.view;
 
+import android.media.MediaSession2Service;
+
+import com.yuukidach.ucount.model.BookItem;
+import com.yuukidach.ucount.model.MoneyItem;
+
+import java.util.List;
+
 public interface MainView {
     enum ImageType {
         HEADER,
@@ -11,17 +18,17 @@ public interface MainView {
     /**
      * Update header image in Main Activity.
      */
-    void updateHeaderImg();
+    void updateHeaderImg(String uriStr);
 
     /**
      * Update header image for drawer
      */
-    void updateDrawerImg();
+    void updateDrawerImg(String uriStr);
 
     /**
      * Show total balance in top center
      */
-    void showBalance();
+    void showBalance(String numStr);
 
     /**
      * Hide total balance
@@ -31,21 +38,21 @@ public interface MainView {
     /**
      * Update sum of earning in current month
      */
-    void updateMonthlyEarn();
+    void updateMonthlyEarn(String numStr);
 
     /**
      * Update sum of cost in current month
      */
-    void updateMonthlyCost();
+    void updateMonthlyCost(String numStr);
 
     /**
      * Navigate to addItem activity
      */
     void navigateToAddItem();
 
-    void setMainItemRecycler();
+    void setMainItemRecycler(List<MoneyItem> list);
 
-    void setBookItemRecycler();
+    void setBookItemRecycler(List<BookItem> list);
 
     void setNewBook();
 }

@@ -16,6 +16,11 @@ public class ImgUtils {
         pref = context.getSharedPreferences("image" + id, Context.MODE_PRIVATE);
     }
 
+    public String getUriStr(int id) {
+        find(id);
+        return pref.getString("uri", "");
+    }
+
     public void update(Uri uri) {
         if (pref == null) return;
 

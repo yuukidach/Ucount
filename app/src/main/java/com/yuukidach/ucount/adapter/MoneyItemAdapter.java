@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.GlobalVariables;
+//import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by yuukidach on 17-3-10.
  */
 
-public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHolder> {
+public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.ViewHolder> {
     private static final String TAG = "IOItemAdapter";
     private final int TYPE_COST = -1;
     private final int TYPE_EARN =  1;
@@ -63,7 +63,7 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
         }
     }
 
-    public MainItemAdapter(List<MoneyItem> moneyItemList) {
+    public MoneyItemAdapter(List<MoneyItem> moneyItemList) {
         mMoneyItemList = moneyItemList;
     }
 

@@ -13,7 +13,7 @@ import java.util.Date;
 
 import at.markushi.ui.CircleButton;
 
-public class AddDescription extends AppCompatActivity {
+public class DescriptionActivity extends AppCompatActivity {
     private EditText inputTxt;
     private TextView countTxt;
     private TextView dateTxt;
