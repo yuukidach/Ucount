@@ -1,6 +1,13 @@
 package com.yuukidach.ucount.view;
 
 public interface MainView {
+    enum ImageType {
+        HEADER,
+        DRAWER
+    }
+
+    void openPicGallery(ImageType type);
+
     /**
      * Update header image in Main Activity.
      */

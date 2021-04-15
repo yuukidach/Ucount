@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     public static String PACKAGE_NAME;
     public static Resources resources;
-    public static final int SELECT_PIC4HEADER = 1;
-    public static final int SELECT_PIC4DRAWER = 2;
+//    public static final int SELECT_PIC4HEADER = 1;
+//    public static final int SELECT_PIC4DRAWER = 2;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     private static final String TAG = "MainActivity";
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         headerImg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                selectPictureFromGallery(1);
+                mainPresenter.onImageLongClick(ImageType.HEADER);
                 return false;
             }
         });
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         drawerBanner.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                selectPictureFromGallery(2);
+                mainPresenter.onImageLongClick(ImageType.DRAWER);
                 return false;
             }
         });
@@ -141,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onResume() {
         super.onResume();
-//        initBookItemList(this);
         mainPresenter.onResume();
     }
 
@@ -152,14 +152,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         intent.addCategory(Intent.CATEGORY_HOME);        // CATEGORY_HOME  设备启动时的第一个Activity
 
         startActivity(intent);
-    }
-
-    public void selectPictureFromGallery(int id) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        // 设置选择类型为图片类型
-        intent.setType("image/*");
-        // 打开图片选择
-        startActivityForResult(intent, id);
     }
 
     @Override
@@ -186,8 +178,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
+    public void openPicGallery(ImageType type) {
+        Log.d(TAG, "openPicGallery: " + type.ordinal());
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, type.ordinal());
+    }
+
+    @Override
     public void updateHeaderImg() {
-        SharedPreferences pref = getSharedPreferences("image" + SELECT_PIC4HEADER,
+        SharedPreferences pref = getSharedPreferences("image" + ImageType.HEADER.ordinal(),
                 MODE_PRIVATE);
         String imageUri = pref.getString("uri", "");
         if (!imageUri.isEmpty()) {
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void updateDrawerImg() {
-        SharedPreferences pref = getSharedPreferences("image" + SELECT_PIC4DRAWER,
+        SharedPreferences pref = getSharedPreferences("image" + ImageType.DRAWER.ordinal(),
                 MODE_PRIVATE);
         String imageUri = pref.getString("uri", "");
         if (!imageUri.isEmpty()) {

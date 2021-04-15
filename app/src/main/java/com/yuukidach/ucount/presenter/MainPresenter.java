@@ -9,6 +9,13 @@ public class MainPresenter {
     final private MainView mainView;
     private List<BookItem> bookItemList;
 
+    /**
+     * Check if a string only contains numeric character
+     * eg. "-1" -> true
+     *     "-8df" -> false;
+     * @param str
+     * @return
+     */
     private static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -35,6 +42,10 @@ public class MainPresenter {
         mainView.updateDrawerImg();
         mainView.updateMonthlyEarn();
         mainView.updateMonthlyCost();
+    }
+
+    public void onImageLongClick(MainView.ImageType type) {
+        mainView.openPicGallery(type);
     }
 
     public void toggleBalanceVisibility(String str) {
