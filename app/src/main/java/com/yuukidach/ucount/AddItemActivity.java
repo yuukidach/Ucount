@@ -15,9 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.IoItem;
-
-import org.litepal.crud.DataSupport;
+import com.yuukidach.ucount.model.MoneyItem;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -129,51 +127,51 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     public void putItemInData(double money) {
-        IoItem ioItem = new IoItem();
+        MoneyItem moneyItem = new MoneyItem();
         BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
         String tagName = (String) bannerText.getTag();
         int tagType = (int) bannerImage.getTag();
 
         if (tagType < 0) {
-            ioItem.setType(ioItem.TYPE_COST);
-        } else ioItem.setType(ioItem.TYPE_EARN);
+            moneyItem.setInOutType(moneyItem.TYPE_COST);
+        } else moneyItem.setInOutType(moneyItem.TYPE_EARN);
 
-        ioItem.setName(bannerText.getText().toString());
-        ioItem.setSrcName(tagName);
-        ioItem.setMoney(money);
-        ioItem.setTimeStamp(formatItem.format(new Date()));         // 存储记账时间
-        ioItem.setDescription(GlobalVariables.getmDescription());
-        ioItem.setBookId(GlobalVariables.getmBookId());
-        ioItem.save();
+        moneyItem.setName(bannerText.getText().toString());
+        moneyItem.setSrcName(tagName);
+        moneyItem.setMoney(money);
+        moneyItem.setDate(formatItem.format(new Date()));         // 存储记账时间
+        moneyItem.setDescription(GlobalVariables.getmDescription());
+        moneyItem.setBookId(GlobalVariables.getmBookId());
+        moneyItem.save();
 
         // 将收支存储在对应账本下
-        bookItem.getIoItemList().add(ioItem);
-        bookItem.setSumAll(bookItem.getSumAll() + money*ioItem.getType());
+        bookItem.getMoneyItemList().add(moneyItem);
+//        bookItem.setSumAll(bookItem.getSumAll() + money* moneyItem.getInOutType());
         bookItem.save();
 
-        calculateMonthlyMoney(bookItem, ioItem.getType(), ioItem);
+        calculateMonthlyMoney(bookItem, moneyItem.getInOutType(), moneyItem);
 
         // 存储完之后及时清空备注
         GlobalVariables.setmDescription("");
     }
 
     // 计算月收支
-    public void calculateMonthlyMoney(BookItem bookItem, int money_type, IoItem ioItem) {
+    public void calculateMonthlyMoney(BookItem bookItem, int money_type, MoneyItem moneyItem) {
         String sumDate = formatSum.format(new Date());
 
         // 求取月收支类型
-        if (bookItem.getDate().equals(ioItem.getTimeStamp().substring(0, 8))) {
+        if (bookItem.getDate().equals(moneyItem.getDate().substring(0, 8))) {
             if (money_type == 1) {
-                bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() + ioItem.getMoney());
+                bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() + moneyItem.getMoney());
             } else {
-                bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() + ioItem.getMoney());
+                bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() + moneyItem.getMoney());
             }
         } else {
             if (money_type == 1) {
-                bookItem.setSumMonthlyEarn(ioItem.getMoney());
+                bookItem.setSumMonthlyEarn(moneyItem.getMoney());
                 bookItem.setSumMonthlyCost(0.0);
             } else {
-                bookItem.setSumMonthlyCost(ioItem.getMoney());
+                bookItem.setSumMonthlyCost(moneyItem.getMoney());
                 bookItem.setSumMonthlyEarn(0.0);
             }
             bookItem.setDate(sumDate);

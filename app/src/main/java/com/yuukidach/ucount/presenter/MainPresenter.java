@@ -1,12 +1,16 @@
 package com.yuukidach.ucount.presenter;
 
+import android.net.Uri;
+
 import com.yuukidach.ucount.model.BookItem;
+import com.yuukidach.ucount.model.ImgUtils;
 import com.yuukidach.ucount.view.MainView;
 
 import java.util.List;
 
 public class MainPresenter {
     final private MainView mainView;
+    final private ImgUtils imgUtils;
     private List<BookItem> bookItemList;
 
     /**
@@ -25,8 +29,9 @@ public class MainPresenter {
         }
     }
 
-    public MainPresenter(MainView mainView) {
+    public MainPresenter(MainView mainView, ImgUtils imgUtils) {
         this.mainView = mainView;
+        this.imgUtils = imgUtils;
     }
 
     public void onResume() {
@@ -46,6 +51,11 @@ public class MainPresenter {
 
     public void onImageLongClick(MainView.ImageType type) {
         mainView.openPicGallery(type);
+    }
+
+    public void updateImgUtils(Uri uri, int id) {
+        imgUtils.find(id);
+        imgUtils.update(uri);
     }
 
     public void toggleBalanceVisibility(String str) {

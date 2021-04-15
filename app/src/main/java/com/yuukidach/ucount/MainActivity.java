@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,25 +27,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yuukidach.ucount.adapter.BookItemAdapter;
+import com.yuukidach.ucount.adapter.MainItemAdapter;
+import com.yuukidach.ucount.callback.BookItemCallback;
+import com.yuukidach.ucount.callback.MainItemCallback;
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.IoItem;
+import com.yuukidach.ucount.model.ImgUtils;
+import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.presenter.MainPresenter;
 import com.yuukidach.ucount.view.MainView;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
 public class MainActivity extends AppCompatActivity implements MainView {
-    private MainPresenter mainPresenter;
+    private final ImgUtils imgUtils = new ImgUtils(this);
+    private final MainPresenter mainPresenter = new MainPresenter(this, imgUtils);
 
     private List<BookItem> bookItemList = new ArrayList<>();
 
@@ -63,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     public static String PACKAGE_NAME;
     public static Resources resources;
-//    public static final int SELECT_PIC4HEADER = 1;
-//    public static final int SELECT_PIC4DRAWER = 2;
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     private static final String TAG = "MainActivity";
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
 
         // litepal
-        Connector.getDatabase();
+//        Connector.getDatabase();
 
         // 获得包名和资源，方便后面的程序使用
         PACKAGE_NAME = getApplicationContext().getPackageName();
@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
         bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
         drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
-
-        mainPresenter = new MainPresenter(this);
 
         showBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         if (data == null) return;
         Uri uri = data.getData();
-        saveImageUri(requestCode, uri);
+//        saveImageUri(requestCode, uri);
+        mainPresenter.updateImgUtils(uri, requestCode);
 
         // get permanent permission to access the image
         int takeFlags = data.getFlags()
@@ -169,13 +168,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         getContentResolver().takePersistableUriPermission(uri, takeFlags);
     }
 
-    // 利用SharedPreferences保存图片uri
-    public void saveImageUri(int id, Uri uri) {
-        SharedPreferences pref = getSharedPreferences("image" + id, MODE_PRIVATE);
-        SharedPreferences.Editor prefEditor = pref.edit();
-        prefEditor.putString("uri", uri.toString());
-        prefEditor.apply();
-    }
+//    // 利用SharedPreferences保存图片uri
+//    public void saveImageUri(int id, Uri uri) {
+//        SharedPreferences pref = getSharedPreferences("image" + id, MODE_PRIVATE);
+//        SharedPreferences.Editor prefEditor = pref.edit();
+//        prefEditor.putString("uri", uri.toString());
+//        prefEditor.apply();
+//    }
 
     @Override
     public void openPicGallery(ImageType type) {
@@ -210,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showBalance() {
-        BookItem tmp = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
+        BookItem tmp = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
 
         String sumString = decimalFormat.format(tmp.getSumAll());
         showBtn.setText(sumString);
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void updateMonthlyEarn() {
-        BookItem tmp = DataSupport.find(
+        BookItem tmp = LitePal.find(
                 BookItem.class,
                 bookItemList.get(GlobalVariables.getmBookPos()
         ).getId());
@@ -232,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void updateMonthlyCost() {
-        BookItem tmp = DataSupport.find(
+        BookItem tmp = LitePal.find(
                 BookItem.class,
                 bookItemList.get(GlobalVariables.getmBookPos()
         ).getId());
@@ -247,10 +246,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setMainItemRecycler() {
-        List<IoItem> ioItemList = DataSupport.where(
+        List<MoneyItem> moneyItemList = LitePal.where(
                 "bookId = ?",
                 String.valueOf(GlobalVariables.getmBookId())
-        ).find(IoItem.class);
+        ).find(MoneyItem.class);
 
         // 用于存储recyclerView的日期
         GlobalVariables.setmDate("");
@@ -259,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         layoutManager.setStackFromEnd(true);    // show from bottom to top
         layoutManager.setReverseLayout(true);   // reverse the layout
 
-        MainItemAdapter ioAdapter = new MainItemAdapter(ioItemList);
+        MainItemAdapter ioAdapter = new MainItemAdapter(moneyItemList);
         ioItemRecyclerView.setAdapter(ioAdapter);
         ioItemRecyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
@@ -270,13 +269,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setBookItemRecycler() {
-        bookItemList = DataSupport.findAll(BookItem.class);
+        bookItemList = LitePal.findAll(BookItem.class);
         Log.d(TAG, "setBookItemRecycler: " + bookItemList);
 
         if (bookItemList.isEmpty()) {
             BookItem bookItem = new BookItem();
             bookItem.addNewBookIntoStorage(1, "Default");
-            bookItemList = DataSupport.findAll(BookItem.class);
+            bookItemList = LitePal.findAll(BookItem.class);
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

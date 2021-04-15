@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.yuukidach.ucount.model.IoItem;
+import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class EarnFragment extends Fragment {
             "意外收获", "分红", "生意"};
     private ViewPager mPager;
     private List<View> mPagerList;
-    private List<IoItem> mDatas;
+    private List<MoneyItem> mDatas;
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
@@ -91,9 +91,9 @@ public class EarnFragment extends Fragment {
 
     // 初始化数据源
     private void initDatas() {
-        mDatas = new ArrayList<IoItem>();
+        mDatas = new ArrayList<MoneyItem>();
         for (int i = 1; i <= titles.length; i++) {
-            mDatas.add(new IoItem("type_big_n" + i, titles[i-1]));
+            mDatas.add(new MoneyItem("type_big_n" + i, titles[i-1]));
         }
     }
 
@@ -105,7 +105,7 @@ public class EarnFragment extends Fragment {
     }
 
     // 改变banner状态
-    public void changeBanner(IoItem tmpItem) {
+    public void changeBanner(MoneyItem tmpItem) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);

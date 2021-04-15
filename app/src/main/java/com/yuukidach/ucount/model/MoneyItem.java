@@ -4,65 +4,75 @@ import android.content.res.Resources;
 
 import com.yuukidach.ucount.MainActivity;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 /**
  * Created by yuukidach on 17-3-10.
  * 花费和收入的条目
  */
 
-public class IoItem extends DataSupport {
-    public final int TYPE_COST = -1;
-    public final int TYPE_EARN =  1;
+public class MoneyItem extends LitePalSupport {
+    public enum InOutType {
+        EARN,
+        COST
+    }
+
+    public enum ItemType{
+
+    }
+
+//    public final int TYPE_COST = -1;
+//    public final int TYPE_EARN =  1;
 
     private int id;
-    private int type;                       // 收入还会支出
+    private InOutType inOutType;
     private int bookId;
     private double money;
     private String name;
     private String description;
-    private String timeStamp;
-    private String srcName;                 // 项目资源名称
+    private String date;
+    private String srcName;                 // 项目资源名称 // TODO WHAT'S this for?
+    private ItemType itemType;
 
-    public IoItem() {}
+    public MoneyItem() {}
 
-    public IoItem(String srcName, String name) {
+    public MoneyItem(String srcName, String name) {
         this.srcName = srcName;
         this.name = name;
     }
 
-    // 构造函数（无具体描述）
-    public IoItem(String srcName, int type, double money, String name) {
-        this.srcName = srcName;
+    // constructor without description
+    public MoneyItem(String srcName, InOutType inOutType, double money, String name) {
+        this(srcName, name);
         this.money = money;
-        this.type = type;
-        this.name = name;
+        this.inOutType = inOutType;
     }
 
-    // 构造函数（有具体描述）
-    public IoItem(String srcName, int type, double money, String name, String description) {
-        this.money = money;
-        this.type = type;
-        this.srcName = srcName;
-        this.name = name;
+    // constructor with description
+    public MoneyItem(String srcName,
+                     InOutType inOutType,
+                     double money,
+                     String name,
+                     String description) {
+        this(srcName, inOutType, money, name);
         this.description = description;
     }
 
     public double getMoney()                       { return money; }
-    public int getType()                           { return type; }
+    public InOutType getInOutType()                { return inOutType; }
     public String getName()                        { return name; }
     public String getDescription()                 { return description; }
-    public String getTimeStamp()                   { return timeStamp; }
+    public String getDate()                        { return date; }
     public int getBookId()                         { return bookId; }
     public String getSrcName()                     { return srcName; }
     public int getId()                             { return id; }
 
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
-    public void setType(int type)                  { this.type = type; }
+    public void setInOutType(InOutType inOutType)  { this.inOutType = inOutType; }
     public void setName(String name)               { this.name = name; }
     public void setDescription(String description) { this.description = description; }
-    public void setTimeStamp(String timeStamp)     { this.timeStamp = timeStamp; }
+    public void setDate(String date)               { this.date = date; }
     public void setBookId(int mId)                 { this.bookId = mId; }
     public void setSrcName(String srcName)         { this.srcName = srcName; }
 

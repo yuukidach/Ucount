@@ -30,7 +30,7 @@ dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'com.github.markushi:circlebutton:1.1'
-    implementation 'org.litepal.android:core:1.6.1'
+    implementation 'org.litepal.guolindev:core:3.2.3'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.github.rey5137:material:1.2.4'
     implementation 'com.github.andyken:moneytextview:1.2'

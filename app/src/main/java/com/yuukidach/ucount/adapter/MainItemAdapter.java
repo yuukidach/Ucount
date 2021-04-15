@@ -1,4 +1,4 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.percentlayout.widget.PercentRelativeLayout;
@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yuukidach.ucount.GlobalVariables;
+import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
-import com.yuukidach.ucount.model.IoItem;
+import com.yuukidach.ucount.model.MoneyItem;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.LitePal;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -28,7 +30,7 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
     private final int TYPE_COST = -1;
     private final int TYPE_EARN =  1;
 
-    private List<IoItem> mIOItemList;
+    private List<MoneyItem> mMoneyItemList;
     private String mDate;
 
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -61,8 +63,8 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
         }
     }
 
-    public MainItemAdapter(List<IoItem> ioItemList) {
-        mIOItemList = ioItemList;
+    public MainItemAdapter(List<MoneyItem> moneyItemList) {
+        mMoneyItemList = moneyItemList;
     }
 
     @NonNull
@@ -75,31 +77,31 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        IoItem ioItem = mIOItemList.get(position);
-        showItemDate(holder, ioItem.getTimeStamp());
+        MoneyItem moneyItem = mMoneyItemList.get(position);
+        showItemDate(holder, moneyItem.getDate());
         // 表示支出的布局
-        if (ioItem.getType() == TYPE_COST) {       // -1代表支出
+        if (moneyItem.getInOutType() == MoneyItem.InOutType.COST) {
             holder.earnLayout.setVisibility(View.GONE);
             holder.costLayout.setVisibility(View.VISIBLE);
-            holder.itemImageCost.setImageResource(ioItem.getSrcId());
-            holder.itemNameCost.setText(ioItem.getName());
-            holder.itemMoneyCost.setText(decimalFormat.format(ioItem.getMoney()));
-            handleDescription(ioItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
+            holder.itemImageCost.setImageResource(moneyItem.getSrcId());
+            holder.itemNameCost.setText(moneyItem.getName());
+            holder.itemMoneyCost.setText(decimalFormat.format(moneyItem.getMoney()));
+            handleDescription(moneyItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
         //表示收入的布局
-        } else if (ioItem.getType() == TYPE_EARN) {
+        } else if (moneyItem.getInOutType() == MoneyItem.InOutType.EARN) {
             holder.earnLayout.setVisibility(View.VISIBLE);
             holder.costLayout.setVisibility(View.GONE);
-            holder.itemImageEarn.setImageResource(ioItem.getSrcId());
-            holder.itemNameEarn.setText(ioItem.getName());
-            holder.itemMoneyEarn.setText(decimalFormat.format(ioItem.getMoney()));
-            handleDescription(ioItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
+            holder.itemImageEarn.setImageResource(moneyItem.getSrcId());
+            holder.itemNameEarn.setText(moneyItem.getName());
+            holder.itemMoneyEarn.setText(decimalFormat.format(moneyItem.getMoney()));
+            handleDescription(moneyItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return mIOItemList.size();
+        return mMoneyItemList.size();
     }
 
     // 利用全局变量进行判定
@@ -115,36 +117,36 @@ public class MainItemAdapter extends RecyclerView.Adapter<MainItemAdapter.ViewHo
 
     // 返回子项目时间，便于在取消删除的时候判断是否应该显示项目时间
     public String getItemDate(int position) {
-        IoItem ioItem = mIOItemList.get(position);
-        return ioItem.getTimeStamp();
+        MoneyItem moneyItem = mMoneyItemList.get(position);
+        return moneyItem.getDate();
     }
 
     public void removeItem(int position) {
-        IoItem ioItem = mIOItemList.get(position);
-        BookItem bookItem = DataSupport.find(BookItem.class, GlobalVariables.getmBookId());
-        int type = ioItem.getType();
-        bookItem.setSumAll(bookItem.getSumAll() - ioItem.getMoney()*type);
+        MoneyItem moneyItem = mMoneyItemList.get(position);
+        BookItem bookItem = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
+        MoneyItem.InOutType type = moneyItem.getInOutType();
+//        bookItem.setSumAll(bookItem.getSumAll() - moneyItem.getMoney()*type);
         // 判断收支类型
-        if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - ioItem.getMoney());
-        else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - ioItem.getMoney());
+//        if (type < 0) bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() - moneyItem.getMoney());
+//        else bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() - moneyItem.getMoney());
         bookItem.save();
-        DataSupport.delete(IoItem.class, mIOItemList.get(position).getId());
+        LitePal.delete(MoneyItem.class, mMoneyItemList.get(position).getId());
 
-        mIOItemList.remove(position);
+        mMoneyItemList.remove(position);
         notifyItemRemoved(position);
     }
 
-    public boolean isThereADescription(IoItem ioItem) {
-        return (ioItem.getDescription()!=null && !ioItem.getDescription().equals(""));
+    public boolean isThereADescription(MoneyItem moneyItem) {
+        return (moneyItem.getDescription()!=null && !moneyItem.getDescription().equals(""));
     }
 
-    public void handleDescription(IoItem ioItem, TextView Dsp, TextView Name, TextView Money) {
-        if (isThereADescription(ioItem)) {
+    public void handleDescription(MoneyItem moneyItem, TextView Dsp, TextView Name, TextView Money) {
+        if (isThereADescription(moneyItem)) {
             RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)Name.getLayoutParams();
             nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);
             RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams)Money.getLayoutParams();
             moneyParams.removeRule(RelativeLayout.CENTER_VERTICAL);
-            Dsp.setText(ioItem.getDescription());
+            Dsp.setText(moneyItem.getDescription());
             Name.setLayoutParams(nameParams);
             Money.setLayoutParams(moneyParams);
         } else {
