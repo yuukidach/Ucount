@@ -4,6 +4,7 @@ import android.content.res.Resources;
 
 import com.yuukidach.ucount.MainActivity;
 
+import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
 /**
@@ -80,5 +81,23 @@ public class MoneyItem extends LitePalSupport {
     public int getSrcId() {
         Resources resources = MainActivity.resources;
         return resources.getIdentifier(srcName, "drawable", MainActivity.PACKAGE_NAME);
+    }
+
+    public void addNewMoneyItemIntoStorage(String name,
+                                           double money,
+                                           int bookId,
+                                           InOutType inOutType,
+                                           String description) {
+        BookItem bookItem = LitePal.find(BookItem.class, bookId);
+
+        setName(name);
+        setMoney(money);
+        setBookId(bookId);
+        setInOutType(inOutType);
+        setDescription(description);
+        save();
+
+        bookItem.getMoneyItemList().add(this);
+        bookItem.save();
     }
 }

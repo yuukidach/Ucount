@@ -260,6 +260,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void navigateToAddItem() {
         Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+        Bundle bundle = new Bundle();
+        // tell addItemActivity which book is on
+        bundle.putInt("bookId", mainPresenter.getCurBookId());
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

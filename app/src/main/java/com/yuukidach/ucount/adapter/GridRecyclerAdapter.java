@@ -1,4 +1,4 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.List;

@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
+import com.yuukidach.ucount.adapter.GridRecyclerAdapter;
+import com.yuukidach.ucount.adapter.ViewPagerAdapter;
 import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.ArrayList;

@@ -7,6 +7,7 @@ import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.ImgUtils;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.view.MainView;
+import com.yuukidach.ucount.view.BookItemViewHolder;
 
 import org.litepal.LitePal;
 
@@ -110,6 +111,23 @@ public class MainPresenter {
         return curBookId;
     }
 
+    public int getItemCount() {
+        List<BookItem> bookItems = LitePal.findAll(BookItem.class);
+        return bookItems.size();
+    }
+
+    public void deleteBookItem(int position) {
+        List<BookItem> bookItems = LitePal.findAll(BookItem.class);
+
+        if (position >= bookItems.size()) return;
+
+        BookItem item = bookItems.get(position);
+
+        LitePal.deleteAll(MoneyItem.class, "bookId = ?", String.valueOf(item.getId()));
+        LitePal.delete(BookItem.class, item.getId());
+        curBookId = bookItems.get(0).getId();
+    }
+
     public void onAddBookClick() {
         mainView.setNewBook();
     }
@@ -128,5 +146,17 @@ public class MainPresenter {
                 String.valueOf(curBookId)
         ).find(MoneyItem.class);
         mainView.setMainItemRecycler(moneyItems);
+    }
+
+    public void onBindBookItemViewHolder(BookItemViewHolder holder, int postion) {
+        List<BookItem> bookItems = LitePal.findAll(BookItem.class);
+        BookItem item = bookItems.get(postion);
+        holder.setBookNameText(item.getName());
+
+        if (postion == curBookId) {
+            holder.setAsChose();
+        } else {
+            holder.setAsNotChose();
+        }
     }
 }
