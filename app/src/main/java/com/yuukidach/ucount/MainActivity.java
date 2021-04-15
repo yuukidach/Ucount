@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         ioItemRecyclerView.setAdapter(ioAdapter);
         ioItemRecyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
-                new MainItemCallback(this, ioAdapter)
+                new MainItemCallback(this, ioItemRecyclerView,ioAdapter)
         );
         ioTouchHelper.attachToRecyclerView(ioItemRecyclerView);
     }
@@ -269,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void setBookItemRecycler() {
         bookItemList = DataSupport.findAll(BookItem.class);
+        Log.d(TAG, "setBookItemRecycler: " + bookItemList);
 
         if (bookItemList.isEmpty()) {
             BookItem bookItem = new BookItem();
@@ -293,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         bookItemRecyclerView.setAdapter(bookAdapter);
         ItemTouchHelper bookTouchHelper = new ItemTouchHelper(
-                new BookItemCallback(this, bookAdapter)
+                new BookItemCallback(this, bookItemRecyclerView, bookAdapter)
         );
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
     }

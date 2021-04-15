@@ -12,13 +12,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
-    private final MainItemAdapter adapter;
-    private final Context context;
+    // DO NOT make them as final
+    private MainItemAdapter adapter;
+    private Context context;
+    private RecyclerView recyclerView;
 
-    public MainItemCallback(Context context, MainItemAdapter adapter) {
+    public MainItemCallback(Context context, RecyclerView recyclerView, MainItemAdapter adapter) {
         super(0, ItemTouchHelper.RIGHT);
         this.context = context;
         this.adapter = adapter;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
                     adapter.removeItem(position);
                     // refresh the activity
                     adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
                 }
             }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                 @Override
@@ -55,6 +59,7 @@ public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
                         GlobalVariables.setmDate("");
                     else GlobalVariables.setmDate(adapter.getItemDate(position));
                     adapter.notifyItemChanged(position);
+                    recyclerView.setAdapter(adapter);
                 }
             }).show();  // pop the window
         }

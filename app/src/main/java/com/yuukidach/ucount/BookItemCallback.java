@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class BookItemCallback extends ItemTouchHelper.SimpleCallback {
+    // DO NOT use final
     private Context context;
     private BookItemAdapter adapter;
+    private RecyclerView recyclerView;
 
-    public BookItemCallback(Context context, BookItemAdapter adapter) {
+    public BookItemCallback(Context context, RecyclerView recyclerView, BookItemAdapter adapter) {
         super(0, ItemTouchHelper.RIGHT);
         this.context = context;
         this.adapter = adapter;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -53,12 +56,14 @@ public class BookItemCallback extends ItemTouchHelper.SimpleCallback {
                 public void onClick(DialogInterface dialog, int which) {
                     adapter.removeItem(position);
                     // refresh
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
                 }
             }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     adapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(adapter);
                 }
             }).show();
         }
