@@ -216,6 +216,7 @@ public class MainPresenter {
             // TODO: just pass a description string
             holder.handleCostDescription(money);
         } else {
+            Log.d("main page earn item", "onBindMoneyItemViewHolder: " + money.getTypeImgId());
             holder.showAsEarnItem();
             holder.setEarnItemTypeImage(money.getTypeImageId());
             holder.setEarnItemTypeText(money.getTypeName());

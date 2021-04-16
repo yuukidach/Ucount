@@ -41,8 +41,8 @@ public class MoneyItem extends LitePalSupport {
 
     public MoneyItem() {}
 
-    public MoneyItem(String srcName, String typeName) {
-        this.typeImgId = srcName;
+    public MoneyItem(String typeImgId, String typeName) {
+        this.typeImgId = typeImgId;
         this.typeName = typeName;
     }
 

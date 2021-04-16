@@ -68,7 +68,7 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setEarnItemTypeImage(int resId) {
-        itemImageCost.setImageResource(resId);
+        itemImageEarn.setImageResource(resId);
     }
 
     public void setCostItemMoney(String str) {
