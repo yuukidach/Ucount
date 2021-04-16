@@ -13,7 +13,6 @@ import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
-import java.security.AlgorithmConstraints;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -22,7 +21,8 @@ public class MainPresenter {
     final private ImgUtils imgUtils;
 
     final DecimalFormat decimalFormat = new DecimalFormat("0.00");
-    private int curBookId;
+    private int curBookId = 0;
+    private int curBookPos = 0;
     private String description;
 
 //    private List<BookItem> bookItemList;
@@ -49,10 +49,8 @@ public class MainPresenter {
     public void onResume() {
         if (mainView == null) return;
 
-//        mainView.setBookItemRecycler();
-        updateBookItemView(0);
+        updateBookItemView(curBookPos);
         updateMoneyItemView();
-//        mainView.setMainItemRecycler();
 
         mainView.hideBalance();
         // transfer enum to int, then get the string
@@ -68,7 +66,8 @@ public class MainPresenter {
     }
 
     private void showBalance() {
-        BookItem book = LitePal.find(BookItem.class, curBookId);
+        BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
+                               .findFirst(BookItem.class);
         String sumStr = decimalFormat.format(book.getSum());
 
         mainView.showBalance(sumStr);
@@ -98,14 +97,16 @@ public class MainPresenter {
     }
 
     public void updateMonthlyEarn() {
-        BookItem book = LitePal.find(BookItem.class, curBookId);
+        BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
+                               .findFirst(BookItem.class);
         String str = decimalFormat.format(book.getEarnSum());
 
         mainView.updateMonthlyEarn(str);
     }
 
     public void updateMonthlyCost() {
-        BookItem book = LitePal.find(BookItem.class, curBookId);
+        BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
+                .findFirst(BookItem.class);
         String str = decimalFormat.format(book.getCostSum());
 
         mainView.updateMonthlyCost(str);
@@ -121,8 +122,13 @@ public class MainPresenter {
         }
 
         // mark current book's ID
-        curBookId = bookItems.get(position).getId();
+        curBookId = bookItems.get(position).getUuid();
+        curBookPos = position;
         mainView.setBookItemRecycler(bookItems);
+
+        Log.d("default book uuid", "updateBookItemView: " + bookItems.get(0).getUuid());
+        Log.d("position", "updateBookItemView: " + position);
+        Log.d("curBookId", "updateBookItemView: " + curBookId);
     }
 
     public int getCurBookId() {
@@ -134,16 +140,27 @@ public class MainPresenter {
         return bookItems.size();
     }
 
+    /**
+     * delete bookitem from database
+     * if there is only one bookitem, then the deletion won't happen
+     * @param position
+     */
     public void deleteBookItem(int position) {
         List<BookItem> bookItems = LitePal.findAll(BookItem.class);
-
-        if (position >= bookItems.size()) return;
+        if (bookItems.size() == 0 || bookItems.size() <= position) return;
 
         BookItem item = bookItems.get(position);
 
-        LitePal.deleteAll(MoneyItem.class, "bookId = ?", String.valueOf(item.getId()));
-        LitePal.delete(BookItem.class, item.getId());
-        curBookId = bookItems.get(0).getId();
+        LitePal.deleteAll(MoneyItem.class, "bookId = ?", String.valueOf(item.getUuid()));
+        if (item.isSaved()) {
+            Log.d("item", "deleteBookItem: " + "saved, can be deleted");
+            item.delete();
+        }
+
+        // after deletion, stay at first book
+        bookItems = LitePal.findAll(BookItem.class);
+        curBookId = bookItems.get(0).getUuid();
+        curBookPos = 0;
     }
 
     public void onAddBookClick() {
@@ -152,10 +169,10 @@ public class MainPresenter {
 
     public void onAddBookConfirmClick(String name) {
         List<BookItem> bookItems = LitePal.findAll(BookItem.class);
-        int id = bookItems.get(bookItems.size()-1).getId() + 1;
+        int uuid = bookItems.get(bookItems.size()-1).getUuid() + 1;
 
         BookItem item = new BookItem();
-        item.addNewBookIntoStorage(id, name);
+        item.addNewBookIntoStorage(uuid, name);
     }
 
     public void updateMoneyItemView() {
@@ -179,10 +196,13 @@ public class MainPresenter {
     }
 
     public void onBindMoneyItemViewHolder(MoneyItemViewHolder holder, int position) {
-        Log.d("=====", "onBindMoneyItemViewHolder: " + position);
-        Log.d("=====", "onBindMoneyItemViewHolder: " + curBookId);
-        BookItem book = LitePal.find(BookItem.class, curBookId);
+        Log.d("position", "onBindMoneyItemViewHolder: " + position);
+        Log.d("current book uuid", "onBindMoneyItemViewHolder: " + curBookId);
+        BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
+                               .findFirst(BookItem.class);
         MoneyItem money = book.getMoneyItemList().get(position);
+
+        Log.d("Date", "onBindMoneyItemViewHolder: " + money.getDate());
 
         holder.showItemDate(money);
 

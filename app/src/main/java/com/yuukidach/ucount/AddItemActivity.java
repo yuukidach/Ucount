@@ -374,6 +374,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
 
     @Override
     public MoneyItem.InOutType getInOutFlag() {
+        Log.d(TAG, "getInOutFlag: " + (MoneyItem.InOutType)bannerImage.getTag());
         return (MoneyItem.InOutType) bannerImage.getTag();
     }
 

@@ -1,5 +1,6 @@
 package com.yuukidach.ucount.view;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.MoneyItem;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     PercentRelativeLayout earnLayout, costLayout;
     RelativeLayout dateBar;
@@ -21,7 +26,7 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     TextView itemDspEarn, itemDspCost;
     TextView itemDate;
 
-    private String date = "";
+    private static String date = "";
 
     public MoneyItemViewHolder(View view) {
         super(view);
@@ -107,11 +112,16 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void showItemDate(MoneyItem item) {
+        Log.d("origin date", "showItemDate: " + date);
+
         if (date.equals(item.getDate())) dateBar.setVisibility(View.GONE);
         else {
             dateBar.setVisibility(View.VISIBLE);
-            itemDate.setText(date);
             date = item.getDate();
+            itemDate.setText(date);
+
+            Log.d("new date", "showItemDate: " + date);
         }
+
     }
 }

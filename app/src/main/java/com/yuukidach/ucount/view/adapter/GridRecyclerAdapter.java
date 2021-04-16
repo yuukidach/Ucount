@@ -72,7 +72,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: I am in here:" + position);
         int realPositon = position + curIndex * pageSize;
         MoneyItem moneyItem = mDatas.get(realPositon);
         holder.itemImage.setImageResource(moneyItem.getTypeImageId());

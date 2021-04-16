@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import com.yuukidach.ucount.MainActivity;
 
 import org.litepal.LitePal;
+import org.litepal.annotation.Column;
 import org.litepal.crud.LitePalSupport;
 
 import java.util.Date;
@@ -29,11 +30,12 @@ public class MoneyItem extends LitePalSupport {
 
     private int id;
     private InOutType inOutType;
+    @Column(index = true)
     private int bookId;
     private double money;
     private String typeName;
     private String description = "";
-    private String date;
+    private String date;                      // yyyy-MM-dd
     private String typeImgId;                 // 项目资源名称 // TODO WHAT'S this for?
     private ItemType itemType;
 

@@ -40,6 +40,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemViewHolder> {
         mainPresenter = presenter;
     }
 
+    @NonNull
     @Override
     public BookItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
