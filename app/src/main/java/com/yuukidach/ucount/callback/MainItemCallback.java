@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 //import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.R;
-import com.yuukidach.ucount.adapter.MoneyItemAdapter;
+import com.yuukidach.ucount.view.adapter.MoneyItemAdapter;
 
 public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
     // DO NOT make them as final
@@ -59,9 +59,9 @@ public class MainItemCallback extends ItemTouchHelper.SimpleCallback {
                     LinearLayout sonView = (LinearLayout) viewHolder.itemView;
                     TextView grandsonTextView = (TextView) sonView.findViewById(R.id.iotem_date);
                     // check if time is needed to show
-                    if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
-                        GlobalVariables.setmDate("");
-                    else GlobalVariables.setmDate(adapter.getItemDate(position));
+//                    if (sonView.findViewById(R.id.date_bar).getVisibility() == View.VISIBLE)
+//                        GlobalVariables.setmDate("");
+//                    else GlobalVariables.setmDate(adapter.getItemDate(position));
                     adapter.notifyItemChanged(position);
                     recyclerView.setAdapter(adapter);
                 }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuukidach.ucount.R;
-import com.yuukidach.ucount.adapter.BookItemAdapter;
+import com.yuukidach.ucount.view.adapter.BookItemAdapter;
 
 
 public class BookItemCallback extends ItemTouchHelper.SimpleCallback {

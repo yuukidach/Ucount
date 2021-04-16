@@ -1,4 +1,4 @@
-package com.yuukidach.ucount.adapter;
+package com.yuukidach.ucount.view.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.percentlayout.widget.PercentRelativeLayout;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
+import com.yuukidach.ucount.presenter.MainPresenter;
 
 import org.litepal.LitePal;
 
@@ -26,12 +27,14 @@ import java.util.List;
  */
 
 public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.ViewHolder> {
-    private static final String TAG = "IOItemAdapter";
-    private final int TYPE_COST = -1;
-    private final int TYPE_EARN =  1;
+    private static final String TAG = "MoneyItemAdapter";
+//    private final int TYPE_COST = -1;
+//    private final int TYPE_EARN =  1;
+
+    private MainPresenter presenter;
 
     private List<MoneyItem> mMoneyItemList;
-    private String mDate;
+    private String showingDate;
 
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
@@ -63,7 +66,8 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
         }
     }
 
-    public MoneyItemAdapter(List<MoneyItem> moneyItemList) {
+    public MoneyItemAdapter(MainPresenter presenter, List<MoneyItem> moneyItemList) {
+        this.presenter = presenter;
         mMoneyItemList = moneyItemList;
     }
 
@@ -84,7 +88,7 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
             holder.earnLayout.setVisibility(View.GONE);
             holder.costLayout.setVisibility(View.VISIBLE);
             holder.itemImageCost.setImageResource(moneyItem.getSrcId());
-            holder.itemNameCost.setText(moneyItem.getName());
+            holder.itemNameCost.setText(moneyItem.getTypeName());
             holder.itemMoneyCost.setText(decimalFormat.format(moneyItem.getMoney()));
             handleDescription(moneyItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
         //表示收入的布局
@@ -92,7 +96,7 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
             holder.earnLayout.setVisibility(View.VISIBLE);
             holder.costLayout.setVisibility(View.GONE);
             holder.itemImageEarn.setImageResource(moneyItem.getSrcId());
-            holder.itemNameEarn.setText(moneyItem.getName());
+            holder.itemNameEarn.setText(moneyItem.getTypeName());
             holder.itemMoneyEarn.setText(decimalFormat.format(moneyItem.getMoney()));
             handleDescription(moneyItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
         }
@@ -106,11 +110,11 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
 
     // 利用全局变量进行判定
     public void showItemDate(ViewHolder holder, String Date) {
-        if (GlobalVariables.getmDate().equals(Date)) holder.dateBar.setVisibility(View.GONE);
+        if (showingDate.equals(Date)) holder.dateBar.setVisibility(View.GONE);
         else {
             holder.dateBar.setVisibility(View.VISIBLE);
             holder.itemDate.setText(Date);
-            GlobalVariables.setmDate(Date);
+            showingDate = Date;
             Log.d(TAG, "showItemDate: "+Date);
         }
     }
@@ -123,7 +127,7 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
 
     public void removeItem(int position) {
         MoneyItem moneyItem = mMoneyItemList.get(position);
-        BookItem bookItem = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
+        BookItem bookItem = LitePal.find(BookItem.class, presenter.getCurBookId());
         MoneyItem.InOutType type = moneyItem.getInOutType();
 //        bookItem.setSumAll(bookItem.getSumAll() - moneyItem.getMoney()*type);
         // 判断收支类型

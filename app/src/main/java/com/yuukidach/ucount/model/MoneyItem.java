@@ -7,6 +7,8 @@ import com.yuukidach.ucount.MainActivity;
 import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
+import java.util.Date;
+
 /**
  * Created by yuukidach on 17-3-10.
  * 花费和收入的条目
@@ -29,22 +31,22 @@ public class MoneyItem extends LitePalSupport {
     private InOutType inOutType;
     private int bookId;
     private double money;
-    private String name;
-    private String description;
+    private String typeName;
+    private String description = "";
     private String date;
     private String srcName;                 // 项目资源名称 // TODO WHAT'S this for?
     private ItemType itemType;
 
     public MoneyItem() {}
 
-    public MoneyItem(String srcName, String name) {
+    public MoneyItem(String srcName, String typeName) {
         this.srcName = srcName;
-        this.name = name;
+        this.typeName = typeName;
     }
 
     // constructor without description
-    public MoneyItem(String srcName, InOutType inOutType, double money, String name) {
-        this(srcName, name);
+    public MoneyItem(String srcName, InOutType inOutType, double money, String typeName) {
+        this(srcName, typeName);
         this.money = money;
         this.inOutType = inOutType;
     }
@@ -61,7 +63,7 @@ public class MoneyItem extends LitePalSupport {
 
     public double getMoney()                       { return money; }
     public InOutType getInOutType()                { return inOutType; }
-    public String getName()                        { return name; }
+    public String getTypeName()                        { return typeName; }
     public String getDescription()                 { return description; }
     public String getDate()                        { return date; }
     public int getBookId()                         { return bookId; }
@@ -71,7 +73,7 @@ public class MoneyItem extends LitePalSupport {
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
     public void setInOutType(InOutType inOutType)  { this.inOutType = inOutType; }
-    public void setName(String name)               { this.name = name; }
+    public void setTypeName(String typeName)               { this.typeName = typeName; }
     public void setDescription(String description) { this.description = description; }
     public void setDate(String date)               { this.date = date; }
     public void setBookId(int mId)                 { this.bookId = mId; }
@@ -90,11 +92,14 @@ public class MoneyItem extends LitePalSupport {
                                            String description) {
         BookItem bookItem = LitePal.find(BookItem.class, bookId);
 
-        setName(name);
+        setTypeName(name);
         setMoney(money);
         setBookId(bookId);
         setInOutType(inOutType);
         setDescription(description);
+
+        setDate(new Date().toString());
+
         save();
 
         bookItem.getMoneyItemList().add(this);

@@ -1,4 +1,4 @@
-package com.yuukidach.ucount.adapter;
+package com.yuukidach.ucount.view.adapter;
 
 import androidx.viewpager.widget.PagerAdapter;
 import android.util.Log;

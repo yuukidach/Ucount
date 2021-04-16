@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.yuukidach.ucount.adapter.GridRecyclerAdapter;
-import com.yuukidach.ucount.adapter.ViewPagerAdapter;
+import com.yuukidach.ucount.view.adapter.GridRecyclerAdapter;
+import com.yuukidach.ucount.view.adapter.ViewPagerAdapter;
 import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.ArrayList;
@@ -113,7 +113,7 @@ public class EarnFragment extends Fragment {
         pb.maximumColorCount(1);
 
         itemImage.setImageResource(tmpItem.getSrcId());
-        itemTitle.setText(tmpItem.getName());
+        itemTitle.setText(tmpItem.getTypeName());
         itemImage.setTag(1);                        // 保留图片资源属性，1表示收入
         itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用
 

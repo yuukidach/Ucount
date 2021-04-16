@@ -20,6 +20,8 @@ public class MainPresenter {
 
     final DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private int curBookId;
+    private String description;
+
 //    private List<BookItem> bookItemList;
 
     /**

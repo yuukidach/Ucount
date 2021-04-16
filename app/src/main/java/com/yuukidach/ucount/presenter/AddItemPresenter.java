@@ -1,14 +1,17 @@
 package com.yuukidach.ucount.presenter;
 
+import android.view.View;
+
 import com.yuukidach.ucount.model.Calculator;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.view.AddItemView;
 
 public class AddItemPresenter {
-    AddItemView view;
-    Calculator calculator;
-    MoneyItem moneyItem = new MoneyItem();
-    int bookId;
+    private final AddItemView view;
+    private final Calculator calculator = new Calculator();
+    private final MoneyItem moneyItem = new MoneyItem();
+    private int bookId;
+    private String description = "";
 
     public AddItemPresenter(AddItemView view, int bookId) {
         this.view = view;
@@ -39,7 +42,20 @@ public class AddItemPresenter {
         if (money.equals("0.00")) {
             view.alarmNoMoneyInput();
         } else {
-            moneyItem.addNewMoneyItemIntoStorage(name, );
+            MoneyItem.InOutType inOutType;
+            if (view.getInOutFlag() < 0) {
+                inOutType = MoneyItem.InOutType.COST;
+            } else {
+                inOutType = MoneyItem.InOutType.EARN;
+            }
+
+            moneyItem.addNewMoneyItemIntoStorage(
+                    view.getTypeName(),
+                    Double.parseDouble(money),
+                    bookId,
+                    inOutType,
+                    description
+            );
         }
         calculator.clear();
     }
@@ -51,5 +67,24 @@ public class AddItemPresenter {
 
     public void onDescriptionButtonClick() {
         view.navigateToDescription();
+    }
+
+    public void OnNumPadNumClick(View v) {
+        String digit = view.getPressedNumPadValue(v);
+        boolean state = calculator.inputDigit(digit);
+        if (!state) view.alarmCanNotContinueToInput();
+        else view.setAmount(calculator.getDecimalFormatMoney());
+    }
+
+    public void onNumPadDotClock() {
+        if (calculator.inputDot()) view.alarmAlreadyHasDot();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String str) {
+        description = str;
     }
 }

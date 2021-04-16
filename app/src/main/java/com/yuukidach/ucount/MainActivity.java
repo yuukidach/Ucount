@@ -26,8 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yuukidach.ucount.adapter.BookItemAdapter;
-import com.yuukidach.ucount.adapter.MoneyItemAdapter;
+import com.yuukidach.ucount.view.adapter.BookItemAdapter;
+import com.yuukidach.ucount.view.adapter.MoneyItemAdapter;
 import com.yuukidach.ucount.callback.BookItemCallback;
 import com.yuukidach.ucount.callback.MainItemCallback;
 import com.yuukidach.ucount.model.BookItem;
@@ -48,25 +48,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
 //    private List<BookItem> bookItemList = new ArrayList<>();
 
 //    private RecyclerView MoneyItemRecyclerView;
-    private final Button showBtn = (Button) findViewById(R.id.show_money_button);
-    private final TextView monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
-    private final TextView monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
-    private final ImageView headerImg = (ImageView) findViewById(R.id.header_img);
-    private final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
-    private final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
-    private final RecyclerView MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
+    private Button showBtn;
+    private TextView monthlyCost;
+    private TextView monthlyEarn;
+    private ImageView headerImg;
+    private CircleButton addBtn;
+    private ImageButton addBookButton;
+    private RecyclerView MoneyItemRecyclerView;
 //    private ImageView headerImg;
 //    private TextView monthlyCost, monthlyEarn;
 
     // parameter for drawer
-//    private DrawerLayout drawerLayout;
-//    private LinearLayout bookLinearLayout;
-//    private RecyclerView bookItemRecyclerView;
-//    private ImageView drawerBanner;
-    private final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
-    private final RecyclerView bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
-    private final LinearLayout bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
-    private final ImageView drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
+    private DrawerLayout drawerLayout;
+    private LinearLayout bookLinearLayout;
+    private RecyclerView bookItemRecyclerView;
+    private ImageView drawerBanner;
 
     public static String PACKAGE_NAME;
     public static Resources resources;
@@ -87,18 +83,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
         PACKAGE_NAME = getApplicationContext().getPackageName();
         resources = getResources();
 
-//        showBtn = (Button) findViewById(R.id.show_money_button);
+        showBtn = (Button) findViewById(R.id.show_money_button);
 //        final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
 //        final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
 //        MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
 //        headerImg = (ImageView) findViewById(R.id.header_img);
-//        monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
-//        monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
+        monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
+        monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
+        headerImg = (ImageView) findViewById(R.id.header_img);
+        addBtn = (CircleButton) findViewById(R.id.add_button);
+        addBookButton = (ImageButton) findViewById(R.id.add_book_button);
+        MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
         // drawer
-//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
-//        bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
-//        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
-//        drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
+        bookItemRecyclerView = (RecyclerView) findViewById(R.id.book_list);
+        bookLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
+        drawerBanner = (ImageView) findViewById(R.id.drawer_banner);
 
         showBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         layoutManager.setStackFromEnd(true);    // show from bottom to top
         layoutManager.setReverseLayout(true);   // reverse the layout
 
-        MoneyItemAdapter moneyItemAdapter = new MoneyItemAdapter(list);
+        MoneyItemAdapter moneyItemAdapter = new MoneyItemAdapter(mainPresenter, list);
         MoneyItemRecyclerView.setAdapter(moneyItemAdapter);
         MoneyItemRecyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper ioTouchHelper = new ItemTouchHelper(
