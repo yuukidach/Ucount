@@ -14,16 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.presenter.AddItemPresenter;
 import com.yuukidach.ucount.view.AddItemView;
 
-import org.litepal.LitePal;
-
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 public class AddItemActivity extends AppCompatActivity implements AddItemView {
@@ -47,18 +43,6 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
     private TextView bannerText;
 
     private TextView moneyText;
-
-//    private final Button addCostBtn = (Button) findViewById(R.id.add_cost_button);
-//    private final Button addEarnBtn = (Button) findViewById(R.id.add_earn_button);
-//    private final Button clearBtn = (Button) findViewById(R.id.clear);
-//    private final ImageButton addFinishBtn = (ImageButton) findViewById(R.id.add_finish);
-//    private final ImageButton addDescription = (ImageButton) findViewById(R.id.add_description);
-//
-//
-//    private final ImageView bannerImage = (ImageView) findViewById(R.id.chosen_image);
-//    private final TextView bannerText = (TextView) findViewById(R.id.chosen_title);
-//
-//    private final TextView moneyText = (TextView) findViewById(R.id.input_money_text);
 
     private TextView words;
 
@@ -84,28 +68,12 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
         Bundle bundle = getIntent().getExtras();
         presenter = new AddItemPresenter(this, bundle.getInt("bookId"));
 
-
-//        addCostBtn.setOnClickListener(new ButtonListener());
-//        addEarnBtn.setOnClickListener(new ButtonListener());
-//        addFinishBtn.setOnClickListener(new ButtonListener());
-//        addDescription.setOnClickListener(new ButtonListener());
-//        clearBtn.setOnClickListener(new ButtonListener());
-
-
         bannerText = (TextView) findViewById(R.id.chosen_title);
         bannerImage = (ImageView) findViewById(R.id.chosen_image);
 
         moneyText = (TextView) findViewById(R.id.input_money_text);
-        // 及时清零
 
         presenter.onCreate();
-//        moneyText.setText("0.00");
-
-//        manager = getSupportFragmentManager();
-//
-//        transaction = manager.beginTransaction();
-//        transaction.replace(R.id.item_fragment, new CostFragment());
-//        transaction.commit();
 
         addCostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,103 +111,6 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
             }
         });
     }
-
-//    private class ButtonListener implements View.OnClickListener {
-//        @Override
-//        public void onClick(View view) {
-//            transaction = manager.beginTransaction();
-
-//            switch (view.getId()) {
-//                case R.id.add_cost_button:
-//                    addCostBtn.setTextColor(0xffff8c00); // 设置“支出“按钮为灰色
-//                    addEarnBtn.setTextColor(0xff908070); // 设置“收入”按钮为橙色
-//                    transaction.replace(R.id.item_fragment, new CostFragment());
-//                    Log.d(TAG, "onClick: add_cost_button");
-//
-//                    break;
-//                case R.id.add_earn_button:
-//                    addEarnBtn.setTextColor(0xffff8c00); // 设置“收入“按钮为灰色
-//                    addCostBtn.setTextColor(0xff908070); // 设置“支出”按钮为橙色
-//                    transaction.replace(R.id.item_fragment, new EarnFragment());
-//                    Log.d(TAG, "onClick: add_earn_button");
-//
-//                    break;
-//                case R.id.add_finish:
-//                    String moneyString =  moneyText.getText().toString();
-//                    if (moneyString.equals("0.00") || GlobalVariables.getmInputMoney().equals(""))
-//                        Toast.makeText(getApplicationContext(),"唔姆，你还没输入金额",Toast.LENGTH_SHORT).show();
-//                    else {
-//                        putItemInData(Double.parseDouble(moneyText.getText().toString()));
-//                        calculatorClear();
-//                        finish();
-//                    }
-//                    break;
-//                case R.id.clear:
-//                    calculatorClear();
-//                    moneyText.setText("0.00");
-//                    break;
-//                case R.id.add_description:
-//                    Intent intent = new Intent(AddItemActivity.this, AddDescription.class);
-//                    startActivity(intent);
-//            }
-//
-//            transaction.commit();
-//        }
-//    }
-
-//    public void putItemInData(double money) {
-//        MoneyItem moneyItem = new MoneyItem();
-//        BookItem bookItem = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
-//        String tagName = (String) bannerText.getTag();
-//        int tagType = (int) bannerImage.getTag();
-//
-//        if (tagType < 0) {
-//            moneyItem.setInOutType(moneyItem.TYPE_COST);
-//        } else moneyItem.setInOutType(moneyItem.TYPE_EARN);
-//
-//        moneyItem.setTypeName(bannerText.getText().toString());
-//        moneyItem.setSrcName(tagName);
-//        moneyItem.setMoney(money);
-//        moneyItem.setDate(formatItem.format(new Date()));         // 存储记账时间
-//        moneyItem.setDescription(GlobalVariables.getmDescription());
-//        moneyItem.setBookId(GlobalVariables.getmBookId());
-//        moneyItem.save();
-//
-//        // 将收支存储在对应账本下
-//        bookItem.getMoneyItemList().add(moneyItem);
-////        bookItem.setSumAll(bookItem.getSumAll() + money* moneyItem.getInOutType());
-//        bookItem.save();
-//
-//        calculateMonthlyMoney(bookItem, moneyItem.getInOutType(), moneyItem);
-//
-//        // 存储完之后及时清空备注
-//        GlobalVariables.setmDescription("");
-//    }
-
-//    // 计算月收支
-//    public void calculateMonthlyMoney(BookItem bookItem, int money_type, MoneyItem moneyItem) {
-//        String sumDate = formatSum.format(new Date());
-//
-//        // 求取月收支类型
-//        if (bookItem.getDate().equals(moneyItem.getDate().substring(0, 8))) {
-//            if (money_type == 1) {
-//                bookItem.setSumMonthlyEarn(bookItem.getSumMonthlyEarn() + moneyItem.getMoney());
-//            } else {
-//                bookItem.setSumMonthlyCost(bookItem.getSumMonthlyCost() + moneyItem.getMoney());
-//            }
-//        } else {
-//            if (money_type == 1) {
-//                bookItem.setSumMonthlyEarn(moneyItem.getMoney());
-//                bookItem.setSumMonthlyCost(0.0);
-//            } else {
-//                bookItem.setSumMonthlyCost(moneyItem.getMoney());
-//                bookItem.setSumMonthlyEarn(0.0);
-//            }
-//            bookItem.setDate(sumDate);
-//        }
-//
-//        bookItem.save();
-//    }
 
     // 数字输入按钮
     public void calculatorNumOnclick(View v) {

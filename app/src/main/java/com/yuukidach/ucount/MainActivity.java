@@ -45,18 +45,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final ImgUtils imgUtils = new ImgUtils(this);
     private final MainPresenter mainPresenter = new MainPresenter(this, imgUtils);
 
-//    private List<BookItem> bookItemList = new ArrayList<>();
-
-//    private RecyclerView MoneyItemRecyclerView;
     private Button showBtn;
     private TextView monthlyCost;
     private TextView monthlyEarn;
     private ImageView headerImg;
-    private CircleButton addBtn;
-    private ImageButton addBookButton;
     private RecyclerView MoneyItemRecyclerView;
-//    private ImageView headerImg;
-//    private TextView monthlyCost, monthlyEarn;
 
     // parameter for drawer
     private DrawerLayout drawerLayout;
@@ -76,23 +69,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // litepal
-//        Connector.getDatabase();
-
         // 获得包名和资源，方便后面的程序使用
         PACKAGE_NAME = getApplicationContext().getPackageName();
         resources = getResources();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
-//        final CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
-//        final ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
-//        MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
-//        headerImg = (ImageView) findViewById(R.id.header_img);
         monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
         monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
         headerImg = (ImageView) findViewById(R.id.header_img);
-        addBtn = (CircleButton) findViewById(R.id.add_button);
-        addBookButton = (ImageButton) findViewById(R.id.add_book_button);
+        CircleButton addBtn = (CircleButton) findViewById(R.id.add_button);
+        ImageButton addBookButton = (ImageButton) findViewById(R.id.add_book_button);
         MoneyItemRecyclerView = (RecyclerView) findViewById(R.id.in_and_out_items);
         // drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_of_books);
@@ -199,9 +185,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showBalance(String numStr) {
-//        BookItem tmp = LitePal.find(BookItem.class, GlobalVariables.getmBookId());
-//
-//        String sumString = decimalFormat.format(tmp.getSumAll());
         showBtn.setText(numStr);
     }
 
@@ -212,21 +195,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void updateMonthlyEarn(String numStr) {
-//        BookItem tmp = LitePal.find(
-//                BookItem.class,
-//                bookItemList.get(GlobalVariables.getmBookPos()
-//        ).getId());
-//        monthlyEarn.setText(decimalFormat.format(tmp.getSumMonthlyEarn()));
         monthlyEarn.setText(numStr);
     }
 
     @Override
     public void updateMonthlyCost(String numStr) {
-//        BookItem tmp = LitePal.find(
-//                BookItem.class,
-//                bookItemList.get(GlobalVariables.getmBookPos()
-//        ).getId());
-//        monthlyCost.setText(decimalFormat.format(tmp.getSumMonthlyCost()));
         monthlyCost.setText(numStr);
     }
 
@@ -242,14 +215,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setMainItemRecycler(List<MoneyItem> list) {
-//        List<MoneyItem> moneyItemList = LitePal.where(
-//                "bookId = ?",
-//                String.valueOf(GlobalVariables.getmBookId())
-//        ).find(MoneyItem.class);
-
-        // 用于存储recyclerView的日期
-//        GlobalVariables.setmDate("");
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);    // show from bottom to top
         layoutManager.setReverseLayout(true);   // reverse the layout
@@ -287,42 +252,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
     }
 
-//    @Override
-//    public void setBookItemRecycler() {
-//        bookItemList = LitePal.findAll(BookItem.class);
-//        Log.d(TAG, "setBookItemRecycler: " + bookItemList);
-//
-//        if (bookItemList.isEmpty()) {
-//            BookItem bookItem = new BookItem();
-//            bookItem.addNewBookIntoStorage(1, "Default");
-//            bookItemList = LitePal.findAll(BookItem.class);
-//        }
-//
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        bookItemRecyclerView.setLayoutManager(layoutManager);
-//        bookItemRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//        BookItemAdapter bookAdapter = new BookItemAdapter(bookItemList);
-//        bookAdapter.setOnItemClickListener(new BookItemAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                // 选中之后的操作
-//                GlobalVariables.setmBookPos(position);
-//                GlobalVariables.setmBookId(bookItemList.get(position).getId());
-//                drawerLayout.closeDrawer(bookLinearLayout);
-//                onResume();
-//            }
-//        });
-//
-//        bookItemRecyclerView.setAdapter(bookAdapter);
-//        ItemTouchHelper bookTouchHelper = new ItemTouchHelper(
-//                new BookItemCallback(this, bookItemRecyclerView, bookAdapter)
-//        );
-//        bookTouchHelper.attachToRecyclerView(bookItemRecyclerView);
-//    }
-
     @Override
     public void setNewBook() {
-//        final BookItem bookItem = new BookItem();
         final EditText book_title = new EditText(MainActivity.this);
         // 弹窗输入
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -334,8 +265,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (!book_title.getText().toString().isEmpty()) {
-//                    int id = bookItemList.get(bookItemList.size()-1).getId() + 1;
-//                    bookItem.addNewBookIntoStorage(id, book_title.getText().toString());
                     mainPresenter.onAddBookConfirmClick(book_title.getText().toString());
                     onResume();
                 } else {

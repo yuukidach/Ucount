@@ -25,9 +25,6 @@ public class MoneyItem extends LitePalSupport {
 
     }
 
-//    public final int TYPE_COST = -1;
-//    public final int TYPE_EARN =  1;
-
     private int id;
     private String inOutType;
     @Column(index = true)
@@ -86,26 +83,4 @@ public class MoneyItem extends LitePalSupport {
         Resources resources = MainActivity.resources;
         return resources.getIdentifier(typeImgId, "drawable", MainActivity.PACKAGE_NAME);
     }
-
-//    public void addNewMoneyItemIntoStorage(String name,
-//                                           double money,
-//                                           int bookId,
-//                                           InOutType inOutType,
-//                                           String description) {
-//        BookItem bookItem = LitePal.find(BookItem.class, bookId);
-//
-//        setTypeName(name);
-//        setMoney(money);
-//        setBookId(bookId);
-//        setInOutType(inOutType);
-//        setDescription(description);
-//
-//        setDate(new Date().toString());
-//
-//        save();
-
-//        bookItem.insertMoneyItem(this);
-//        bookItem.getMoneyItemList().add(this);
-//        bookItem.save();
-//    }
 }

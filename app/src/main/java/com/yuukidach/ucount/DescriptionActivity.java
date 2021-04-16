@@ -18,19 +18,20 @@ import com.yuukidach.ucount.view.DescriptionView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import at.markushi.ui.CircleButton;
 
 public class DescriptionActivity extends AppCompatActivity implements DescriptionView {
     private EditText inputTxt;
     private TextView countTxt;
-    private TextView dateTxt;
-    private CircleButton doneBtn;
-
 
     DescriptionPresenter presenter;
 
-    private final SimpleDateFormat formatItem = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat formatItem = new SimpleDateFormat(
+            "yyyy-MM-dd",
+            Locale.getDefault()
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,8 @@ public class DescriptionActivity extends AppCompatActivity implements Descriptio
 
         inputTxt = (EditText) findViewById(R.id.page3_edit);
         countTxt = (TextView) findViewById(R.id.page3_count);
-        dateTxt = (TextView) findViewById(R.id.page3_date);
-        doneBtn = (CircleButton) findViewById(R.id.page3_done);
+        TextView dateTxt = (TextView) findViewById(R.id.page3_date);
+        CircleButton doneBtn = (CircleButton) findViewById(R.id.page3_done);
 
         // 显示日期
         dateTxt.setText(formatItem.format(new Date()));
@@ -55,9 +56,7 @@ public class DescriptionActivity extends AppCompatActivity implements Descriptio
         // 获取焦点
         inputTxt.setFocusable(true);
         presenter.onCreated();
-//        inputTxt.setText(GlobalVariables.getmDescription());
         inputTxt.setSelection(inputTxt.getText().length());
-//        countTxt.setText(String.valueOf(inputTxt.getText().length()) +"/30");
 
         // 设置输入文本监听，实时显示字数
         inputTxt.addTextChangedListener(new TextWatcher() {
