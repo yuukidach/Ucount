@@ -163,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         if (data == null) return;
         Uri uri = data.getData();
-//        saveImageUri(requestCode, uri);
-//        mainPresenter.updateImgUtils(uri, requestCode);
-//        mainPresenter.updateMoneyItemView(requestCode);
         mainPresenter.onActivityResult(uri, requestCode);
 
         // get permanent permission to access the image
@@ -174,14 +171,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         getContentResolver().takePersistableUriPermission(uri, takeFlags);
     }
-
-//    // 利用SharedPreferences保存图片uri
-//    public void saveImageUri(int id, Uri uri) {
-//        SharedPreferences pref = getSharedPreferences("image" + id, MODE_PRIVATE);
-//        SharedPreferences.Editor prefEditor = pref.edit();
-//        prefEditor.putString("uri", uri.toString());
-//        prefEditor.apply();
-//    }
 
     @Override
     public void openPicGallery(ImageType type) {
@@ -207,28 +196,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Uri uri = Uri.parse(uriStr);
         this.drawerBanner.setImageURI(uri);
     }
-
-//    @Override
-//    public void updateHeaderImg() {
-//        SharedPreferences pref = getSharedPreferences("image" + ImageType.HEADER.ordinal(),
-//                MODE_PRIVATE);
-//        String imageUri = pref.getString("uri", "");
-//        if (!imageUri.isEmpty()) {
-//            Uri contentUri = Uri.parse(imageUri);
-//            this.headerImg.setImageURI(contentUri);
-//        }
-//    }
-//
-//    @Override
-//    public void updateDrawerImg() {
-//        SharedPreferences pref = getSharedPreferences("image" + ImageType.DRAWER.ordinal(),
-//                MODE_PRIVATE);
-//        String imageUri = pref.getString("uri", "");
-//        if (!imageUri.isEmpty()) {
-//            Uri contentUri = Uri.parse(imageUri);
-//            this.drawerBanner.setImageURI(contentUri);
-//        }
-//    }
 
     @Override
     public void showBalance(String numStr) {
