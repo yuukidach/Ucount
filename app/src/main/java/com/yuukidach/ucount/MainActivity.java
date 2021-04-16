@@ -164,7 +164,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (data == null) return;
         Uri uri = data.getData();
 //        saveImageUri(requestCode, uri);
-        mainPresenter.updateImgUtils(uri, requestCode);
+//        mainPresenter.updateImgUtils(uri, requestCode);
+//        mainPresenter.updateMoneyItemView(requestCode);
+        mainPresenter.onActivityResult(uri, requestCode);
 
         // get permanent permission to access the image
         int takeFlags = data.getFlags()
@@ -192,12 +194,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void updateHeaderImg(String uriStr) {
+        // If there is no picture in SharedPreferences, then use default picture
+        if (uriStr.isEmpty()) return;
         Uri uri = Uri.parse(uriStr);
         this.headerImg.setImageURI(uri);
     }
 
     @Override
     public void updateDrawerImg(String uriStr) {
+        // If there is no picture in SharedPreferences, then use default picture
+        if (uriStr.isEmpty()) return;
         Uri uri = Uri.parse(uriStr);
         this.drawerBanner.setImageURI(uri);
     }

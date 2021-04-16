@@ -53,8 +53,8 @@ public class MainPresenter {
 
         mainView.hideBalance();
         // transfer enum to int, then get the string
-        mainView.updateHeaderImg(imgUtils.getUriStr(MainView.ImageType.HEADER.ordinal()));
-        mainView.updateDrawerImg(imgUtils.getUriStr(MainView.ImageType.DRAWER.ordinal()));
+        updateImgView(MainView.ImageType.HEADER.ordinal());
+        updateImgView(MainView.ImageType.DRAWER.ordinal());
         updateMonthlyEarn();
         updateMonthlyCost();
 
@@ -79,6 +79,19 @@ public class MainPresenter {
     public void updateImgUtils(Uri uri, int id) {
         imgUtils.find(id);
         imgUtils.update(uri);
+    }
+
+    public void updateImgView(int id) {
+        if (id == MainView.ImageType.DRAWER.ordinal()) {
+            mainView.updateDrawerImg(imgUtils.getUriStr(id));
+        } else if (id == MainView.ImageType.HEADER.ordinal()) {
+            mainView.updateHeaderImg(imgUtils.getUriStr(id));
+        }
+    }
+
+    public void onActivityResult(Uri uri, int requestCode) {
+        updateImgUtils(uri, requestCode);
+        updateImgView(requestCode);
     }
 
     public void updateMonthlyEarn() {
