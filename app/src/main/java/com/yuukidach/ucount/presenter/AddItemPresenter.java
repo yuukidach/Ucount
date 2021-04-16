@@ -67,13 +67,6 @@ public class AddItemPresenter {
             moneyItem.save();
 
             Log.d("book ID", "onAddFinishButtonClick: " + bookId);
-//            moneyItem.addNewMoneyItemIntoStorage(
-//                    view.getTypeName(),
-//                    Double.parseDouble(money),
-//                    bookId,
-//                    inOutType,
-//                    description
-//            );
         }
         calculator.clear();
     }

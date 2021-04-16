@@ -60,6 +60,9 @@ public class MainPresenter {
         updateMonthlyEarn();
         updateMonthlyCost();
 
+        // reset date as "" so that the date text view won't disappear after going to another page
+        // and then going back to main page
+        MoneyItemViewHolder.resetDate();
     }
 
     public void onImageLongClick(MainView.ImageType type) {

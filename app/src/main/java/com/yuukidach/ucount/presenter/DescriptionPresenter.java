@@ -22,7 +22,8 @@ public class DescriptionPresenter {
         view.setWordsCounter(description);
     }
 
-    public void onTextChanged() {
+    public void afterTextChanged() {
+        description = view.getDescriptionText();
         view.setWordsCounter(description);
     }
 

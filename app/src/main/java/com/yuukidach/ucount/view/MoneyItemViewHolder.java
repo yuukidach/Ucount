@@ -122,6 +122,13 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
 
             Log.d("new date", "showItemDate: " + date);
         }
+    }
 
+    /**
+     * reset date to "" otherwise when we go to another activity and then go back, the last date
+     * would not be shown
+     */
+    static public void resetDate() {
+        date = "";
     }
 }

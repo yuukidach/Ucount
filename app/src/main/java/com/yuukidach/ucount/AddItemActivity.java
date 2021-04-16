@@ -244,38 +244,11 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
     // 数字输入按钮
     public void calculatorNumOnclick(View v) {
         presenter.OnNumPadNumClick(v);
-
-//        Button view = (Button) v;
-//        String digit = view.getText().toString();
-//        String money = GlobalVariables.getmInputMoney();
-//        if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length()>2) {
-//            String dot = money.substring(money.length() - 3, money.length() - 2);
-//            Log.d(TAG, "calculatorNumOnclick: " + dot);
-//            if (dot.equals(".")) {
-//                Toast.makeText(getApplicationContext(), "唔，已经不能继续输入了", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//        }
-//        GlobalVariables.setmInputMoney(money+digit);
-//        moneyText.setText(decimalFormat.format(Double.valueOf(GlobalVariables.getmInputMoney())));
     }
-
-//    // 清零按钮
-//    public void calculatorClear() {
-//        GlobalVariables.setmInputMoney("");
-//        GlobalVariables.setHasDot(false);
-//    }
 
     // 小数点处理工作
     public void calculatorPushDot(View view) {
         presenter.onNumPadDotClock();
-//
-//        if (GlobalVariables.getmHasDot()) {
-//            Toast.makeText(getApplicationContext(), "已经输入过小数点了 ━ω━●", Toast.LENGTH_SHORT).show();
-//        } else {
-//            GlobalVariables.setmInputMoney(GlobalVariables.getmInputMoney()+".");
-//            GlobalVariables.setHasDot(true);
-//        }
     }
 
     @Override
@@ -344,7 +317,7 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
         Bundle bundle = new Bundle();
         bundle.putString("description", presenter.getDescription());
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_DESCRIPTION);
     }
 
     @Override

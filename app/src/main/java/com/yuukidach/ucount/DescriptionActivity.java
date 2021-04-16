@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,17 +27,8 @@ public class DescriptionActivity extends AppCompatActivity implements Descriptio
     private TextView dateTxt;
     private CircleButton doneBtn;
 
-    private final Bundle bundle = getIntent().getExtras();
 
-    DescriptionPresenter presenter = new DescriptionPresenter(
-            this,
-            bundle.getString("description")
-    );
-
-//    private final EditText inputTxt = (EditText) findViewById(R.id.page3_edit);
-//    private final TextView countTxt = (TextView) findViewById(R.id.page3_count);
-//    private final TextView dateTxt = (TextView) findViewById(R.id.page3_date);
-//    private final CircleButton doneBtn = (CircleButton) findViewById(R.id.page3_done);
+    DescriptionPresenter presenter;
 
     private final SimpleDateFormat formatItem = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -44,6 +36,13 @@ public class DescriptionActivity extends AppCompatActivity implements Descriptio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_descrpition);
+
+        final Bundle bundle = getIntent().getExtras();
+
+        presenter = new DescriptionPresenter(
+                this,
+                bundle.getString("description")
+        );
 
         inputTxt = (EditText) findViewById(R.id.page3_edit);
         countTxt = (TextView) findViewById(R.id.page3_count);
@@ -69,21 +68,21 @@ public class DescriptionActivity extends AppCompatActivity implements Descriptio
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                countTxt.setText(String.valueOf(s.length())+"/30");
-                presenter.onTextChanged();
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                presenter.afterTextChanged();
             }
         });
 
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("description", "onClick: " + presenter.getDescription());
+
                 presenter.onDoneButtonClick();
-//                GlobalVariables.setmDescription(inputTxt.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra(Intent.EXTRA_TEXT, presenter.getDescription());
                 setResult(RESULT_OK, intent);
