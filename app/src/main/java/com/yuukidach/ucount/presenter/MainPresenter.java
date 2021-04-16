@@ -13,6 +13,7 @@ import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
+import java.security.AlgorithmConstraints;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -202,11 +203,12 @@ public class MainPresenter {
                                .findFirst(BookItem.class);
         MoneyItem money = book.getMoneyItemList().get(position);
 
-        Log.d("Date", "onBindMoneyItemViewHolder: " + money.getDate());
+        Log.d("inout type", "onBindMoneyItemViewHolder: " + money.getInOutType());
 
         holder.showItemDate(money);
 
         if (money.getInOutType() == MoneyItem.InOutType.COST) {
+            Log.d("main page cost item", "onBindMoneyItemViewHolder: " + money.getMoney());
             holder.showAsCostItem();
             holder.setCostItemTypeImage(money.getTypeImageId());
             holder.setCostItemTypeText(money.getTypeName());

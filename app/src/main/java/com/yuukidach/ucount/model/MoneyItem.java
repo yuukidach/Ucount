@@ -29,7 +29,7 @@ public class MoneyItem extends LitePalSupport {
 //    public final int TYPE_EARN =  1;
 
     private int id;
-    private InOutType inOutType;
+    private String inOutType;
     @Column(index = true)
     private int bookId;
     private double money;
@@ -50,7 +50,7 @@ public class MoneyItem extends LitePalSupport {
     public MoneyItem(String typeImgId, InOutType inOutType, double money, String typeName) {
         this(typeImgId, typeName);
         this.money = money;
-        this.inOutType = inOutType;
+        this.inOutType = inOutType.name();
     }
 
     // constructor with description
@@ -64,7 +64,7 @@ public class MoneyItem extends LitePalSupport {
     }
 
     public double getMoney()                       { return money; }
-    public InOutType getInOutType()                { return inOutType; }
+    public InOutType getInOutType()                { return InOutType.valueOf(inOutType); }
     public String getTypeName()                        { return typeName; }
     public String getDescription()                 { return description; }
     public String getDate()                        { return date; }
@@ -74,7 +74,7 @@ public class MoneyItem extends LitePalSupport {
 
     // 设定属性
     public void setMoney(double money)             { this.money = money; }
-    public void setInOutType(InOutType inOutType)  { this.inOutType = inOutType; }
+    public void setInOutType(InOutType inOutType)  { this.inOutType = inOutType.name(); }
     public void setTypeName(String typeName)               { this.typeName = typeName; }
     public void setDescription(String description) { this.description = description; }
     public void setDate(String date)               { this.date = date; }
