@@ -1,6 +1,7 @@
 package com.yuukidach.ucount.presenter;
 
 import android.net.Uri;
+import android.util.Log;
 
 //import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.model.BookItem;
@@ -12,6 +13,7 @@ import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
+import java.security.AlgorithmConstraints;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -177,13 +179,26 @@ public class MainPresenter {
     }
 
     public void onBindMoneyItemViewHolder(MoneyItemViewHolder holder, int position) {
+        Log.d("=====", "onBindMoneyItemViewHolder: " + position);
+        Log.d("=====", "onBindMoneyItemViewHolder: " + curBookId);
         BookItem book = LitePal.find(BookItem.class, curBookId);
         MoneyItem money = book.getMoneyItemList().get(position);
 
+        holder.showItemDate(money);
+
         if (money.getInOutType() == MoneyItem.InOutType.COST) {
             holder.showAsCostItem();
+            holder.setCostItemTypeImage(money.getTypeImageId());
+            holder.setCostItemTypeText(money.getTypeName());
+            holder.setCostItemMoney(decimalFormat.format(money.getMoney()));
+            // TODO: just pass a description string
+            holder.handleCostDescription(money);
         } else {
             holder.showAsEarnItem();
+            holder.setEarnItemTypeImage(money.getTypeImageId());
+            holder.setEarnItemTypeText(money.getTypeName());
+            holder.setEarnItemMoney(decimalFormat.format(money.getMoney()));
+            holder.handleEarnDescription(money);
         }
     }
 }

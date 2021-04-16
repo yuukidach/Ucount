@@ -290,14 +290,14 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
 
     @Override
     public void highlightEarnButton() {
-        addCostBtn.setTextColor(0xffff8c00); // set cost button as gray
-        addEarnBtn.setTextColor(0xff908070); // set earn button as orange
+        addCostBtn.setTextColor(0xff908070); // set cost button as gray
+        addEarnBtn.setTextColor(0xffff8c00); // set earn button as orange
     }
 
     @Override
     public void highlightCostButton() {
-        addEarnBtn.setTextColor(0xffff8c00); // set earn button as gray
-        addCostBtn.setTextColor(0xff908070); // set cost button as orange
+        addEarnBtn.setTextColor(0xff908070); // set earn button as gray
+        addCostBtn.setTextColor(0xffff8c00); // set cost button as orange
     }
 
     @Override
@@ -373,8 +373,8 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
     }
 
     @Override
-    public int getInOutFlag() {
-        return (int)bannerImage.getTag();
+    public MoneyItem.InOutType getInOutFlag() {
+        return (MoneyItem.InOutType) bannerImage.getTag();
     }
 
     @Override

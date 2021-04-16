@@ -2,6 +2,8 @@ package com.yuukidach.ucount.view;
 
 import android.view.View;
 
+import com.yuukidach.ucount.model.MoneyItem;
+
 public interface AddItemView {
     void highlightEarnButton();
 
@@ -35,7 +37,7 @@ public interface AddItemView {
 
     String getPressedNumPadValue(View view);
 
-    int getInOutFlag();
+    MoneyItem.InOutType getInOutFlag();
 
     void alarmNoMoneyInput();
 

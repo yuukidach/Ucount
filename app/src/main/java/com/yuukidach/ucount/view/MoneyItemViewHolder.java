@@ -9,6 +9,7 @@ import androidx.percentlayout.widget.PercentRelativeLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuukidach.ucount.R;
+import com.yuukidach.ucount.model.MoneyItem;
 
 public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     PercentRelativeLayout earnLayout, costLayout;
@@ -19,6 +20,8 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
     TextView itemMoneyEarn, itemMoneyCost;
     TextView itemDspEarn, itemDspCost;
     TextView itemDate;
+
+    private String date = "";
 
     public MoneyItemViewHolder(View view) {
         super(view);
@@ -69,5 +72,46 @@ public class MoneyItemViewHolder extends RecyclerView.ViewHolder {
 
     public void setEarnItemMoney(String str) {
         itemMoneyEarn.setText(str);
+    }
+
+    public boolean isThereADescription(MoneyItem moneyItem) {
+        return (moneyItem.getDescription()!=null && !moneyItem.getDescription().equals(""));
+    }
+
+    public void handleCostDescription(MoneyItem moneyItem) {
+        if (isThereADescription(moneyItem)) {
+            RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)itemNameCost.getLayoutParams();
+            nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams)itemMoneyCost.getLayoutParams();
+            moneyParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            itemDspCost.setText(moneyItem.getDescription());
+            itemNameCost.setLayoutParams(nameParams);
+            itemMoneyCost.setLayoutParams(moneyParams);
+        } else {
+            itemDspCost.setVisibility(View.GONE);
+        }
+    }
+
+    public void handleEarnDescription(MoneyItem moneyItem) {
+        if (isThereADescription(moneyItem)) {
+            RelativeLayout.LayoutParams nameParams = (RelativeLayout.LayoutParams)itemNameEarn.getLayoutParams();
+            nameParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            RelativeLayout.LayoutParams moneyParams = (RelativeLayout.LayoutParams)itemMoneyEarn.getLayoutParams();
+            moneyParams.removeRule(RelativeLayout.CENTER_VERTICAL);
+            itemDspEarn.setText(moneyItem.getDescription());
+            itemNameEarn.setLayoutParams(nameParams);
+            itemMoneyEarn.setLayoutParams(moneyParams);
+        } else {
+            itemDspEarn.setVisibility(View.GONE);
+        }
+    }
+
+    public void showItemDate(MoneyItem item) {
+        if (date.equals(item.getDate())) dateBar.setVisibility(View.GONE);
+        else {
+            dateBar.setVisibility(View.VISIBLE);
+            itemDate.setText(date);
+            date = item.getDate();
+        }
     }
 }

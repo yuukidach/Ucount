@@ -27,12 +27,10 @@ public class BookItem extends LitePalSupport {
     public BookItem() {}
     public BookItem(String name) {
         this.name = name;
-
     }
 
     public int getId()                          { return id; }
     public String getName()                     { return name; }
-    public List<MoneyItem> getMoneyItemList()   { return moneyItemList; }
 //    public double getSumAll()                   { return sumAll; }
 //    public double getSumMonthlyCost()           { return sumMonthlyCost; }
 //    public double getSumMonthlyEarn()           { return sumMonthlyEarn; }
@@ -44,15 +42,26 @@ public class BookItem extends LitePalSupport {
 //    public void setSumMonthlyCost(double cost)  { this.sumMonthlyCost = cost; }
 //    public void setSumMonthlyEarn(double earn)  { this.sumMonthlyEarn = earn; }
 //    public void setDate(String date)            { this.date = date; }
-    public void setMoneyItemList(List<MoneyItem> moneyItemList) {
-        this.moneyItemList = moneyItemList;
-    }
+//    public void setMoneyItemList(List<MoneyItem> moneyItemList) {
+//        this.moneyItemList = moneyItemList;
+//    }
 
     public boolean isThereABook(int id) {
         return LitePal.find(BookItem.class, id) != null;
     }
 
+    public void updateMoneyItemList() {
+        moneyItemList = LitePal.where("bookId = ?", String.valueOf(id))
+                               .find(MoneyItem.class);
+    }
+
+    public List<MoneyItem> getMoneyItemList() {
+        updateMoneyItemList();
+        return moneyItemList;
+    }
+
     public double getEarnSum() {
+        updateMoneyItemList();
         return moneyItemList.stream()
                             .filter(o -> o.getInOutType() == MoneyItem.InOutType.EARN)
                             .mapToDouble(MoneyItem::getMoney)
@@ -60,6 +69,7 @@ public class BookItem extends LitePalSupport {
     }
 
     public double getCostSum() {
+        updateMoneyItemList();
         return moneyItemList.stream()
                             .filter(o -> o.getInOutType() == MoneyItem.InOutType.COST)
                             .mapToDouble(MoneyItem::getMoney)
@@ -67,6 +77,7 @@ public class BookItem extends LitePalSupport {
     }
 
     public double getSum() {
+        updateMoneyItemList();
         return getEarnSum() - getCostSum();
     }
 
@@ -83,10 +94,10 @@ public class BookItem extends LitePalSupport {
         save();
     }
 
-    public void insertMoneyItem(MoneyItem moneyItem) {
-        moneyItemList.add(moneyItem);
-        save();
-    }
+//    public void insertMoneyItem(MoneyItem moneyItem) {
+//        moneyItemList.add(moneyItem);
+//        save();
+//    }
 
 
 //    public void saveBook(BookItem bookItem, int id, String name) {

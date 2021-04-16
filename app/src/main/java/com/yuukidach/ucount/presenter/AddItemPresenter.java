@@ -6,6 +6,8 @@ import com.yuukidach.ucount.model.Calculator;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.view.AddItemView;
 
+import java.util.Date;
+
 public class AddItemPresenter {
     private final AddItemView view;
     private final Calculator calculator = new Calculator();
@@ -42,20 +44,29 @@ public class AddItemPresenter {
         if (money.equals("0.00")) {
             view.alarmNoMoneyInput();
         } else {
-            MoneyItem.InOutType inOutType;
-            if (view.getInOutFlag() < 0) {
-                inOutType = MoneyItem.InOutType.COST;
-            } else {
-                inOutType = MoneyItem.InOutType.EARN;
-            }
+            MoneyItem.InOutType inOutType = view.getInOutFlag();
+//            if (view.getInOutFlag() == MoneyItem.InOutType.COST.ordinal()) {
+//                inOutType = MoneyItem.InOutType.COST;
+//            } else {
+//                inOutType = MoneyItem.InOutType.EARN;
+//            }
 
-            moneyItem.addNewMoneyItemIntoStorage(
-                    view.getTypeName(),
-                    Double.parseDouble(money),
-                    bookId,
-                    inOutType,
-                    description
-            );
+            moneyItem.setTypeName(view.getTypeName());
+            moneyItem.setDate(new Date().toString());
+            moneyItem.setMoney(Double.parseDouble(money));
+            moneyItem.setBookId(bookId);
+            moneyItem.setInOutType(inOutType);
+            moneyItem.setDescription(description);
+            moneyItem.setTypeImgId(view.getTypeImgResourceName());
+            moneyItem.save();
+
+//            moneyItem.addNewMoneyItemIntoStorage(
+//                    view.getTypeName(),
+//                    Double.parseDouble(money),
+//                    bookId,
+//                    inOutType,
+//                    description
+//            );
         }
         calculator.clear();
     }
@@ -77,7 +88,7 @@ public class AddItemPresenter {
     }
 
     public void onNumPadDotClock() {
-        if (calculator.inputDot()) view.alarmAlreadyHasDot();
+        if (!calculator.inputDot()) view.alarmAlreadyHasDot();
     }
 
     public String getDescription() {

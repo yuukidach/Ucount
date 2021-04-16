@@ -3,7 +3,6 @@ package com.yuukidach.ucount.model;
 import java.text.DecimalFormat;
 
 import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 public class Calculator {
     String money;
@@ -37,24 +36,25 @@ public class Calculator {
     public int cntFreePlaceForDecimal() {
         if (!hasDot()) return 2;
 
-        int cnt = 0;
-        for (int i = money.length(); i >= 0; --i) {
+        int cnt = 2;
+        for (int i = money.length()-1; i >= 0; --i) {
             if (money.charAt(i) == '.') break;;
-            cnt++;
+            cnt--;
         }
-        return min(cnt, 2);
+        return max(cnt, 0);
     }
 
     public boolean inputDot() {
         if (!hasDot()) {
             money += '.';
+            setHasDot(true);
             return true;
         }
         return false;
     }
 
     public boolean inputDigit(String digit) {
-        if (cntFreePlaceForDecimal() < 0) return false;
+        if (cntFreePlaceForDecimal() <= 0) return false;
         money += digit;
         return true;
     }

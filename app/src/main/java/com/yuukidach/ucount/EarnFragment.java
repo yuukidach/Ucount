@@ -114,8 +114,8 @@ public class EarnFragment extends Fragment {
 
         itemImage.setImageResource(tmpItem.getTypeImageId());
         itemTitle.setText(tmpItem.getTypeName());
-        itemImage.setTag(1);                        // 保留图片资源属性，1表示收入
-        itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用
+        itemImage.setTag(MoneyItem.InOutType.EARN);  // 保留图片资源属性
+        itemTitle.setTag(tmpItem.getTypeImgId());      // 保留图片资源名称作为标签，方便以后调用
 
         // 获取图片颜色并改变上方banner的背景色
         pb.generate(new Palette.PaletteAsyncListener() {
