@@ -66,6 +66,10 @@ public class MainPresenter {
         mainView.openPicGallery(type);
     }
 
+    public void hideBalance() {
+        mainView.hideBalance();
+    }
+
     private void showBalance() {
         BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
                                .findFirst(BookItem.class);
@@ -139,6 +143,11 @@ public class MainPresenter {
     public int getItemCount() {
         List<BookItem> bookItems = LitePal.findAll(BookItem.class);
         return bookItems.size();
+    }
+
+    public List<MoneyItem> getMoneyItemsInCurBook() {
+        return LitePal.where("bookId = ?", String.valueOf(curBookId))
+                      .find(MoneyItem.class);
     }
 
     /**
