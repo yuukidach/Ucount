@@ -1,6 +1,6 @@
-package com.yuukidach.ucount;
+package com.yuukidach.ucount.view.adapter;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.R;
+import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "GridRecyclerAdapter";
 
-    private List<IOItem> mDatas;
+    private List<MoneyItem> mDatas;
     private int curIndex;
     private int pageSize;
 
@@ -40,7 +41,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    public GridRecyclerAdapter(List<IOItem> Datas, int curIndex, int pageSize) {
+    public GridRecyclerAdapter(List<MoneyItem> Datas, int curIndex, int pageSize) {
         this.mDatas = Datas;
         this.curIndex = curIndex;
         this.pageSize = pageSize;
@@ -71,11 +72,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: I am in here:" + position);
         int realPositon = position + curIndex * pageSize;
-        IOItem ioItem = mDatas.get(realPositon);
-        holder.itemImage.setImageResource(ioItem.getSrcId());
-        holder.itemTitle.setText(ioItem.getName());
+        MoneyItem moneyItem = mDatas.get(realPositon);
+        holder.itemImage.setImageResource(moneyItem.getTypeImageId());
+        holder.itemTitle.setText(moneyItem.getTypeName());
         // 将数据保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(realPositon);
     }

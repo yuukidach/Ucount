@@ -1,11 +1,10 @@
 package com.yuukidach.ucount;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 
 /**
  * Created by yuukidach on 17-3-19.
