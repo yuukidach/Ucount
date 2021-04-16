@@ -80,7 +80,7 @@ public class MoneyItem extends LitePalSupport {
     public void setSrcName(String srcName)         { this.srcName = srcName; }
 
     // 返回图片资源的id
-    public int getSrcId() {
+    public int getTypeImageId() {
         Resources resources = MainActivity.resources;
         return resources.getIdentifier(srcName, "drawable", MainActivity.PACKAGE_NAME);
     }
@@ -102,7 +102,8 @@ public class MoneyItem extends LitePalSupport {
 
         save();
 
-        bookItem.getMoneyItemList().add(this);
-        bookItem.save();
+        bookItem.insertMoneyItem(this);
+//        bookItem.getMoneyItemList().add(this);
+//        bookItem.save();
     }
 }

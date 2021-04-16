@@ -8,6 +8,7 @@ import com.yuukidach.ucount.model.ImgUtils;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.view.MainView;
 import com.yuukidach.ucount.view.BookItemViewHolder;
+import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
@@ -163,15 +164,26 @@ public class MainPresenter {
         mainView.setMainItemRecycler(moneyItems);
     }
 
-    public void onBindBookItemViewHolder(BookItemViewHolder holder, int postion) {
+    public void onBindBookItemViewHolder(BookItemViewHolder holder, int position) {
         List<BookItem> bookItems = LitePal.findAll(BookItem.class);
-        BookItem item = bookItems.get(postion);
+        BookItem item = bookItems.get(position);
         holder.setBookNameText(item.getName());
 
-        if (postion == curBookId) {
+        if (position == curBookId) {
             holder.setAsChose();
         } else {
             holder.setAsNotChose();
+        }
+    }
+
+    public void onBindMoneyItemViewHolder(MoneyItemViewHolder holder, int position) {
+        BookItem book = LitePal.find(BookItem.class, curBookId);
+        MoneyItem money = book.getMoneyItemList().get(position);
+
+        if (money.getInOutType() == MoneyItem.InOutType.COST) {
+            holder.showAsCostItem();
+        } else {
+            holder.showAsEarnItem();
         }
     }
 }

@@ -29,12 +29,7 @@ import java.util.Locale;
 public class AddItemActivity extends AppCompatActivity implements AddItemView {
     private final int REQUEST_DESCRIPTION = 1;
 
-    private final Bundle bundle = getIntent().getExtras();
-
-    private final AddItemPresenter presenter = new AddItemPresenter(
-            this,
-            bundle.getInt("key")
-    );
+    private AddItemPresenter presenter;
 
     private static final String TAG = "AddItemActivity";
 
@@ -48,10 +43,10 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
     private ImageButton addDescription;
 
 
-    private final ImageView bannerImage = (ImageView) findViewById(R.id.chosen_image);
-    private final TextView bannerText = (TextView) findViewById(R.id.chosen_title);
+    private ImageView bannerImage;
+    private TextView bannerText;
 
-    private final TextView moneyText = (TextView) findViewById(R.id.input_money_text);
+    private TextView moneyText;
 
 //    private final Button addCostBtn = (Button) findViewById(R.id.add_cost_button);
 //    private final Button addEarnBtn = (Button) findViewById(R.id.add_earn_button);
@@ -86,6 +81,9 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
         clearBtn.setTypeface(typeface);
         words.setTypeface(typeface);
 
+        Bundle bundle = getIntent().getExtras();
+        presenter = new AddItemPresenter(this, bundle.getInt("bookId"));
+
 
 //        addCostBtn.setOnClickListener(new ButtonListener());
 //        addEarnBtn.setOnClickListener(new ButtonListener());
@@ -94,10 +92,10 @@ public class AddItemActivity extends AppCompatActivity implements AddItemView {
 //        clearBtn.setOnClickListener(new ButtonListener());
 
 
-//        bannerText = (TextView) findViewById(R.id.chosen_title);
-//        bannerImage = (ImageView) findViewById(R.id.chosen_image);
-//
-//        moneyText = (TextView) findViewById(R.id.input_money_text);
+        bannerText = (TextView) findViewById(R.id.chosen_title);
+        bannerImage = (ImageView) findViewById(R.id.chosen_image);
+
+        moneyText = (TextView) findViewById(R.id.input_money_text);
         // 及时清零
 
         presenter.onCreate();

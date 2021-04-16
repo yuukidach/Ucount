@@ -82,6 +82,13 @@ public class BookItem extends LitePalSupport {
 
         save();
     }
+
+    public void insertMoneyItem(MoneyItem moneyItem) {
+        moneyItemList.add(moneyItem);
+        save();
+    }
+
+
 //    public void saveBook(BookItem bookItem, int id, String name) {
 //        bookItem.setId(id);
 //        bookItem.setName(name);

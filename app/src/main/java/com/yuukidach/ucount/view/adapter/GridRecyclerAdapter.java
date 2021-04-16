@@ -75,7 +75,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Log.d(TAG, "onBindViewHolder: I am in here:" + position);
         int realPositon = position + curIndex * pageSize;
         MoneyItem moneyItem = mDatas.get(realPositon);
-        holder.itemImage.setImageResource(moneyItem.getSrcId());
+        holder.itemImage.setImageResource(moneyItem.getTypeImageId());
         holder.itemTitle.setText(moneyItem.getTypeName());
         // 将数据保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(realPositon);

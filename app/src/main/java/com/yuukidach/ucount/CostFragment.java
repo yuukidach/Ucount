@@ -123,12 +123,12 @@ public class CostFragment extends Fragment {
 
     // 改变banner状态
     public void changeBanner(MoneyItem tmpItem) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getTypeImageId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);
 
 
-        itemImage.setImageResource(tmpItem.getSrcId());
+        itemImage.setImageResource(tmpItem.getTypeImageId());
         itemTitle.setText(tmpItem.getTypeName());
         itemImage.setTag(-1);                        // 保留图片资源属性，-1表示支出
         itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用

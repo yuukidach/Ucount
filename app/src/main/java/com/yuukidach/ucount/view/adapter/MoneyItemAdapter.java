@@ -1,13 +1,11 @@
 package com.yuukidach.ucount.view.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.percentlayout.widget.PercentRelativeLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +14,7 @@ import com.yuukidach.ucount.R;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.MoneyItem;
 import com.yuukidach.ucount.presenter.MainPresenter;
+import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
@@ -26,7 +25,7 @@ import java.util.List;
  * Created by yuukidach on 17-3-10.
  */
 
-public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.ViewHolder> {
+public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemViewHolder> {
     private static final String TAG = "MoneyItemAdapter";
 //    private final int TYPE_COST = -1;
 //    private final int TYPE_EARN =  1;
@@ -38,33 +37,33 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
 
     public DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        PercentRelativeLayout earnLayout, costLayout;
-        RelativeLayout dateBar;
-
-        ImageView itemImageEarn, itemImageCost;
-        TextView itemNameEarn, itemNameCost;
-        TextView itemMoneyEarn, itemMoneyCost;
-        TextView itemDspEarn, itemDspCost;
-        TextView itemDate;
-
-        public ViewHolder(View view) {
-            super(view);
-            earnLayout = (PercentRelativeLayout) view.findViewById(R.id.earn_left_layout);
-            costLayout = (PercentRelativeLayout) view.findViewById(R.id.cost_right_layout);
-            dateBar    = (RelativeLayout) view.findViewById(R.id.date_bar);
-
-            itemImageEarn = (ImageView) view.findViewById(R.id.earn_item_img_main);
-            itemImageCost = (ImageView) view.findViewById(R.id.cost_item_img_main);
-            itemNameEarn  = (TextView ) view.findViewById(R.id.earn_item_name_main);
-            itemNameCost  = (TextView ) view.findViewById(R.id.cost_item_name_main);
-            itemMoneyEarn = (TextView ) view.findViewById(R.id.earn_item_money_main);
-            itemMoneyCost = (TextView ) view.findViewById(R.id.cost_item_money_main);
-            itemDspEarn   = (TextView ) view.findViewById(R.id.earn_item_decription);
-            itemDspCost   = (TextView ) view.findViewById(R.id.cost_item_decription);
-            itemDate      = (TextView ) view.findViewById(R.id.iotem_date);
-        }
-    }
+//    static class ViewHolder extends RecyclerView.ViewHolder {
+//        PercentRelativeLayout earnLayout, costLayout;
+//        RelativeLayout dateBar;
+//
+//        ImageView itemImageEarn, itemImageCost;
+//        TextView itemNameEarn, itemNameCost;
+//        TextView itemMoneyEarn, itemMoneyCost;
+//        TextView itemDspEarn, itemDspCost;
+//        TextView itemDate;
+//
+//        public ViewHolder(View view) {
+//            super(view);
+//            earnLayout = (PercentRelativeLayout) view.findViewById(R.id.earn_left_layout);
+//            costLayout = (PercentRelativeLayout) view.findViewById(R.id.cost_right_layout);
+//            dateBar    = (RelativeLayout) view.findViewById(R.id.date_bar);
+//
+//            itemImageEarn = (ImageView) view.findViewById(R.id.earn_item_img_main);
+//            itemImageCost = (ImageView) view.findViewById(R.id.cost_item_img_main);
+//            itemNameEarn  = (TextView ) view.findViewById(R.id.earn_item_name_main);
+//            itemNameCost  = (TextView ) view.findViewById(R.id.cost_item_name_main);
+//            itemMoneyEarn = (TextView ) view.findViewById(R.id.earn_item_money_main);
+//            itemMoneyCost = (TextView ) view.findViewById(R.id.cost_item_money_main);
+//            itemDspEarn   = (TextView ) view.findViewById(R.id.earn_item_decription);
+//            itemDspCost   = (TextView ) view.findViewById(R.id.cost_item_decription);
+//            itemDate      = (TextView ) view.findViewById(R.id.iotem_date);
+//        }
+//    }
 
     public MoneyItemAdapter(MainPresenter presenter, List<MoneyItem> moneyItemList) {
         this.presenter = presenter;
@@ -73,29 +72,29 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MoneyItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "onCreateViewHolder: ");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.io_item, parent ,false);
-        return new ViewHolder(view);
+        return new MoneyItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MoneyItemViewHolder holder, int position) {
         MoneyItem moneyItem = mMoneyItemList.get(position);
         showItemDate(holder, moneyItem.getDate());
         // 表示支出的布局
         if (moneyItem.getInOutType() == MoneyItem.InOutType.COST) {
-            holder.earnLayout.setVisibility(View.GONE);
-            holder.costLayout.setVisibility(View.VISIBLE);
-            holder.itemImageCost.setImageResource(moneyItem.getSrcId());
+//            holder.earnLayout.setVisibility(View.GONE);
+//            holder.costLayout.setVisibility(View.VISIBLE);
+            holder.itemImageCost.setImageResource(moneyItem.getTypeImageId());
             holder.itemNameCost.setText(moneyItem.getTypeName());
             holder.itemMoneyCost.setText(decimalFormat.format(moneyItem.getMoney()));
             handleDescription(moneyItem, holder.itemDspCost, holder.itemNameCost, holder.itemMoneyCost);
         //表示收入的布局
         } else if (moneyItem.getInOutType() == MoneyItem.InOutType.EARN) {
-            holder.earnLayout.setVisibility(View.VISIBLE);
-            holder.costLayout.setVisibility(View.GONE);
-            holder.itemImageEarn.setImageResource(moneyItem.getSrcId());
+//            holder.earnLayout.setVisibility(View.VISIBLE);
+//            holder.costLayout.setVisibility(View.GONE);
+            holder.itemImageEarn.setImageResource(moneyItem.getTypeImageId());
             holder.itemNameEarn.setText(moneyItem.getTypeName());
             holder.itemMoneyEarn.setText(decimalFormat.format(moneyItem.getMoney()));
             handleDescription(moneyItem, holder.itemDspEarn, holder.itemNameEarn, holder.itemMoneyEarn);
@@ -109,7 +108,7 @@ public class MoneyItemAdapter extends RecyclerView.Adapter<MoneyItemAdapter.View
     }
 
     // 利用全局变量进行判定
-    public void showItemDate(ViewHolder holder, String Date) {
+    public void showItemDate(MoneyItemViewHolder holder, String Date) {
         if (showingDate.equals(Date)) holder.dateBar.setVisibility(View.GONE);
         else {
             holder.dateBar.setVisibility(View.VISIBLE);
