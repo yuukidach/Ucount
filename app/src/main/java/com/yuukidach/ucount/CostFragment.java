@@ -3,11 +3,11 @@ package com.yuukidach.ucount;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.yuukidach.ucount.model.IOItem;
+import com.yuukidach.ucount.view.adapter.GridRecyclerAdapter;
+import com.yuukidach.ucount.view.adapter.ViewPagerAdapter;
+import com.yuukidach.ucount.model.MoneyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class CostFragment extends Fragment {
             "家庭", "宠物", "服装", "日用", "水果", "母婴", "信用卡", "理财", "工作", "家具", "通信"};
     private ViewPager mPager;
     private List<View> mPagerList;
-    private List<IOItem> mDatas;
+    private List<MoneyItem> mDatas;
     private LayoutInflater inflater;
     private ImageView itemImage;
     private TextView itemTitle;
@@ -105,9 +107,9 @@ public class CostFragment extends Fragment {
      * 初始化数据源
      */
     private void initDatas() {
-        mDatas = new ArrayList<IOItem>();
+        mDatas = new ArrayList<MoneyItem>();
         for (int i = 1; i <= titles.length; i++) {
-            mDatas.add(new IOItem("type_big_" + i, titles[i-1]));
+            mDatas.add(new MoneyItem("type_big_" + i, titles[i-1]));
         }
     }
 
@@ -120,16 +122,16 @@ public class CostFragment extends Fragment {
     }
 
     // 改变banner状态
-    public void changeBanner(IOItem tmpItem) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getSrcId());
+    public void changeBanner(MoneyItem tmpItem) {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), tmpItem.getTypeImageId());
         Palette.Builder pb = new Palette.Builder(bm);
         pb.maximumColorCount(1);
 
 
-        itemImage.setImageResource(tmpItem.getSrcId());
-        itemTitle.setText(tmpItem.getName());
-        itemImage.setTag(-1);                        // 保留图片资源属性，-1表示支出
-        itemTitle.setTag(tmpItem.getSrcName());      // 保留图片资源名称作为标签，方便以后调用
+        itemImage.setImageResource(tmpItem.getTypeImageId());
+        itemTitle.setText(tmpItem.getTypeName());
+        itemImage.setTag(MoneyItem.InOutType.COST);    // 保留图片资源属性
+        itemTitle.setTag(tmpItem.getTypeImgId());      // 保留图片资源名称作为标签，方便以后调用
 
         // 获取图片颜色并改变上方banner的背景色
         pb.generate(new Palette.PaletteAsyncListener() {

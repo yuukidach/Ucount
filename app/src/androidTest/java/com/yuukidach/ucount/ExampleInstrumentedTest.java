@@ -1,12 +1,13 @@
 package com.yuukidach.ucount;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static org.junit.Assert.*;
 
 /**
@@ -19,7 +20,7 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.yuukidach.ucount", appContext.getPackageName());
     }

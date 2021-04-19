@@ -14,8 +14,8 @@
             <!-- padding：Button里面的文字与Button边界的间隔 -->
             <padding
                 android:bottom="0dp"
-                android:left="0dp"
-                android:right="0dp"
+                android:left="10dp"
+                android:right="10dp"
                 android:top="0dp" />
         </shape>
     </item>

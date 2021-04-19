@@ -1,54 +1,70 @@
 package com.yuukidach.ucount.model;
 
-import org.litepal.crud.DataSupport;
+import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Date;
+import org.litepal.LitePal;
+import org.litepal.annotation.Column;
+import org.litepal.crud.LitePalSupport;
+
 import java.util.List;
 
 /**
  * Created by dash on 18-3-12.
  */
 
-public class BookItem extends DataSupport {
-    private int id;
+public class BookItem extends LitePalSupport {
+    @Column(unique = true)
+    private int uuid;
     private String name;
-    private double sumAll = 0.0;
-    private double sumMonthlyCost = 0.0;
-    private double sumMonthlyEarn = 0.0;
-    private String date;
-    private List<IOItem> ioItemList = new ArrayList<IOItem>();      // 一个账本对应多条收支
 
     public BookItem() {}
     public BookItem(String name) {
         this.name = name;
     }
 
-    public int getId()                          { return id; }
+    public int getUuid()                          { return uuid; }
     public String getName()                     { return name; }
-    public List<IOItem> getIoItemList()         { return ioItemList; }
-    public double getSumAll()                   { return sumAll; }
-    public double getSumMonthlyCost()           { return sumMonthlyCost; }
-    public double getSumMonthlyEarn()           { return sumMonthlyEarn; }
-    public String getDate()                     { return date; }
 
-    public void setId(int id)                   { this.id = id; }
+    public void setUuid(int uuid)                   { this.uuid = uuid; }
     public void setName(String name)            { this.name = name; }
-    public void setIoItemList(List<IOItem> ioItemList)          { this.ioItemList = ioItemList; }
-    public void setSumAll(double all)        { this.sumAll = all; }
-    public void setSumMonthlyCost(double cost)        { this.sumMonthlyCost = cost; }
-    public void setSumMonthlyEarn(double earn)        { this.sumMonthlyEarn = earn; }
-    public void setDate(String date)            { this.date = date; }
 
     public boolean isThereABook(int id) {
-        if (DataSupport.find(BookItem.class, id) == null)
-            return false;
-        return true;
+        return LitePal.find(BookItem.class, id) != null;
     }
 
-    public void saveBook(BookItem bookItem, int id, String name) {
-        bookItem.setId(id);
-        bookItem.setName(name);
-        bookItem.save();
+    public List<MoneyItem> getMoneyItemList() {
+        return LitePal.where("bookId = ?", String.valueOf(uuid))
+                      .find(MoneyItem.class);
+    }
+
+    public double getEarnSum() {
+        List<MoneyItem> moneyItemList = getMoneyItemList();
+        if (moneyItemList.size() == 0) return 0.0;
+        Log.d("moneyItemList size", "getEarnSum: " + moneyItemList.size());
+
+        return moneyItemList.stream()
+                            .filter(o -> o.getInOutType() == MoneyItem.InOutType.EARN)
+                            .mapToDouble(MoneyItem::getMoney)
+                            .sum();
+    }
+
+    public double getCostSum() {
+        List<MoneyItem> moneyItemList = getMoneyItemList();
+        if (moneyItemList.size() == 0) return 0.0;
+
+        return moneyItemList.stream()
+                            .filter(o -> o.getInOutType() == MoneyItem.InOutType.COST)
+                            .mapToDouble(MoneyItem::getMoney)
+                            .sum();
+    }
+
+    public double getSum() {
+        return getEarnSum() - getCostSum();
+    }
+
+    public void addNewBookIntoStorage(int uuid, String name) {
+        setUuid(uuid);
+        setName(name);
+        save();
     }
 }

@@ -24,7 +24,7 @@
 **主界面**  
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true" width="40%">
 
-**删除界面**    
+**删除界面** 
 <img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true" width="40%">
 
 **支出项目界面**    
@@ -45,7 +45,6 @@
 ### 附加功能说明
 1. 长按首页以及账本横幅可以更换图片
 2. 单个项目左滑删除
-
 
 ### 测试机型：
 小米6
