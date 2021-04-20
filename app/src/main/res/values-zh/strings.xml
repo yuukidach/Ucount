@@ -8,4 +8,9 @@
     <string name="cancle">取消</string>
     <string name="confirm">确定</string>
     <string name="new_book_prompt">请输入新账本名字</string>
+    <string name="add_cost_button_string">支出</string>
+    <string name="add_earn_button_string">收入</string>
+    <string name="previous">上一个</string>
+    <string name="next">下一个</string>
+    <string name="clear">清零</string>
 </resources>

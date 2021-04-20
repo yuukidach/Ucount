@@ -60,20 +60,22 @@
             android:text="@string/show_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="0dp"
+            android:minHeight="36dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/btn_default_shape"
             app:layout_marginTopPercent="2%" />
 
-        <Button
+        <ImageButton
             android:id="@+id/stats_button"
-            android:text="@string/stats_button_string"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="0dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/btn_default_shape"
-            app:layout_marginTopPercent="8%" />
+            app:layout_marginTopPercent="2%"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/outline_auto_graph_black_36"
+            android:background="@drawable/outline_auto_graph_black_36"
+            android:contentDescription="Show statistics" />
 
         <TextView
             android:id="@+id/monthly_income_title"

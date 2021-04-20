@@ -256,7 +256,7 @@
                 android:layout_height="0dp"
                 app:layout_widthPercent="33%"
                 app:layout_heightPercent="25%"
-                android:text="清零"
+                android:text="@string/clear"
                 android:textColor="#000"
                 android:textSize="19sp"
                 android:background="@drawable/calculator_button"/>

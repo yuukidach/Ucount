@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final MainPresenter mainPresenter = new MainPresenter(this, imgUtils);
 
     private Button showBtn;
-    private Button statsBtn;
+    private ImageButton statsBtn;
     private TextView monthlyCost;
     private TextView monthlyEarn;
     private ImageView headerImg;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         resources = getResources();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
-        statsBtn = (Button) findViewById(R.id.stats_button);
+        statsBtn = (ImageButton) findViewById(R.id.stats_button);
         monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
         monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
         headerImg = (ImageView) findViewById(R.id.header_img);

@@ -10,85 +10,76 @@
     android:background="#fff">
 
     <androidx.percentlayout.widget.PercentRelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/select_month"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_heightPercent="10%"
+        app:layout_heightPercent="8%"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/prev_month"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:text="&lt;-"
-            android:textColor="#000"
-            android:textSize="30sp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/round_arrow_back_ios_black_24"
+            android:background="@drawable/round_arrow_back_ios_black_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#666"/>
+            android:contentDescription="@string/previous" />
 
-        <Button
+        <ImageButton
             android:id="@+id/next_month"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
-            android:text="-&gt;"
-            android:textColor="#000"
-            android:textSize="30sp"
-            android:layout_width="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:src="@drawable/round_arrow_forward_ios_black_24"
+            android:background="@drawable/round_arrow_forward_ios_black_24"
             android:layout_height="wrap_content"
-            android:background="#666"/>
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/next" />
 
-        <Button
+        <TextView
             android:id="@+id/selected_month"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="2021-04"
+            android:text=""
             android:textColor="#000"
-            android:textSize="30sp"
+            android:textSize="19sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#fff"/>
 
     </androidx.percentlayout.widget.PercentRelativeLayout>
 
-
     <androidx.percentlayout.widget.PercentRelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/stats_chart_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_heightPercent="45%"
+        app:layout_heightPercent="46%"
         android:layout_below="@+id/select_month"
         android:orientation="vertical">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/chart_cost"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"/>
 
     </androidx.percentlayout.widget.PercentRelativeLayout>
 
     <androidx.percentlayout.widget.PercentRelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/stats_chart_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_heightPercent="45%"
+        app:layout_heightPercent="46%"
         android:layout_below="@id/stats_chart_1"
         android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart_earn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_earn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"/>
+
     </androidx.percentlayout.widget.PercentRelativeLayout>
 
 
