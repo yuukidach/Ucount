@@ -62,6 +62,7 @@ public class StatisticsActivity extends AppCompatActivity implements StatisticsV
         fmtYM = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
         calendar = Calendar.getInstance();
         yearMonth = fmtYM.format(calendar.getTime());
+        selectBtn.setText(yearMonth);
         Log.d("calendar", "format:"+ yearMonth);
         drawPieChart();
 
