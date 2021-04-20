@@ -7,8 +7,11 @@
     <string name="cancle">Cancle</string>
     <string name="confirm">Confirm</string>
     <string name="new_book_prompt">Please enter the name for new book</string>
-    <string name="add_cost_button_string">支出</string>
-    <string name="add_earn_button_string">收入</string>
+    <string name="add_cost_button_string">Cost</string>
+    <string name="add_earn_button_string">Earn</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
+    <string name="clear">AC</string>
 
     <string name="page3_banner">备注</string>
     <string name="page3_edit_hint">记录点滴生活&#8230;</string>
