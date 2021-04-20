@@ -12,42 +12,34 @@ The purpose of writing this Android APP is to avoid bordering of ads. Everytime 
 
 ### Main page
 
-![](./markdown_res/main_page.png)
+<img src="./markdown_res/main_page.png" width="40%" />
 
-<img src="./markdown_res/main_page.png" />
+Items in the left side are earning and those in the right side are costs.
 
+Click the "+" button, the APP will navigate to page which can choose earn / cost items to add.
 
+### Add item page
 
+<img src="./markdown_res/add_page.png" width="40%" />
 
-1. Add / delete items
-### 软件截图
+Click the notebook button, we can add descriptions about the item.
 
-一开始本来打算第二界面自己重新布局的，结果发现让软键盘弹出来还是太难看了，就也写了个键盘输入
+### Description page
 
-**主界面**  
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490531757.png?raw=true" width="40%">
+<img src="./markdown_res/description_page.png" width="40%" />
 
-**删除界面**  
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519168.png?raw=true" width="40%">
+The description can be no more than 30 characters.
 
-**支出项目界面**    
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533156.png?raw=true" width="40%">
+### Book page
 
-**收入项目界面**    
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490533171.png?raw=true" width="40%">
+<img src="./markdown_res/book_page.png" width="40%" />
 
-**备注界面**    
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490519189.png?raw=true" width="40%">
+There is a drawer in the main page. Sliding from the left edge to the right will call out the drawer. In the drawer, we can add and select different account books.
 
-**账本添加界面**  
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_2018-03-15-15-43-26-363_com.yuukidach.ucount.png" width="40%">
+### Tips
 
-**旧版收支界面**  
-<img src="https://github.com/yuukidach/Ucount/blob/master/Markdown%20Image/Screenshot_1490237812.png?raw=true" width="40%">
-
-### 附加功能说明
-1. 长按首页以及账本横幅可以更换图片
-2. 单个项目左滑删除
+1. Swipe from left to right to delete an item / account book.
+2. Long press the header image in main page / drawer can trigger the album. Then you can choose another image to replace it.
 
 ### Third party libraries
 
