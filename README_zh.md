@@ -47,7 +47,7 @@
 <img src="./markdown_res/Screenshot_2018-03-15-15-43-26-363_com.yuukidach.ucount.png" width="40%">
 
 **旧版收支界面**  
-<img src="./mardkown_res/Screenshot_1490237812.png" width="40%">
+<img src="./markdown_res/Screenshot_1490237812.png" width="40%">
 
 ### 附加功能说明
 1. 长按首页以及账本横幅可以更换图片
