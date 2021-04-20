@@ -65,6 +65,16 @@
             android:background="@drawable/btn_default_shape"
             app:layout_marginTopPercent="2%" />
 
+        <Button
+            android:id="@+id/stats_button"
+            android:text="@string/stats_button_string"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_default_shape"
+            app:layout_marginTopPercent="8%" />
+
         <TextView
             android:id="@+id/monthly_income_title"
             android:text="@string/monthly_income_title"

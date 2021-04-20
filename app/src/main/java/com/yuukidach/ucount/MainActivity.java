@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final MainPresenter mainPresenter = new MainPresenter(this, imgUtils);
 
     private Button showBtn;
+    private Button statsBtn;
     private TextView monthlyCost;
     private TextView monthlyEarn;
     private ImageView headerImg;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         resources = getResources();
 
         showBtn = (Button) findViewById(R.id.show_money_button);
+        statsBtn = (Button) findViewById(R.id.stats_button);
         monthlyCost = (TextView) findViewById(R.id.monthly_cost_money);
         monthlyEarn = (TextView) findViewById(R.id.monthly_earn_money);
         headerImg = (ImageView) findViewById(R.id.header_img);
@@ -99,6 +101,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void onClick(View v) {
                 navigateToAddItem();
+            }
+        });
+
+        // start activity to statistics
+        statsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToStatistics();
             }
         });
 
@@ -277,5 +287,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
             public void onClick(DialogInterface dialog, int which) {
             }
         }).show();
+    }
+
+    @Override
+    public void navigateToStatistics() {
+        Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+        Bundle bundle = new Bundle();
+        // tell StatisticsActivity which book is on
+        bundle.putInt("bookId", mainPresenter.getCurBookId());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
