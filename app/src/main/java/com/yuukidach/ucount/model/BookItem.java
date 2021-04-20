@@ -37,6 +37,32 @@ public class BookItem extends LitePalSupport {
                       .find(MoneyItem.class);
     }
 
+    /**
+     * Find all items in a certain month
+     * @param yearMonth "yyyy-MM"
+     * @return
+     */
+    public List<MoneyItem> getMonthMoneyItemLit(String yearMonth) {
+        return LitePal.where("bookId = ? and date like ?", String.valueOf(uuid), yearMonth+"%")
+                      .find(MoneyItem.class);
+    }
+
+    public double getMonthEarnSum(String yearMonth) {
+        List<MoneyItem> moneyItems = getMonthMoneyItemLit(yearMonth);
+        return moneyItems.stream()
+                         .filter(o -> o.getInOutType() == MoneyItem.InOutType.EARN)
+                         .mapToDouble(MoneyItem::getMoney)
+                         .sum();
+    }
+
+    public double getMonthCostSum(String yearMonth) {
+        List<MoneyItem> moneyItems = getMonthMoneyItemLit(yearMonth);
+        return moneyItems.stream()
+                         .filter(o -> o.getInOutType() == MoneyItem.InOutType.COST)
+                         .mapToDouble(MoneyItem::getMoney)
+                         .sum();
+    }
+
     public double getEarnSum() {
         List<MoneyItem> moneyItemList = getMoneyItemList();
         if (moneyItemList.size() == 0) return 0.0;

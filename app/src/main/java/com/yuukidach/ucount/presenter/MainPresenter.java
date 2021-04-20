@@ -3,19 +3,22 @@ package com.yuukidach.ucount.presenter;
 import android.net.Uri;
 import android.util.Log;
 
-//import com.yuukidach.ucount.GlobalVariables;
 import com.yuukidach.ucount.model.BookItem;
 import com.yuukidach.ucount.model.ImgUtils;
 import com.yuukidach.ucount.model.MoneyItem;
-import com.yuukidach.ucount.view.MainView;
 import com.yuukidach.ucount.view.BookItemViewHolder;
+import com.yuukidach.ucount.view.MainView;
 import com.yuukidach.ucount.view.MoneyItemViewHolder;
 
 import org.litepal.LitePal;
 
-import java.security.AlgorithmConstraints;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+//import com.yuukidach.ucount.GlobalVariables;
 
 public class MainPresenter {
     final private MainView mainView;
@@ -25,8 +28,6 @@ public class MainPresenter {
     private int curBookId = 0;
     private int curBookPos = 0;
     private String description;
-
-//    private List<BookItem> bookItemList;
 
     /**
      * Check if a string only contains numeric character
@@ -107,15 +108,22 @@ public class MainPresenter {
     public void updateMonthlyEarn() {
         BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
                                .findFirst(BookItem.class);
-        String str = decimalFormat.format(book.getEarnSum());
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
+        String curMonth = fmt.format(new Date());
+
+        Log.d("date", "updateMonthlyEarn: " + curMonth);
+
+        String str = decimalFormat.format(book.getMonthEarnSum(curMonth));
 
         mainView.updateMonthlyEarn(str);
     }
 
     public void updateMonthlyCost() {
         BookItem book = LitePal.where("uuid = ?", String.valueOf(curBookId))
-                .findFirst(BookItem.class);
-        String str = decimalFormat.format(book.getCostSum());
+                               .findFirst(BookItem.class);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
+        String curMonth = fmt.format(new Date());
+        String str = decimalFormat.format(book.getMonthCostSum(curMonth));
 
         mainView.updateMonthlyCost(str);
     }
