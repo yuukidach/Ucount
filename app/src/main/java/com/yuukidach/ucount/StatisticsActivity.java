@@ -111,12 +111,12 @@ public class StatisticsActivity extends AppCompatActivity implements StatisticsV
                 "where bookId = ? and " +
                 "inOutType = ? and " +
                 "date like ? " +
-                "group by typename", "0", MoneyItem.InOutType.COST.toString(), yearMonth+"%");
+                "group by typename", String.valueOf(presenter.getBookId()), MoneyItem.InOutType.COST.toString(), yearMonth+"%");
         Cursor cursor_earn = LitePal.findBySQL("select sum(money),typename from MoneyItem " +
                 "where bookId = ? and " +
                 "inOutType = ? and " +
                 "date like ? " +
-                "group by typename", "0", MoneyItem.InOutType.EARN.toString(), yearMonth+"%");
+                "group by typename", String.valueOf(presenter.getBookId()), MoneyItem.InOutType.EARN.toString(), yearMonth+"%");
         if (cursor_cost != null && cursor_cost.moveToFirst()) {
             do {
                 Log.d("database", "#######"+cursor_cost.getString(1)+"########");

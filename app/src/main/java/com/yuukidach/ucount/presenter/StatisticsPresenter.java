@@ -27,6 +27,7 @@ public class StatisticsPresenter {
         view.selectMonth();
         view.drawPieChart();
     }
+    public int getBookId(){return bookId;}
 
 
 }
