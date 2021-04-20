@@ -14,11 +14,11 @@
             android:theme="@style/StartWindow">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".AddItemActivity" />
+        <activity android:name=".StatisticsActivity" />
         <activity android:name=".DescriptionActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>

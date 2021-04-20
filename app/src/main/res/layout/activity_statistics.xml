@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.percentlayout.widget.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_statistics"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <androidx.percentlayout.widget.PercentRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/select_month"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_heightPercent="10%"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/prev_month"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="&lt;-"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#666"/>
+
+        <Button
+            android:id="@+id/next_month"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:text="-&gt;"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#666"/>
+
+        <Button
+            android:id="@+id/selected_month"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="2021-04"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#fff"/>
+
+    </androidx.percentlayout.widget.PercentRelativeLayout>
+
+
+    <androidx.percentlayout.widget.PercentRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/stats_chart_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="45%"
+        android:layout_below="@+id/select_month"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_cost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.percentlayout.widget.PercentRelativeLayout>
+
+    <androidx.percentlayout.widget.PercentRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/stats_chart_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_heightPercent="45%"
+        android:layout_below="@id/stats_chart_1"
+        android:orientation="vertical">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart_earn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </androidx.percentlayout.widget.PercentRelativeLayout>
+
+
+</androidx.percentlayout.widget.PercentRelativeLayout>

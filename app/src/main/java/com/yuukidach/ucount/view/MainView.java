@@ -50,6 +50,8 @@ public interface MainView {
      */
     void navigateToAddItem();
 
+    void navigateToStatistics();
+
     void setMainItemRecycler(List<MoneyItem> list);
 
     void setBookItemRecycler(List<BookItem> list);

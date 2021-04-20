@@ -17,7 +17,29 @@ public class BookItem extends LitePalSupport {
     private int uuid;
     private String name;
 
-    public BookItem() {}
+    public BookItem() {
+//        MoneyItem moneyItem = new MoneyItem("000", MoneyItem.InOutType.COST, 100.0, "normal", "note");
+//        moneyItem.setDate("2021-04-01");
+//        moneyItem.setBookId(0);
+//        moneyItem.save();
+//        MoneyItem moneyItem2 = new MoneyItem("000", MoneyItem.InOutType.COST, 200.0, "normal", "note");
+//        moneyItem2.setDate("2021-04-25");
+//        moneyItem2.setBookId(0);
+//        moneyItem2.save();
+//        MoneyItem moneyItem3 = new MoneyItem("000", MoneyItem.InOutType.COST, 300.0, "rent", "note");
+//        moneyItem3.setDate("2021-04-03");
+//        moneyItem3.setBookId(0);
+//        moneyItem3.save();
+//        MoneyItem moneyItem4 = new MoneyItem("000", MoneyItem.InOutType.COST, 400.0, "normal", "note");
+//        moneyItem4.setDate("2021-03-01");
+//        moneyItem4.setBookId(0);
+//        moneyItem4.save();
+//        MoneyItem moneyItem5 = new MoneyItem("000", MoneyItem.InOutType.COST, 500.0, "tax", "note");
+//        moneyItem5.setDate("2021-04-26");
+//        moneyItem5.setBookId(0);
+//        moneyItem5.save();
+
+    }
     public BookItem(String name) {
         this.name = name;
     }
