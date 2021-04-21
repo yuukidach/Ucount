@@ -18,6 +18,14 @@ Items in the left side are earning and those in the right side are costs.
 
 Click the "+" button, the APP will navigate to page which can choose earn / cost items to add.
 
+Click the icon in the top right corner, user can surf to the statistics page.
+
+### Statistics page
+
+<img src="./markdown_res/stat_page.png" width="40%" />
+
+This page will display 2 pie charts of cost and earning items in one month.
+
 ### Add item page
 
 <img src="./markdown_res/add_page.png" width="40%" />
