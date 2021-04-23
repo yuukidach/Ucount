@@ -13,8 +13,8 @@
 
         <View
             android:id="@+id/main_dot"
-            android:layout_width="5dp"
-            android:layout_height="5dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:layout_gravity="center"
             android:background="@drawable/dot"
             android:layout_centerInParent="true"/>
@@ -23,8 +23,8 @@
             android:id="@+id/iotem_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@color/colorSlateGray"
+            android:textSize="14sp"
+            android:textColor="@color/cardview_dark_background"
             android:layout_toStartOf="@id/main_dot"
             android:layout_marginEnd="27dp"/>
 
@@ -40,7 +40,7 @@
             android:id="@+id/earn_item_img_main"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            app:layout_widthPercent="8%"
+            app:layout_widthPercent="10%"
             android:scaleType="fitCenter"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
@@ -53,12 +53,14 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/page1_recycler_top"
             android:layout_centerVertical="true"
+            android:textSize="15sp"
             android:textColor="@color/colorSlateGray" />
 
         <TextView
             android:id="@+id/earn_item_name_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/earn_item_money_main"
             android:layout_marginEnd="@dimen/text_gap"
@@ -71,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/earn_item_money_main"
             android:layout_alignEnd="@id/earn_item_money_main"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textColor="@color/colorLightGray"
             android:background="@null"/>
 
@@ -87,7 +89,7 @@
             android:id="@+id/cost_item_img_main"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            app:layout_widthPercent="8%"
+            app:layout_widthPercent="10%"
             android:scaleType="fitCenter"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
@@ -99,6 +101,7 @@
             android:layout_toEndOf="@id/cost_item_img_main"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/page1_recycler_top"
+            android:textSize="15sp"
             android:layout_centerVertical="true"
             android:textColor="@color/colorSlateGray" />
 
@@ -110,6 +113,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/text_gap"
             android:layout_marginTop="@dimen/page1_recycler_top"
+            android:textSize="15sp"
             android:textColor="@color/colorSlateGray" />
 
         <TextView
@@ -118,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cost_item_name_main"
             android:layout_alignStart="@id/cost_item_name_main"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textColor="@color/colorGray"
             android:background="@null"/>
 
