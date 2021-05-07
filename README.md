@@ -20,7 +20,7 @@ Install the application and click to run.
 
 ## Application demo
 
-<img src="./markdown_res/ucount_demo.gif" with=40% />
+<img src="./markdown_res/ucount_demo.gif" width=400 />
 
 ### Tips
 
