@@ -18,7 +18,7 @@ Or you can try to use the APK in the release page.
 
 Install the application and click to run.
 
-## Application details
+## Application demo
 
 <img src="./markdown_res/ucount_demo.gif" with=40% />
 
